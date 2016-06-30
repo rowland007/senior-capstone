@@ -2,7 +2,7 @@ License
 ===================
 This document, the software design document and the source code for this project are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode). 
 
-<div class="center" style="width: auto; margin-left: auto; margin-right: auto;">[License Logo](https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png)</div>
+![License logo](https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png)
 
 > **You are free to**:
 > 
@@ -37,27 +37,3 @@ Notwithstanding the provisions of sections 106 and 106A, the fair use of a copyr
 > 4.  the effect of the use upon the potential market for or value of the copyrighted work. 
 
 >The fact that a work is unpublished shall not itself bar a finding of fair use if such finding is made upon consideration of all the above factors.
-
-<!-- ### UML diagrams
-
-<!-- You can also render sequence diagrams like this:
-
-<!-- ```sequence
-Alice->Bob: Hello Bob, how are you?
-Note right of Bob: Bob thinks
-Bob-->Alice: I am good thanks!
-<!-- ```
-
-<!-- And flow charts like this:
-
-<!-- ```flow
-st=>start: Start
-e=>end
-op=>operation: My Operation
-cond=>condition: Yes or No?
-
-st->op->cond
-cond(yes)->e
-cond(no)->op
-```
--->
