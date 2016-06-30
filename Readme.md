@@ -22,7 +22,7 @@ This document, the software design document and the source code for this project
 
 ----------
 
-Copyright ![Copyright](http://www.copyrightauthority.com/copyright-symbol/Copyright-Symbol-images/Copyright_symbol_9.gif)
+![2000px-License_icon-copyright-88x31.svg.png](https://bitbucket.org/repo/6aE9eE/images/1848042318-2000px-License_icon-copyright-88x31.svg.png)
 -------------
 The *Zelda* fonts, music, sounds, sprites, tile sets, and other resources used from *Zelda: A Link to the Past* are copyrighted and owned by Nintendo.
 
