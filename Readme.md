@@ -2,7 +2,8 @@ License
 ===================
 This document, the software design document and the source code for this project are licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode). 
 
-<center>![License Logo](https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png)
+<div class="center" style="width: auto; margin-left: auto; margin-right: auto;">[License Logo](https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png)</div>
+
 > **You are free to**:
 > 
  - **Share** — copy and redistribute the material in any medium or format
