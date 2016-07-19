@@ -26,10 +26,13 @@ Date                Comment
 #include <Windows.h>
 #include "GameEngine.h"
 #include "Resource.h"
+#include "Bitmap.h"
 
 //Required global variables
-bool isTest = true;
+bool isTest = false;
+HINSTANCE g_hInstance;
 GameEngine *g_pGame;
+Bitmap* g_pLoadScreen;
 
 BOOL GameInitialize(HINSTANCE hInstance)
 {
@@ -40,12 +43,15 @@ BOOL GameInitialize(HINSTANCE hInstance)
 		return FALSE;
 
 	g_pGame->SetFrameRate(15);
+	g_hInstance = hInstance;
 	
 	return TRUE;
 }
 
 void GameStart(HWND hWindow)
 {
+	HDC hDC = GetDC(hWindow);
+	g_pLoadScreen = new Bitmap(hDC, TEXT("LoadScreen.bmp"));
 	if (isTest)
 	{
 		//Seed random number generator
@@ -56,6 +62,8 @@ void GameStart(HWND hWindow)
 void GameEnd()
 {
 	//Deallocation of memory
+	delete g_pLoadScreen;
+	g_pLoadScreen = NULL;
 	delete g_pGame;
 	g_pGame = NULL;
 }
@@ -97,7 +105,7 @@ void GameDeactivate(HWND hWindow)
 
 void GamePaint(HDC hDC)
 {
-	//empty
+	g_pLoadScreen->Draw(hDC, 0, 0);
 }
 
 void GameCycle()
