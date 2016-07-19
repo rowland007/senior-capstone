@@ -19,6 +19,8 @@ Modifications:
 Date                Comment
 ----    ------------------------------------------------
 ************************************************************************/
+#pragma
+#include <Windows.h>
 class Bitmap
 {
 protected:
@@ -41,14 +43,7 @@ public:
 	BOOL Create(HDC hDC, LPTSTR szFilename);
 	BOOL Create(HDC hDC, UINT uiResID, HINSTANCE hInstance);
 	BOOL Create(HDC hDC, int iWidth, int iHeight, COLORREF crColor);
-	void Draw(HDC hDC, int x, int y);
 	void Draw(HDC hDC, int x, int y, BOOL bTrans = FALSE, COLORREF crTransColor = RGB(255, 0, 255));
-	int GetWidth() const
-	{
-		return m_iWidth;
-	};
-	int GetHeight() const
-	{
-		return m_iHeight;
-	};
+	int GetWidth() const;
+	int GetHeight() const;
 };

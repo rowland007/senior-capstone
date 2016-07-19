@@ -51,7 +51,7 @@ BOOL GameInitialize(HINSTANCE hInstance)
 void GameStart(HWND hWindow)
 {
 	HDC hDC = GetDC(hWindow);
-	g_pLoadScreen = new Bitmap(hDC, TEXT("LoadScreen.bmp"));
+	g_pLoadScreen = new Bitmap(hDC, IDB_BITMAP1, g_hInstance);
 	if (isTest)
 	{
 		//Seed random number generator
