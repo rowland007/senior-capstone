@@ -1,12 +1,14 @@
 /************************************************************************
-Program: CapstoneProject
-Author: Randall D. Rowland Jr.
-Class:
-Instructor: Dan Randall
-Date: 
-Description:
-Input:
-Output:
+Program:		CapstoneProject
+Author:			Randall D. Rowland Jr.
+Class:			
+Instructor:		Dan Randall
+Date:			18 July 2016
+Description:	This file creates the window in using the GameEngine class
+				and loads the program's icon.
+Input:			
+Output:			A window with an icon and text in the title bar.
+
 Compilation instructions:
 Usage:
 Known bugs/missing features:
@@ -19,18 +21,20 @@ Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.
 Modifications:
 Date                Comment
 ----    ------------------------------------------------
-
+18Jul16	Added a bool var to put program in a test mode.
 ************************************************************************/
 #include <Windows.h>
 #include "GameEngine.h"
 #include "Resource.h"
 
-GameEngine* g_pGame;
+//Required global variables
+bool isTest = true;
+GameEngine *g_pGame;
 
 BOOL GameInitialize(HINSTANCE hInstance)
 {
 	//Create the game engine
-	g_pGame = new GameEngine(hInstance, TEXT("Dungeon Warrior"), TEXT("Dungeon Warrior"), IDI_ICON1, IDI_ICON1);
+	g_pGame = new GameEngine(hInstance, TEXT("Capstone Project"), TEXT("Dungeon Warrior"), IDI_ICON1, IDI_ICON1);
 
 	if (g_pGame == NULL)
 		return FALSE;
@@ -42,14 +46,18 @@ BOOL GameInitialize(HINSTANCE hInstance)
 
 void GameStart(HWND hWindow)
 {
-	//Seed random number generator
-	srand(GetTickCount());
+	if (isTest)
+	{
+		//Seed random number generator
+		srand(GetTickCount());
+	}
 }
 
 void GameEnd()
 {
-	//clean the system
+	//Deallocation of memory
 	delete g_pGame;
+	g_pGame = NULL;
 }
 
 void GameActivate(HWND hWindow)
@@ -57,11 +65,16 @@ void GameActivate(HWND hWindow)
 	HDC		hDC;
 	RECT	rect;
 
-	//Draw activation text on screen
+	
 	GetClientRect(hWindow, &rect);
 	hDC = GetDC(hWindow);
 
-	DrawText(hDC, TEXT("TEST WINDOW - ACTIVE"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+	if (isTest)
+	{
+		//Draw activation text on screen
+		DrawText(hDC, TEXT("TEST WINDOW - ACTIVE NOW"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+	}
+	
 	ReleaseDC(hWindow, hDC);
 }
 
@@ -70,11 +83,15 @@ void GameDeactivate(HWND hWindow)
 	HDC		hDC;
 	RECT	rect;
 
-	//Draw deactivation text on screen
 	GetClientRect(hWindow, &rect);
 	hDC = GetDC(hWindow);
 
-	DrawText(hDC, TEXT("TEST WINDOW - NOT ACTIVE"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+	if (isTest)
+	{
+		//Draw deactivation text on screen
+		DrawText(hDC, TEXT("TEST WINDOW - NOT ACTIVE"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+	}
+	
 	ReleaseDC(hWindow, hDC);
 }
 
@@ -88,12 +105,13 @@ void GameCycle()
 	HDC		hDC;
 	HWND	hWindow = g_pGame->GetWindow();
 
-	//Draw the screen
+	
 	hDC = GetDC(hWindow);
+	if (isTest)
+	{
+		//This will draw your icon on the screen randomly.  This is a test module and can be removed at a later date
+		DrawIcon(hDC, rand() % g_pGame->GetWidth(), rand() % g_pGame->GetHeight(), (HICON)(WORD)GetClassLong(hWindow, GCL_HICON));
+	}
 
-	//This will draw your icon on the screen randomly.  This is a test module and can be removed at a later date
-	DrawIcon(hDC, rand() % g_pGame->GetWidth(), rand() % g_pGame->GetHeight(), (HICON)(WORD)GetClassLong(hWindow, GCL_HICON));
-
-	//clean up
 	ReleaseDC(hWindow, hDC);
 }

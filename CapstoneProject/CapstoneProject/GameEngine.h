@@ -17,6 +17,28 @@ int WINAPI        WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	PSTR szCmdLine, int iCmdShow);
 LRESULT CALLBACK  WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+/************************************************************************
+Program:		CapstoneProject
+Author:			Michael Morrison
+Class:			GameEngine
+Instructor:		Dan Randall
+Date:			5 July 2016
+Description:	GameEngine hides all the Windows specific code so you can
+				focus on the game code.  Code is used from the book:
+				"Beginning Game Programming" by Michael Morrison.
+				No need to reinvent the wheel.
+Input:
+Output:
+
+Compilation instructions:
+Usage:
+Known bugs/missing features:
+
+Modifications:
+Date                Comment
+----    ------------------------------------------------
+18Jul16	Added this comment block.
+************************************************************************/
 //-----------------------------------------------------------------
 // Game Engine Function Declarations
 //-----------------------------------------------------------------
