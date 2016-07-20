@@ -19,6 +19,7 @@ Modifications:
 Date                Comment
 ----    ------------------------------------------------
 18Jul16	Added this comment block.
+20Jul16	Engine now has the game window open maximized.
 ************************************************************************/
 //-----------------------------------------------------------------
 // Game Engine Object
@@ -163,7 +164,7 @@ BOOL GameEngine::Initialize(int iCmdShow)
 		return FALSE;
 
 	// Show and update the window
-	ShowWindow(m_hWindow, iCmdShow);
+	ShowWindow(m_hWindow, SW_MAXIMIZE);
 	UpdateWindow(m_hWindow);
 
 	return TRUE;
