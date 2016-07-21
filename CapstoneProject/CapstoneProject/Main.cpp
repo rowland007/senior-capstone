@@ -30,7 +30,7 @@ Date                Comment
 #include "Bitmap.h"
 
 //Required global variables
-const bool isTest = false;
+const bool isTest = true;
 bool isLoading;
 HINSTANCE g_hInstance;
 GameEngine *g_pGame;
@@ -119,26 +119,57 @@ void GameCycle()
 
 void HandleKeys()
 {
+	HDC		hDC;
+	HWND	hWindow = g_pGame->GetWindow();
+	hDC = GetDC(hWindow);
+
 	if (GetAsyncKeyState(VK_LEFT) < 0)
 	{
 		//Move left
+		if (isTest)
+		{
+			GamePaint(hDC);
+			TextOut(hDC, 1100, 990, TEXT("LEFT KEY"), 16);
+		}
 	} 
 	else if (GetAsyncKeyState(VK_RIGHT) < 0)
 	{
 		//Move right
+		if (isTest)
+		{
+			GamePaint(hDC);
+			TextOut(hDC, 1100, 990, TEXT("RIGHT KEY"), 16);
+		}
 	}
 	
 	if (GetAsyncKeyState(VK_UP) < 0)
 	{
 		//Move up
+		if (isTest)
+		{
+			GamePaint(hDC);
+			TextOut(hDC, 1100, 990, TEXT("UP KEY"), 16);
+		}
 	}
 	else if (GetAsyncKeyState(VK_DOWN) < 0)
 	{
 		//Move down
+		if (isTest)
+		{
+			GamePaint(hDC);
+			TextOut(hDC, 1100, 990, TEXT("DOWN KEY"), 16);
+		}
 	}
 
 	if (GetAsyncKeyState(VK_SPACE) < 0)
 	{
 		//Will be used to select options and use weapon
+		if (isTest)
+		{
+			GamePaint(hDC);
+			TextOut(hDC, 1100, 990, TEXT("BOOM-BOOM KEY"), 16);
+		}
 	}
+
+	ReleaseDC(hWindow, hDC);
 }
