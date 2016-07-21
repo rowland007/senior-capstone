@@ -1,22 +1,3 @@
-//-----------------------------------------------------------------
-// Game Engine Object
-// C++ Header - GameEngine.h
-//-----------------------------------------------------------------
-
-#pragma once
-
-//-----------------------------------------------------------------
-// Include Files
-//-----------------------------------------------------------------
-#include <windows.h>
-
-//-----------------------------------------------------------------
-// Windows Function Declarations
-//-----------------------------------------------------------------
-int WINAPI        WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-	PSTR szCmdLine, int iCmdShow);
-LRESULT CALLBACK  WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 /************************************************************************
 Program:		CapstoneProject
 Author:			Michael Morrison
@@ -38,7 +19,16 @@ Modifications:
 Date                Comment
 ----    ------------------------------------------------
 18Jul16	Added this comment block.
+20Jul16 Added HandleKeys function for keyboard support.
 ************************************************************************/
+#pragma once
+#include <windows.h>
+
+//-----------------------------------------------------------------
+// Windows Function Declarations
+//-----------------------------------------------------------------
+int WINAPI        WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow);
+LRESULT CALLBACK  WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 //-----------------------------------------------------------------
 // Game Engine Function Declarations
 //-----------------------------------------------------------------
@@ -49,6 +39,7 @@ void GameActivate(HWND hWindow);
 void GameDeactivate(HWND hWindow);
 void GamePaint(HDC hDC);
 void GameCycle();
+void HandleKeys();
 
 //-----------------------------------------------------------------
 // GameEngine Class
@@ -69,15 +60,13 @@ protected:
 
 public:
 	// Constructor(s)/Destructor
-	GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle,
-		WORD wIcon, WORD wSmallIcon, int iWidth = 640, int iHeight = 480);
+	GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle, WORD wIcon, WORD wSmallIcon, int iWidth = 640, int iHeight = 480);
 	virtual ~GameEngine();
 
 	// General Methods
 	static GameEngine*  GetEngine() { return m_pGameEngine; };
 	BOOL                Initialize(int iCmdShow);
-	LRESULT             HandleEvent(HWND hWindow, UINT msg, WPARAM wParam,
-		LPARAM lParam);
+	LRESULT             HandleEvent(HWND hWindow, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	// Accessor Methods
 	HINSTANCE GetInstance() { return m_hInstance; };

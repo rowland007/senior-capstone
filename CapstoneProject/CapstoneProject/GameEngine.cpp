@@ -19,16 +19,8 @@ Modifications:
 Date                Comment
 ----    ------------------------------------------------
 18Jul16	Added this comment block.
-20Jul16	Engine now has the game window open maximized.
+20Jul16	Engine now has the game window open maximized. Added keyboard support.
 ************************************************************************/
-//-----------------------------------------------------------------
-// Game Engine Object
-// C++ Source - GameEngine.cpp
-//-----------------------------------------------------------------
-
-//-----------------------------------------------------------------
-// Include Files
-//-----------------------------------------------------------------
 #include "GameEngine.h"
 
 //-----------------------------------------------------------------
@@ -72,8 +64,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 					iTickCount = GetTickCount();
 					if (iTickCount > iTickTrigger)
 					{
-						iTickTrigger = iTickCount +
-							GameEngine::GetEngine()->GetFrameDelay();
+						iTickTrigger = iTickCount + GameEngine::GetEngine()->GetFrameDelay();
+						HandleKeys();
 						GameCycle();
 					}
 				}

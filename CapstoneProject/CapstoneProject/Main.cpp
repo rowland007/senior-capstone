@@ -22,6 +22,7 @@ Modifications:
 Date                Comment
 ----    ------------------------------------------------
 18Jul16	Added a bool var to put program in a test mode.
+20Jul16 Added keyboard support with HandleKeys function.
 ************************************************************************/
 #include <Windows.h>
 #include "GameEngine.h"
@@ -114,4 +115,30 @@ void GameCycle()
 	hDC = GetDC(hWindow);
 
 	ReleaseDC(hWindow, hDC);
+}
+
+void HandleKeys()
+{
+	if (GetAsyncKeyState(VK_LEFT) < 0)
+	{
+		//Move left
+	} 
+	else if (GetAsyncKeyState(VK_RIGHT) < 0)
+	{
+		//Move right
+	}
+	
+	if (GetAsyncKeyState(VK_UP) < 0)
+	{
+		//Move up
+	}
+	else if (GetAsyncKeyState(VK_DOWN) < 0)
+	{
+		//Move down
+	}
+
+	if (GetAsyncKeyState(VK_SPACE) < 0)
+	{
+		//Will be used to select options and use weapon
+	}
 }
