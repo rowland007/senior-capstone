@@ -29,10 +29,12 @@ Date                Comment
 #include "Bitmap.h"
 
 //Required global variables
-bool isTest = false;
+const bool isTest = false;
+bool isLoading;
 HINSTANCE g_hInstance;
 GameEngine *g_pGame;
 Bitmap* g_pLoadScreen;
+Bitmap* g_pLoadScreenText;
 
 BOOL GameInitialize(HINSTANCE hInstance)
 {
@@ -51,17 +53,16 @@ BOOL GameInitialize(HINSTANCE hInstance)
 void GameStart(HWND hWindow)
 {
 	HDC hDC = GetDC(hWindow);
+	isLoading = true;
 	g_pLoadScreen = new Bitmap(hDC, IDB_BITMAP1, g_hInstance);
-	if (isTest)
-	{
-		//Seed random number generator
-		srand(GetTickCount());
-	}
+	g_pLoadScreenText = new Bitmap(hDC, IDB_BITMAP2, g_hInstance);
 }
 
 void GameEnd()
 {
 	//Deallocation of memory
+	delete g_pLoadScreenText;
+	g_pLoadScreenText = NULL;
 	delete g_pLoadScreen;
 	g_pLoadScreen = NULL;
 	delete g_pGame;
@@ -76,12 +77,6 @@ void GameActivate(HWND hWindow)
 	
 	GetClientRect(hWindow, &rect);
 	hDC = GetDC(hWindow);
-
-	if (isTest)
-	{
-		//Draw activation text on screen
-		DrawText(hDC, TEXT("TEST WINDOW - ACTIVE NOW"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
-	}
 	
 	ReleaseDC(hWindow, hDC);
 }
@@ -93,19 +88,21 @@ void GameDeactivate(HWND hWindow)
 
 	GetClientRect(hWindow, &rect);
 	hDC = GetDC(hWindow);
-
-	if (isTest)
-	{
-		//Draw deactivation text on screen
-		DrawText(hDC, TEXT("TEST WINDOW - NOT ACTIVE"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
-	}
 	
 	ReleaseDC(hWindow, hDC);
 }
 
 void GamePaint(HDC hDC)
 {
-	g_pLoadScreen->Draw(hDC, 0, 0);
+	if (isLoading)
+	{
+		g_pLoadScreen->Draw(hDC, 0, 0);
+		g_pLoadScreenText->Draw(hDC, 120, 315, TRUE);
+	}
+	else
+	{
+		//g_pGame->DrawSprites(hDC); or something like that here
+	}
 }
 
 void GameCycle()
@@ -115,11 +112,6 @@ void GameCycle()
 
 	
 	hDC = GetDC(hWindow);
-	if (isTest)
-	{
-		//This will draw your icon on the screen randomly.  This is a test module and can be removed at a later date
-		DrawIcon(hDC, rand() % g_pGame->GetWidth(), rand() % g_pGame->GetHeight(), (HICON)(WORD)GetClassLong(hWindow, GCL_HICON));
-	}
 
 	ReleaseDC(hWindow, hDC);
 }
