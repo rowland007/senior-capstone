@@ -1,11 +1,24 @@
-//-----------------------------------------------------------------
-// Bitmap Object
-// C++ Source - Bitmap.cpp
-//-----------------------------------------------------------------
+/************************************************************************
+Program:		CapstoneProject
+Author:			Michael Morrison
+Class:			Bitmap
+Instructor:		Dan Randall
+Date:			18 July 2016
+Description:	Bitmap class loads information about a bitmap into memory
+				also enables it to be drawn to the screen. 
+Input:
+Output:
 
-//-----------------------------------------------------------------
-// Include Files
-//-----------------------------------------------------------------
+Compilation instructions:
+Usage:
+Known bugs/missing features:
+
+Modifications:
+Date                Comment
+----    ------------------------------------------------
+18Jul16	Made Get functions const
+20Jul16	Put functions all on line and added comments.
+************************************************************************/
 #include "Bitmap.h"
 
 //-----------------------------------------------------------------
@@ -60,18 +73,16 @@ BOOL Bitmap::Create(HDC hDC, LPTSTR szFileName)
 	Free();
 
 	// Open the bitmap file
-	HANDLE hFile = CreateFile(szFileName, GENERIC_READ, FILE_SHARE_READ, NULL,
-		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE hFile = CreateFile(szFileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE)
 		return FALSE;
 
 	// Read the bitmap file header
 	BITMAPFILEHEADER  bmfHeader;
 	DWORD             dwBytesRead;
-	BOOL bOK = ReadFile(hFile, &bmfHeader, sizeof(BITMAPFILEHEADER),
-		&dwBytesRead, NULL);
-	if ((!bOK) || (dwBytesRead != sizeof(BITMAPFILEHEADER)) ||
-		(bmfHeader.bfType != 0x4D42))
+	BOOL bOK = ReadFile(hFile, &bmfHeader, sizeof(BITMAPFILEHEADER), &dwBytesRead, NULL);
+	
+	if ((!bOK) || (dwBytesRead != sizeof(BITMAPFILEHEADER)) || (bmfHeader.bfType != 0x4D42))
 	{
 		CloseHandle(hFile);
 		return FALSE;
@@ -81,8 +92,7 @@ BOOL Bitmap::Create(HDC hDC, LPTSTR szFileName)
 	if (pBitmapInfo != NULL)
 	{
 		// Read the bitmap info header
-		bOK = ReadFile(hFile, pBitmapInfo, sizeof(BITMAPINFOHEADER),
-			&dwBytesRead, NULL);
+		bOK = ReadFile(hFile, pBitmapInfo, sizeof(BITMAPINFOHEADER), &dwBytesRead, NULL);
 		if ((!bOK) || (dwBytesRead != sizeof(BITMAPINFOHEADER)))
 		{
 			CloseHandle(hFile);
@@ -96,13 +106,11 @@ BOOL Bitmap::Create(HDC hDC, LPTSTR szFileName)
 
 		// Get a handle to the bitmap and copy the image bits
 		PBYTE pBitmapBits;
-		m_hBitmap = CreateDIBSection(hDC, pBitmapInfo, DIB_RGB_COLORS,
-			(PVOID*)&pBitmapBits, NULL, 0);
+		m_hBitmap = CreateDIBSection(hDC, pBitmapInfo, DIB_RGB_COLORS, (PVOID*)&pBitmapBits, NULL, 0);
 		if ((m_hBitmap != NULL) && (pBitmapBits != NULL))
 		{
 			SetFilePointer(hFile, bmfHeader.bfOffBits, NULL, FILE_BEGIN);
-			bOK = ReadFile(hFile, pBitmapBits, pBitmapInfo->bmiHeader.biSizeImage,
-				&dwBytesRead, NULL);
+			bOK = ReadFile(hFile, pBitmapBits, pBitmapInfo->bmiHeader.biSizeImage, &dwBytesRead, NULL);
 			if (bOK)
 				return TRUE;
 		}
@@ -143,12 +151,10 @@ BOOL Bitmap::Create(HDC hDC, UINT uiResID, HINSTANCE hInstance)
 
 	// Get a handle to the bitmap and copy the image bits
 	PBYTE pBitmapBits;
-	m_hBitmap = CreateDIBSection(hDC, pBitmapInfo, DIB_RGB_COLORS,
-		(PVOID*)&pBitmapBits, NULL, 0);
+	m_hBitmap = CreateDIBSection(hDC, pBitmapInfo, DIB_RGB_COLORS, (PVOID*)&pBitmapBits, NULL, 0);
 	if ((m_hBitmap != NULL) && (pBitmapBits != NULL))
 	{
-		const PBYTE pTempBits = pBitmapImage + pBitmapInfo->bmiHeader.biSize +
-			pBitmapInfo->bmiHeader.biClrUsed * sizeof(RGBQUAD);
+		const PBYTE pTempBits = pBitmapImage + pBitmapInfo->bmiHeader.biSize + pBitmapInfo->bmiHeader.biClrUsed * sizeof(RGBQUAD);
 		CopyMemory(pBitmapBits, pTempBits, pBitmapInfo->bmiHeader.biSizeImage);
 
 		// Unlock and free the bitmap graphics object
@@ -208,8 +214,7 @@ void Bitmap::Draw(HDC hDC, int x, int y, BOOL bTrans, COLORREF crTransColor)
 
 		// Draw the bitmap to the destination device context
 		if (bTrans)
-			TransparentBlt(hDC, x, y, GetWidth(), GetHeight(), hMemDC, 0, 0,
-				GetWidth(), GetHeight(), crTransColor);
+			TransparentBlt(hDC, x, y, GetWidth(), GetHeight(), hMemDC, 0, 0, GetWidth(), GetHeight(), crTransColor);
 		else
 			BitBlt(hDC, x, y, GetWidth(), GetHeight(), hMemDC, 0, 0, SRCCOPY);
 

@@ -4,10 +4,8 @@ Author:			Michael Morrison
 Class:			Bitmap
 Instructor:		Dan Randall
 Date:			18 July 2016
-Description:	GameEngine hides all the Windows specific code so you can
-				focus on the game code.  Code is used from the book:
-				"Beginning Game Programming" by Michael Morrison.
-				No need to reinvent the wheel.
+Description:	Bitmap class loads information about a bitmap into memory
+				also enables it to be drawn to the screen.
 Input:
 Output:
 
@@ -18,6 +16,7 @@ Known bugs/missing features:
 Modifications:
 Date                Comment
 ----    ------------------------------------------------
+18Jul16	Made Get functions const
 ************************************************************************/
 #pragma
 #include <Windows.h>
