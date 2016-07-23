@@ -23,6 +23,7 @@ Date                Comment
 ----    ------------------------------------------------
 18Jul16	Added a bool var to put program in a test mode.
 20Jul16 Added keyboard support with HandleKeys function.
+22Jul16	Modified HandleKeys to a switch/case.
 ************************************************************************/
 #include <Windows.h>
 #include "GameEngine.h"
@@ -157,11 +158,18 @@ void HandleKeys(WPARAM wParam)
 		}
 		break;
 	case VK_SPACE:
+		if (isLoading)
+		{
+			isLoading = false;
+		}
 		if (isTest)
 		{
 			GamePaint(hDC);
 			TextOut(hDC, 1100, 990, TEXT("BOOM-BOOM KEY"), 14);
 		}
+		break;
+	case VK_RETURN:
+		isLoading = false;
 		break;
 	default:
 		GamePaint(hDC);
