@@ -1,6 +1,6 @@
 /************************************************************************
 Program:		CapstoneProject
-Author:			Michael Morrison
+Author:			Randy Rowland
 Class:			Bitmap
 Instructor:		Dan Randall
 Date:			22 July 2016
@@ -37,7 +37,7 @@ const BOUNDSACTION	BA_STOP		= 0,
 class Sprite
 {
 public:
-	Sprite(Bitmap *pBitmap);
+	Sprite(Bitmap *pBitmap, int iGameSizeWidth, int iGameSizeHeight);
 	Sprite(Bitmap *pBitmap, RECT &rcBounds, BOUNDSACTION baBoundsAction = BA_STOP);
 	Sprite(Bitmap *pBitmap, POINT ptPosition, POINT ptVelocity, int iZorder, RECT &rcBounds, BOUNDSACTION = BA_STOP);
 	virtual ~Sprite();

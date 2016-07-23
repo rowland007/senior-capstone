@@ -29,6 +29,7 @@ Date                Comment
 #include "GameEngine.h"
 #include "Resource.h"
 #include "Bitmap.h"
+#include "Sprite.h"
 
 //Required global variables
 const bool isTest = true;
