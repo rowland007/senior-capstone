@@ -34,6 +34,8 @@ const bool isTest = true;
 bool isLoading;
 HINSTANCE g_hInstance;
 GameEngine *g_pGame;
+
+//Load resources into memory
 Bitmap* g_pLoadScreen;
 Bitmap* g_pLoadScreenText;
 
@@ -110,8 +112,6 @@ void GameCycle()
 {
 	HDC		hDC;
 	HWND	hWindow = g_pGame->GetWindow();
-
-	
 	hDC = GetDC(hWindow);
 
 	ReleaseDC(hWindow, hDC);
@@ -119,6 +119,9 @@ void GameCycle()
 
 void HandleKeys(WPARAM wParam)
 {
+	//HandleKeys knows when a key is pressed but does not know if a key is being held.
+	//Even if a key is being held, when a new key is pressed it will see that key press.
+	//TODO: Implement if key is being held.
 	HDC		hDC;
 	HWND	hWindow = g_pGame->GetWindow();
 	hDC = GetDC(hWindow);
@@ -129,35 +132,35 @@ void HandleKeys(WPARAM wParam)
 		if (isTest)
 		{
 			GamePaint(hDC);
-			TextOut(hDC, 1100, 990, TEXT("LEFT KEY"), 16);
+			TextOut(hDC, 1100, 990, TEXT("LEFT KEY"), 9);
 		}
 		break;
 	case VK_RIGHT:
 		if (isTest)
 		{
 			GamePaint(hDC);
-			TextOut(hDC, 1100, 990, TEXT("RIGHT KEY"), 16);
+			TextOut(hDC, 1100, 990, TEXT("RIGHT KEY"), 10);
 		}
 		break;
 	case VK_UP:
 		if (isTest)
 		{
 			GamePaint(hDC);
-			TextOut(hDC, 1100, 990, TEXT("UP KEY"), 16);
+			TextOut(hDC, 1100, 990, TEXT("UP KEY"), 6);
 		}
 		break;
 	case VK_DOWN:
 		if (isTest)
 		{
 			GamePaint(hDC);
-			TextOut(hDC, 1100, 990, TEXT("DOWN KEY"), 16);
+			TextOut(hDC, 1100, 990, TEXT("DOWN KEY"), 9);
 		}
 		break;
 	case VK_SPACE:
 		if (isTest)
 		{
 			GamePaint(hDC);
-			TextOut(hDC, 1100, 990, TEXT("BOOM-BOOM KEY"), 16);
+			TextOut(hDC, 1100, 990, TEXT("BOOM-BOOM KEY"), 14);
 		}
 		break;
 	default:
