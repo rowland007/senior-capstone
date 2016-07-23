@@ -117,59 +117,52 @@ void GameCycle()
 	ReleaseDC(hWindow, hDC);
 }
 
-void HandleKeys()
+void HandleKeys(WPARAM wParam)
 {
 	HDC		hDC;
 	HWND	hWindow = g_pGame->GetWindow();
 	hDC = GetDC(hWindow);
 
-	if (GetAsyncKeyState(VK_LEFT) < 0)
+	switch (wParam)
 	{
-		//Move left
+	case VK_LEFT:
 		if (isTest)
 		{
 			GamePaint(hDC);
 			TextOut(hDC, 1100, 990, TEXT("LEFT KEY"), 16);
 		}
-	} 
-	else if (GetAsyncKeyState(VK_RIGHT) < 0)
-	{
-		//Move right
+		break;
+	case VK_RIGHT:
 		if (isTest)
 		{
 			GamePaint(hDC);
 			TextOut(hDC, 1100, 990, TEXT("RIGHT KEY"), 16);
 		}
-	}
-	
-	if (GetAsyncKeyState(VK_UP) < 0)
-	{
-		//Move up
+		break;
+	case VK_UP:
 		if (isTest)
 		{
 			GamePaint(hDC);
 			TextOut(hDC, 1100, 990, TEXT("UP KEY"), 16);
 		}
-	}
-	else if (GetAsyncKeyState(VK_DOWN) < 0)
-	{
-		//Move down
+		break;
+	case VK_DOWN:
 		if (isTest)
 		{
 			GamePaint(hDC);
 			TextOut(hDC, 1100, 990, TEXT("DOWN KEY"), 16);
 		}
-	}
-
-	if (GetAsyncKeyState(VK_SPACE) < 0)
-	{
-		//Will be used to select options and use weapon
+		break;
+	case VK_SPACE:
 		if (isTest)
 		{
 			GamePaint(hDC);
 			TextOut(hDC, 1100, 990, TEXT("BOOM-BOOM KEY"), 16);
 		}
+		break;
+	default:
+		GamePaint(hDC);
+		break;
 	}
-
 	ReleaseDC(hWindow, hDC);
 }

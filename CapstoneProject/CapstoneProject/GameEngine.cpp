@@ -31,8 +31,7 @@ GameEngine *GameEngine::m_pGameEngine = NULL;
 //-----------------------------------------------------------------
 // Windows Functions
 //-----------------------------------------------------------------
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-	PSTR szCmdLine, int iCmdShow)
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow)
 {
 	MSG         msg;
 	static int  iTickTrigger = 0;
@@ -65,7 +64,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 					if (iTickCount > iTickTrigger)
 					{
 						iTickTrigger = iTickCount + GameEngine::GetEngine()->GetFrameDelay();
-						HandleKeys();
 						GameCycle();
 					}
 				}
@@ -89,8 +87,7 @@ LRESULT CALLBACK WndProc(HWND hWindow, UINT msg, WPARAM wParam, LPARAM lParam)
 //-----------------------------------------------------------------
 // GameEngine Constructor(s)/Destructor
 //-----------------------------------------------------------------
-GameEngine::GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass,
-	LPTSTR szTitle, WORD wIcon, WORD wSmallIcon, int iWidth, int iHeight)
+GameEngine::GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle, WORD wIcon, WORD wSmallIcon, int iWidth, int iHeight)
 {
 	// Set the member variables for the game engine
 	m_pGameEngine = this;
@@ -126,10 +123,8 @@ BOOL GameEngine::Initialize(int iCmdShow)
 	wndclass.cbClsExtra = 0;
 	wndclass.cbWndExtra = 0;
 	wndclass.hInstance = m_hInstance;
-	wndclass.hIcon = LoadIcon(m_hInstance,
-		MAKEINTRESOURCE(GetIcon()));
-	wndclass.hIconSm = LoadIcon(m_hInstance,
-		MAKEINTRESOURCE(GetSmallIcon()));
+	wndclass.hIcon = LoadIcon(m_hInstance, MAKEINTRESOURCE(GetIcon()));
+	wndclass.hIconSm = LoadIcon(m_hInstance, MAKEINTRESOURCE(GetSmallIcon()));
 	wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wndclass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	wndclass.lpszMenuName = NULL;
@@ -200,6 +195,10 @@ LRESULT GameEngine::HandleEvent(HWND hWindow, UINT msg, WPARAM wParam, LPARAM lP
 		// End the game and exit the application
 		GameEnd();
 		PostQuitMessage(0);
+		return 0;
+
+	case WM_KEYDOWN:
+		HandleKeys(wParam);
 		return 0;
 	}
 	return DefWindowProc(hWindow, msg, wParam, lParam);

@@ -39,7 +39,7 @@ void GameActivate(HWND hWindow);
 void GameDeactivate(HWND hWindow);
 void GamePaint(HDC hDC);
 void GameCycle();
-void HandleKeys();
+void HandleKeys(WPARAM wParam);
 
 //-----------------------------------------------------------------
 // GameEngine Class
