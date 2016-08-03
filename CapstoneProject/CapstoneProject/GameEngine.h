@@ -1,11 +1,11 @@
 /************************************************************************
 Program:		CapstoneProject
-Author:			Michael Morrison
+Author:			Randall Rowland
 Class:			GameEngine
 Instructor:		Dan Randall
 Date:			5 July 2016
 Description:	GameEngine hides all the Windows specific code so you can
-				focus on the game code.  Code is used from the book:
+				focus on the game code.  Code is based from the book:
 				"Beginning Game Programming" by Michael Morrison.
 				No need to reinvent the wheel.
 Input:
@@ -20,6 +20,8 @@ Date                Comment
 ----    ------------------------------------------------
 18Jul16	Added this comment block.
 20Jul16 Added HandleKeys function for keyboard support.
+2Aug16	Changed BOOL to bool, TRUE to true, and FALSE to false.
+3Aug16	Moved implementation of general and accessor methods to GameEngine.cpp
 ************************************************************************/
 #pragma once
 #include <windows.h>
@@ -27,19 +29,19 @@ Date                Comment
 //-----------------------------------------------------------------
 // Windows Function Declarations
 //-----------------------------------------------------------------
-int WINAPI        WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow);
-LRESULT CALLBACK  WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+int		WINAPI    WinMain(HINSTANCE, HINSTANCE, PSTR, int);
+LRESULT CALLBACK  WndProc(HWND, UINT, WPARAM, LPARAM);
 //-----------------------------------------------------------------
 // Game Engine Function Declarations
 //-----------------------------------------------------------------
-bool GameInitialize(HINSTANCE hInstance);
-void GameStart(HWND hWindow);
+bool GameInitialize(HINSTANCE);
+void GameStart(HWND);
 void GameEnd();
-void GameActivate(HWND hWindow);
-void GameDeactivate(HWND hWindow);
-void GamePaint(HDC hDC);
+void GameActivate(HWND);
+void GameDeactivate(HWND);
+void GamePaint(HDC);
 void GameCycle();
-void HandleKeys(WPARAM wParam);
+void HandleKeys(WPARAM);
 
 //-----------------------------------------------------------------
 // GameEngine Class
@@ -60,28 +62,25 @@ protected:
 
 public:
 	// Constructor(s)/Destructor
-	GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle, WORD wIcon, WORD wSmallIcon, int iWidth = 640, int iHeight = 480);
+	GameEngine(HINSTANCE, LPTSTR, LPTSTR, WORD, WORD, int, int);
 	virtual ~GameEngine();
 
 	// General Methods
-	static GameEngine*  GetEngine() { return m_pGameEngine; };
-	bool                Initialize(int iCmdShow);
-	LRESULT             HandleEvent(HWND hWindow, UINT msg, WPARAM wParam, LPARAM lParam);
+	static GameEngine*  GetEngine();
+	bool                Initialize(int);
+	LRESULT             HandleEvent(HWND, UINT, WPARAM, LPARAM);
 
 	// Accessor Methods
-	HINSTANCE GetInstance() { return m_hInstance; };
-	HWND      GetWindow() { return m_hWindow; };
-	void      SetWindow(HWND hWindow) { m_hWindow = hWindow; };
-	LPTSTR    GetTitle() { return m_szTitle; };
-	WORD      GetIcon() { return m_wIcon; };
-	WORD      GetSmallIcon() { return m_wSmallIcon; };
-	int       GetWidth() { return m_iWidth; };
-	int       GetHeight() { return m_iHeight; };
-	int       GetFrameDelay() { return m_iFrameDelay; };
-	void      SetFrameRate(int iFrameRate) {
-		m_iFrameDelay = 1000 /
-			iFrameRate;
-	};
-	bool      GetSleep() { return m_bSleep; };
-	void      SetSleep(bool bSleep) { m_bSleep = bSleep; };
+	HINSTANCE GetInstance() const;
+	HWND      GetWindow() const;
+	void      SetWindow(HWND);
+	LPTSTR    GetTitle();
+	WORD      GetIcon() const;
+	WORD      GetSmallIcon() const;
+	int       GetWidth() const;
+	int       GetHeight() const;
+	int       GetFrameDelay() const;
+	void      SetFrameRate(int);
+	bool      GetSleep() const;
+	void      SetSleep(bool );
 };

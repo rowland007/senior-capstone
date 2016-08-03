@@ -24,6 +24,7 @@ Date                Comment
 18Jul16	Added a bool var to put program in a test mode.
 20Jul16 Added keyboard support with HandleKeys function.
 22Jul16	Modified HandleKeys to a switch/case.
+3Aug16	Set screen size in GameEngine constructor parameters
 ************************************************************************/
 #include <Windows.h>
 #include "GameEngine.h"
@@ -44,7 +45,7 @@ Bitmap* g_pLoadScreenText;
 bool GameInitialize(HINSTANCE hInstance)
 {
 	//Create the game engine
-	g_pGame = new GameEngine(hInstance, TEXT("Capstone Project"), TEXT("Dungeon Warrior"), IDI_ICON1, IDI_ICON1);
+	g_pGame = new GameEngine(hInstance, TEXT("Capstone Project"), TEXT("Dungeon Warrior"), IDI_ICON1, IDI_ICON1, 1920, 1080);
 
 	if (g_pGame == NULL)
 		return false;

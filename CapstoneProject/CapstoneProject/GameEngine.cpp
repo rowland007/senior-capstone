@@ -20,6 +20,8 @@ Date                Comment
 ----    ------------------------------------------------
 18Jul16	Added this comment block.
 20Jul16	Engine now has the game window open maximized. Added keyboard support.
+2Aug16	Changed BOOL to bool, TRUE to true, and FALSE to false.
+3Aug16	Moved implementation of general and accessor methods from GameEngine.h
 ************************************************************************/
 #include "GameEngine.h"
 
@@ -87,7 +89,7 @@ LRESULT CALLBACK WndProc(HWND hWindow, UINT msg, WPARAM wParam, LPARAM lParam)
 //-----------------------------------------------------------------
 // GameEngine Constructor(s)/Destructor
 //-----------------------------------------------------------------
-GameEngine::GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle, WORD wIcon, WORD wSmallIcon, int iWidth, int iHeight)
+GameEngine::GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle, WORD wIcon, WORD wSmallIcon, int iWidth = 800, int iHeight = 640)
 {
 	// Set the member variables for the game engine
 	m_pGameEngine = this;
@@ -109,6 +111,10 @@ GameEngine::~GameEngine()
 {
 }
 
+GameEngine* GameEngine::GetEngine()
+{
+	return m_pGameEngine;
+}
 //-----------------------------------------------------------------
 // Game Engine General Methods
 //-----------------------------------------------------------------
@@ -202,4 +208,64 @@ LRESULT GameEngine::HandleEvent(HWND hWindow, UINT msg, WPARAM wParam, LPARAM lP
 		return 0;
 	}
 	return DefWindowProc(hWindow, msg, wParam, lParam);
+}
+
+HINSTANCE GameEngine::GetInstance() const
+{
+	return m_hInstance;
+}
+
+HWND GameEngine::GetWindow() const 
+{ 
+	return m_hWindow; 
+}
+
+void GameEngine::SetWindow(HWND hWindow) 
+{ 
+	m_hWindow = hWindow; 
+}
+
+LPTSTR GameEngine::GetTitle() 
+{ 
+	return m_szTitle; 
+}
+
+WORD GameEngine::GetIcon() const 
+{ 
+	return m_wIcon; 
+}
+
+WORD GameEngine::GetSmallIcon() const 
+{ 
+	return m_wSmallIcon; 
+}
+
+int GameEngine::GetWidth() const 
+{ 
+	return m_iWidth; 
+}
+
+int GameEngine::GetHeight() const 
+{ 
+	return m_iHeight; 
+}
+
+int GameEngine::GetFrameDelay() const 
+{ 
+	return m_iFrameDelay; 
+}
+
+void GameEngine::SetFrameRate(int iFrameRate) 
+{
+	m_iFrameDelay = 1000 / iFrameRate;
+}
+
+bool GameEngine::GetSleep() const 
+{ 
+	return m_bSleep; 
+}
+
+void GameEngine::SetSleep(bool bSleep) 
+{ 
+	m_bSleep = bSleep; 
 }

@@ -1,6 +1,6 @@
 /************************************************************************
 Program:		CapstoneProject
-Author:			Michael Morrison
+Author:			Randall Rowland
 Class:			Bitmap
 Instructor:		Dan Randall
 Date:			18 July 2016
@@ -18,6 +18,7 @@ Date                Comment
 ----    ------------------------------------------------
 18Jul16	Made Get functions const
 20Jul16	Put functions all on line and added comments.
+2Aug16	Changed BOOL to bool, TRUE to true, and FALSE to false.
 ************************************************************************/
 #include "Bitmap.h"
 
