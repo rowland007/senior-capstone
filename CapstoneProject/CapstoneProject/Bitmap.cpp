@@ -67,7 +67,7 @@ void Bitmap::Free()
 //-----------------------------------------------------------------
 // Bitmap General Methods
 //-----------------------------------------------------------------
-BOOL Bitmap::Create(HDC hDC, LPTSTR szFileName)
+bool Bitmap::Create(HDC hDC, LPTSTR szFileName)
 {
 	// Free any previous bitmap info
 	Free();
@@ -75,17 +75,17 @@ BOOL Bitmap::Create(HDC hDC, LPTSTR szFileName)
 	// Open the bitmap file
 	HANDLE hFile = CreateFile(szFileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE)
-		return FALSE;
+		return false;
 
 	// Read the bitmap file header
 	BITMAPFILEHEADER  bmfHeader;
 	DWORD             dwBytesRead;
-	BOOL bOK = ReadFile(hFile, &bmfHeader, sizeof(BITMAPFILEHEADER), &dwBytesRead, NULL);
+	BOOL			  bOK = ReadFile(hFile, &bmfHeader, sizeof(BITMAPFILEHEADER), &dwBytesRead, NULL);
 	
 	if ((!bOK) || (dwBytesRead != sizeof(BITMAPFILEHEADER)) || (bmfHeader.bfType != 0x4D42))
 	{
 		CloseHandle(hFile);
-		return FALSE;
+		return false;
 	}
 
 	BITMAPINFO* pBitmapInfo = (new BITMAPINFO);
@@ -97,7 +97,7 @@ BOOL Bitmap::Create(HDC hDC, LPTSTR szFileName)
 		{
 			CloseHandle(hFile);
 			Free();
-			return FALSE;
+			return false;
 		}
 
 		// Store the width and height of the bitmap
@@ -112,16 +112,16 @@ BOOL Bitmap::Create(HDC hDC, LPTSTR szFileName)
 			SetFilePointer(hFile, bmfHeader.bfOffBits, NULL, FILE_BEGIN);
 			bOK = ReadFile(hFile, pBitmapBits, pBitmapInfo->bmiHeader.biSizeImage, &dwBytesRead, NULL);
 			if (bOK)
-				return TRUE;
+				return true;
 		}
 	}
 
 	// Something went wrong, so cleanup everything
 	Free();
-	return FALSE;
+	return false;
 }
 
-BOOL Bitmap::Create(HDC hDC, UINT uiResID, HINSTANCE hInstance)
+bool Bitmap::Create(HDC hDC, UINT uiResID, HINSTANCE hInstance)
 {
 	// Free any previous DIB info
 	Free();
@@ -129,19 +129,19 @@ BOOL Bitmap::Create(HDC hDC, UINT uiResID, HINSTANCE hInstance)
 	// Find the bitmap resource
 	HRSRC hResInfo = FindResource(hInstance, MAKEINTRESOURCE(uiResID), RT_BITMAP);
 	if (hResInfo == NULL)
-		return FALSE;
+		return false;
 
 	// Load the bitmap resource
 	HGLOBAL hMemBitmap = LoadResource(hInstance, hResInfo);
 	if (hMemBitmap == NULL)
-		return FALSE;
+		return false;
 
 	// Lock the resource and access the entire bitmap image
 	PBYTE pBitmapImage = (BYTE*)LockResource(hMemBitmap);
 	if (pBitmapImage == NULL)
 	{
 		FreeResource(hMemBitmap);
-		return FALSE;
+		return false;
 	}
 
 	// Store the width and height of the bitmap
@@ -160,22 +160,22 @@ BOOL Bitmap::Create(HDC hDC, UINT uiResID, HINSTANCE hInstance)
 		// Unlock and free the bitmap graphics object
 		UnlockResource(hMemBitmap);
 		FreeResource(hMemBitmap);
-		return TRUE;
+		return true;
 	}
 
 	// Something went wrong, so cleanup everything
 	UnlockResource(hMemBitmap);
 	FreeResource(hMemBitmap);
 	Free();
-	return FALSE;
+	return false;
 }
 
-BOOL Bitmap::Create(HDC hDC, int iWidth, int iHeight, COLORREF crColor)
+bool Bitmap::Create(HDC hDC, int iWidth, int iHeight, COLORREF crColor)
 {
 	// Create a blank bitmap
 	m_hBitmap = CreateCompatibleBitmap(hDC, iWidth, iHeight);
 	if (m_hBitmap == NULL)
-		return FALSE;
+		return false;
 
 	// Set the width and height
 	m_iWidth = iWidth;
@@ -199,10 +199,10 @@ BOOL Bitmap::Create(HDC hDC, int iWidth, int iHeight, COLORREF crColor)
 	DeleteDC(hMemDC);
 	DeleteObject(hBrush);
 
-	return TRUE;
+	return true;
 }
 
-void Bitmap::Draw(HDC hDC, int x, int y, BOOL bTrans, COLORREF crTransColor)
+void Bitmap::Draw(HDC hDC, int x, int y, bool bTrans, COLORREF crTransColor)
 {
 	if (m_hBitmap != NULL)
 	{

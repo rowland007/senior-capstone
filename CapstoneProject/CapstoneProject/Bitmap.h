@@ -39,10 +39,10 @@ public:
 	virtual ~Bitmap();
 
 	//General Methods
-	BOOL Create(HDC hDC, LPTSTR szFilename);
-	BOOL Create(HDC hDC, UINT uiResID, HINSTANCE hInstance);
-	BOOL Create(HDC hDC, int iWidth, int iHeight, COLORREF crColor);
-	void Draw(HDC hDC, int x, int y, BOOL bTrans = FALSE, COLORREF crTransColor = RGB(255, 0, 255));
+	bool Create(HDC hDC, LPTSTR szFilename);
+	bool Create(HDC hDC, UINT uiResID, HINSTANCE hInstance);
+	bool Create(HDC hDC, int iWidth, int iHeight, COLORREF crColor);
+	void Draw(HDC hDC, int x, int y, bool bTrans = false, COLORREF crTransColor = RGB(255, 0, 255));
 	int GetWidth() const;
 	int GetHeight() const;
 };
