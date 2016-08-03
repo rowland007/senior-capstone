@@ -41,18 +41,18 @@ GameEngine *g_pGame;
 Bitmap* g_pLoadScreen;
 Bitmap* g_pLoadScreenText;
 
-BOOL GameInitialize(HINSTANCE hInstance)
+bool GameInitialize(HINSTANCE hInstance)
 {
 	//Create the game engine
 	g_pGame = new GameEngine(hInstance, TEXT("Capstone Project"), TEXT("Dungeon Warrior"), IDI_ICON1, IDI_ICON1);
 
 	if (g_pGame == NULL)
-		return FALSE;
+		return false;
 
 	g_pGame->SetFrameRate(15);
 	g_hInstance = hInstance;
 	
-	return TRUE;
+	return true;
 }
 
 void GameStart(HWND hWindow)
@@ -102,7 +102,7 @@ void GamePaint(HDC hDC)
 	if (isLoading)
 	{
 		g_pLoadScreen->Draw(hDC, 0, 0);
-		g_pLoadScreenText->Draw(hDC, 120, 315, TRUE);
+		g_pLoadScreenText->Draw(hDC, 120, 315, true);
 	}
 	else
 	{

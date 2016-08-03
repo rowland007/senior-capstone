@@ -17,7 +17,7 @@ Modifications:
 Date                Comment
 ----    ------------------------------------------------
 22Jul16	Added const to getter functions. Removed implementation.
-************************************************************************/
+************************************************************************
 #pragma once
 #include <Windows.h>
 #include "Bitmap.h"
@@ -85,4 +85,4 @@ protected:
 
 	void UpdateFrame();
 	virtual void CalcCollisionRect();
-};
+};*/

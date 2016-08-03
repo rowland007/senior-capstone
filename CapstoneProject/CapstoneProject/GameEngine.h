@@ -32,7 +32,7 @@ LRESULT CALLBACK  WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 //-----------------------------------------------------------------
 // Game Engine Function Declarations
 //-----------------------------------------------------------------
-BOOL GameInitialize(HINSTANCE hInstance);
+bool GameInitialize(HINSTANCE hInstance);
 void GameStart(HWND hWindow);
 void GameEnd();
 void GameActivate(HWND hWindow);
@@ -56,7 +56,7 @@ protected:
 	WORD                m_wIcon, m_wSmallIcon;
 	int                 m_iWidth, m_iHeight;
 	int                 m_iFrameDelay;
-	BOOL                m_bSleep;
+	bool                m_bSleep;
 
 public:
 	// Constructor(s)/Destructor
@@ -65,7 +65,7 @@ public:
 
 	// General Methods
 	static GameEngine*  GetEngine() { return m_pGameEngine; };
-	BOOL                Initialize(int iCmdShow);
+	bool                Initialize(int iCmdShow);
 	LRESULT             HandleEvent(HWND hWindow, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	// Accessor Methods
@@ -82,6 +82,6 @@ public:
 		m_iFrameDelay = 1000 /
 			iFrameRate;
 	};
-	BOOL      GetSleep() { return m_bSleep; };
-	void      SetSleep(BOOL bSleep) { m_bSleep = bSleep; };
+	bool      GetSleep() { return m_bSleep; };
+	void      SetSleep(bool bSleep) { m_bSleep = bSleep; };
 };

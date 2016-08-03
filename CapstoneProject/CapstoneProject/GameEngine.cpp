@@ -41,10 +41,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
 	{
 		// Initialize the game engine
 		if (!GameEngine::GetEngine()->Initialize(iCmdShow))
-			return FALSE;
+			return false;
 
 		// Enter the main message loop
-		while (TRUE)
+		while (true)
 		{
 			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 			{
@@ -75,7 +75,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
 	// End the game
 	GameEnd();
 
-	return TRUE;
+	return true;
 }
 
 LRESULT CALLBACK WndProc(HWND hWindow, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -102,7 +102,7 @@ GameEngine::GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle
 	m_iWidth = iWidth;
 	m_iHeight = iHeight;
 	m_iFrameDelay = 50;   // 20 FPS default
-	m_bSleep = TRUE;
+	m_bSleep = true;
 }
 
 GameEngine::~GameEngine()
@@ -112,7 +112,7 @@ GameEngine::~GameEngine()
 //-----------------------------------------------------------------
 // Game Engine General Methods
 //-----------------------------------------------------------------
-BOOL GameEngine::Initialize(int iCmdShow)
+bool GameEngine::Initialize(int iCmdShow)
 {
 	WNDCLASSEX    wndclass;
 
@@ -132,7 +132,7 @@ BOOL GameEngine::Initialize(int iCmdShow)
 
 	// Register the window class
 	if (!RegisterClassEx(&wndclass))
-		return FALSE;
+		return false;
 
 	// Calculate the window size and position based upon the game size
 	int iWindowWidth = m_iWidth + GetSystemMetrics(SM_CXFIXEDFRAME) * 2,
@@ -148,13 +148,13 @@ BOOL GameEngine::Initialize(int iCmdShow)
 		WS_CAPTION | WS_MINIMIZEBOX, iXWindowPos, iYWindowPos, iWindowWidth,
 		iWindowHeight, NULL, NULL, m_hInstance, NULL);
 	if (!m_hWindow)
-		return FALSE;
+		return false;
 
 	// Show and update the window
 	ShowWindow(m_hWindow, SW_MAXIMIZE);
 	UpdateWindow(m_hWindow);
 
-	return TRUE;
+	return true;
 }
 
 LRESULT GameEngine::HandleEvent(HWND hWindow, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -171,13 +171,13 @@ LRESULT GameEngine::HandleEvent(HWND hWindow, UINT msg, WPARAM wParam, LPARAM lP
 	case WM_SETFOCUS:
 		// Activate the game and update the Sleep status
 		GameActivate(hWindow);
-		SetSleep(FALSE);
+		SetSleep(false);
 		return 0;
 
 	case WM_KILLFOCUS:
 		// Deactivate the game and update the Sleep status
 		GameDeactivate(hWindow);
-		SetSleep(TRUE);
+		SetSleep(true);
 		return 0;
 
 	case WM_PAINT:

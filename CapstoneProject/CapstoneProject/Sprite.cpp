@@ -16,7 +16,7 @@ Known bugs/missing features:
 Modifications:
 Date                Comment
 ----    ------------------------------------------------
-************************************************************************/
+************************************************************************
 #include "Sprite.h"
 #include "GameEngine.h"
 
@@ -48,4 +48,4 @@ Sprite::Sprite(Bitmap *pBitmap, RECT &rcBounds, BOUNDSACTION baBoundsAction)
 
 Sprite::~Sprite()
 {
-}
+}*/
