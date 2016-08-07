@@ -17,7 +17,7 @@ Modifications:
 Date                Comment
 ----    ------------------------------------------------
 22Jul16	Added const to getter functions. Removed implementation.
-************************************************************************
+************************************************************************/!
 #pragma once
 #include <Windows.h>
 #include "Bitmap.h"
@@ -37,18 +37,18 @@ const BOUNDSACTION	BA_STOP		= 0,
 class Sprite
 {
 public:
-	Sprite(Bitmap *pBitmap, int iGameSizeWidth, int iGameSizeHeight);
+	Sprite(Bitmap *pBitmap);
 	Sprite(Bitmap *pBitmap, RECT &rcBounds, BOUNDSACTION baBoundsAction = BA_STOP);
 	Sprite(Bitmap *pBitmap, POINT ptPosition, POINT ptVelocity, int iZorder, RECT &rcBounds, BOUNDSACTION = BA_STOP);
 	virtual ~Sprite();
 	virtual SPRITEACTION Update();
 	Sprite *AddSprite;
 	void Draw(HDC hDC);
-	BOOL IsPointInside(int x, int y);
-	BOOL TestCollision(Sprite *pTestSprite);
+	bool IsPointInside(int x, int y);
+	bool TestCollision(Sprite *pTestSprite);
 	void Kill();
 	Bitmap *GetBitmap() const;
-	void SetNumFrames(int iNumFrames, BOOL bOneCycle = FALSE);
+	void SetNumFrames(int iNumFrames, bool bOneCycle = false);
 	void SetFrameDelay(int iFrameDelay);
 	RECT &GetPosition() const;
 	void SetPosition(int x, int y);
@@ -59,12 +59,12 @@ public:
 	POINT GetVelocity() const;
 	void SetVelocity(int x, int y);
 	void SetVelocity(POINT ptVelocity);
-	BOOL GetZorder() const;
+	bool GetZorder() const;
 	void SetZorder(int iZorder);
 	void SetBounds(RECT &rcBounds);
 	void SetBoundsAction(BOUNDSACTION ba);
-	BOOL IsHidden() const;
-	void SetHidden(BOOL bHidden);
+	bool IsHidden() const;
+	void SetHidden(bool bHidden);
 	int GetWidth() const;
 	int GetHeight() const;
 protected:
@@ -79,10 +79,10 @@ protected:
 	RECT			m_rcCollision;
 	RECT			m_rcBounds;
 	BOUNDSACTION	m_baBoundsAction;
-	BOOL			m_bHidden;
-	BOOL			m_bDying;
-	BOOL			m_bOneCycle;
+	bool			m_bHidden;
+	bool			m_bDying;
+	bool			m_bOneCycle;
 
 	void UpdateFrame();
 	virtual void CalcCollisionRect();
-};*/
+};
