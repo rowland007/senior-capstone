@@ -22,9 +22,14 @@ Date                Comment
 20Jul16 Added HandleKeys function for keyboard support.
 2Aug16	Changed BOOL to bool, TRUE to true, and FALSE to false.
 3Aug16	Moved implementation of general and accessor methods to GameEngine.cpp
+18Aug16 Added functions and variables to handle Sprites and MIDI files
 ************************************************************************/
 #pragma once
 #include <windows.h>
+#include <mmsystem.h>
+#include <vector>
+using namespace std;
+#include "Sprite.h"
 
 //-----------------------------------------------------------------
 // Windows Function Declarations
@@ -42,6 +47,8 @@ void GameDeactivate(HWND);
 void GamePaint(HDC);
 void GameCycle();
 void HandleKeys(WPARAM);
+bool SpriteCollision(Sprite*, Sprite*);
+void SpriteDying(Sprite*);
 
 //-----------------------------------------------------------------
 // GameEngine Class
@@ -59,6 +66,13 @@ protected:
 	int                 m_iWidth, m_iHeight;
 	int                 m_iFrameDelay;
 	bool                m_bSleep;
+	vector<Sprite*>		m_vSprites;
+
+	//MIDI
+	UINT				m_uiMIDIPlayerID;
+
+	//Helper Methods
+	bool				CheckSpriteCollision(Sprite*);
 
 public:
 	// Constructor(s)/Destructor
@@ -69,6 +83,17 @@ public:
 	static GameEngine*  GetEngine();
 	bool                Initialize(int);
 	LRESULT             HandleEvent(HWND, UINT, WPARAM, LPARAM);
+	void				ErrorQuit(LPTSTR);
+	void				AddSprite(Sprite*);
+	void				DrawSprites(HDC);
+	void				UpdateSprites();
+	void				CleanupSprites();
+	Sprite*				IsPointInSprite(int, int);
+
+	//MIDI
+	void				PlayMIDISong(LPTSTR, bool);
+	void				PauseMIDISong();
+	void				CloseMIDIPlayer();
 
 	// Accessor Methods
 	HINSTANCE GetInstance() const;

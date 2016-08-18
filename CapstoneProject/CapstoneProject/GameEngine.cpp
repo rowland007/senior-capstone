@@ -22,6 +22,7 @@ Date                Comment
 20Jul16	Engine now has the game window open maximized. Added keyboard support.
 2Aug16	Changed BOOL to bool, TRUE to true, and FALSE to false.
 3Aug16	Moved implementation of general and accessor methods from GameEngine.h
+18Aug16	Added functions and variables to handle Sprites and MIDI files
 ************************************************************************/
 #include "GameEngine.h"
 
@@ -268,4 +269,155 @@ bool GameEngine::GetSleep() const
 void GameEngine::SetSleep(bool bSleep) 
 { 
 	m_bSleep = bSleep; 
+}
+void GameEngine::AddSprite(Sprite* pSprite)
+{
+  // Add a sprite to the sprite vector
+  if (pSprite != NULL)
+  {
+    // See if there are sprites already in the sprite vector
+    if (m_vSprites.size() > 0)
+    {
+      // Find a spot in the sprite vector to insert the sprite by its z-order
+      vector<Sprite*>::iterator siSprite;
+      for (siSprite = m_vSprites.begin(); siSprite != m_vSprites.end(); siSprite++)
+        if (pSprite->GetZOrder() < (*siSprite)->GetZOrder())
+        {
+          // Insert the sprite into the sprite vector
+          m_vSprites.insert(siSprite, pSprite);
+          return;
+        }
+    }
+
+    // The sprite's z-order is highest, so add it to the end of the vector
+    m_vSprites.push_back(pSprite);
+  }
+}
+
+void GameEngine::DrawSprites(HDC hDC)
+{
+  // Draw the sprites in the sprite vector
+  vector<Sprite*>::iterator siSprite;
+  for (siSprite = m_vSprites.begin(); siSprite != m_vSprites.end(); siSprite++)
+    (*siSprite)->Draw(hDC);
+}
+
+void GameEngine::UpdateSprites()
+{
+  // Expand the capacity of the sprite vector, if necessary
+  if (m_vSprites.size() >= (m_vSprites.capacity() / 2))
+    m_vSprites.reserve(m_vSprites.capacity() * 2);
+
+  // Update the sprites in the sprite vector
+  RECT          rcOldSpritePos;
+  SPRITEACTION  saSpriteAction;
+  vector<Sprite*>::iterator siSprite;
+  for (siSprite = m_vSprites.begin(); siSprite != m_vSprites.end(); siSprite++)
+  {
+    // Save the old sprite position in case we need to restore it
+    rcOldSpritePos = (*siSprite)->GetPosition();
+
+    // Update the sprite
+    saSpriteAction = (*siSprite)->Update();
+
+    // Handle the SA_ADDSPRITE sprite action
+    if (saSpriteAction & SA_ADDSPRITE)
+      // Allow the sprite to add its sprite
+      AddSprite((*siSprite)->AddSprite());
+
+    // Handle the SA_KILL sprite action
+    if (saSpriteAction & SA_KILL)
+    {
+      // Notify the game that the sprite is dying
+      SpriteDying(*siSprite);
+
+      // Kill the sprite
+      delete (*siSprite);
+      m_vSprites.erase(siSprite);
+      siSprite--;
+      continue;
+    }
+
+    // See if the sprite collided with any others
+    if (CheckSpriteCollision(*siSprite))
+      // Restore the old sprite position
+      (*siSprite)->SetPosition(rcOldSpritePos);
+  }
+}
+
+void GameEngine::CleanupSprites()
+{
+  // Delete and remove the sprites in the sprite vector
+  vector<Sprite*>::iterator siSprite;
+  for (siSprite = m_vSprites.begin(); siSprite != m_vSprites.end(); siSprite++)
+  {
+    delete (*siSprite);
+    m_vSprites.erase(siSprite);
+    siSprite--;
+  }
+}
+
+Sprite* GameEngine::IsPointInSprite(int x, int y)
+{
+  // See if the point is in a sprite in the sprite vector
+  vector<Sprite*>::reverse_iterator siSprite;
+  for (siSprite = m_vSprites.rbegin(); siSprite != m_vSprites.rend(); siSprite++)
+    if (!(*siSprite)->IsHidden() && (*siSprite)->IsPointInside(x, y))
+      return (*siSprite);
+
+  // The point is not in a sprite
+  return NULL;
+}
+
+void GameEngine::PlayMIDISong(LPTSTR szMIDIFileName, BOOL bRestart)
+{
+  // See if the MIDI player needs to be opened
+  if (m_uiMIDIPlayerID == 0)
+  {
+    // Open the MIDI player by specifying the device and filename
+    MCI_OPEN_PARMS mciOpenParms;
+    mciOpenParms.lpstrDeviceType = "sequencer";
+    mciOpenParms.lpstrElementName = szMIDIFileName;
+    if (mciSendCommand(NULL, MCI_OPEN, MCI_OPEN_TYPE | MCI_OPEN_ELEMENT,
+      (DWORD_PTR)&mciOpenParms) == 0)
+      // Get the ID for the MIDI player
+      m_uiMIDIPlayerID = mciOpenParms.wDeviceID;
+    else
+      // There was a problem, so just return
+      return;
+  }
+
+  // Restart the MIDI song, if necessary
+  if (bRestart)
+  {
+    MCI_SEEK_PARMS mciSeekParms;
+    if (mciSendCommand(m_uiMIDIPlayerID, MCI_SEEK, MCI_SEEK_TO_START,
+      (DWORD_PTR)&mciSeekParms) != 0)
+      // There was a problem, so close the MIDI player
+      CloseMIDIPlayer();
+  }
+
+  // Play the MIDI song
+  MCI_PLAY_PARMS mciPlayParms;
+  if (mciSendCommand(m_uiMIDIPlayerID, MCI_PLAY, 0,
+    (DWORD_PTR)&mciPlayParms) != 0)
+    // There was a problem, so close the MIDI player
+    CloseMIDIPlayer();
+}
+
+void GameEngine::PauseMIDISong()
+{
+  // Pause the currently playing song, if possible
+  if (m_uiMIDIPlayerID != 0)
+    mciSendCommand(m_uiMIDIPlayerID, MCI_PAUSE, 0, NULL);
+}
+
+void GameEngine::CloseMIDIPlayer()
+{
+  // Close the MIDI player, if possible
+  if (m_uiMIDIPlayerID != 0)
+  {
+    mciSendCommand(m_uiMIDIPlayerID, MCI_CLOSE, 0, NULL);
+    m_uiMIDIPlayerID = 0;
+  }
 }
