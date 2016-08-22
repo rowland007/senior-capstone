@@ -18,6 +18,7 @@ Date                Comment
 ----    ------------------------------------------------
 18Jul16	Made Get functions const
 2Aug16	Changed BOOL to bool and FALSE to false.
+21Aug16	Added DrawPart fuction to handle frames for Sprites
 ************************************************************************/
 #pragma
 #include <Windows.h>
@@ -46,4 +47,5 @@ public:
 	void Draw(HDC hDC, int x, int y, bool bTrans = false, COLORREF crTransColor = RGB(255, 0, 255));
 	int GetWidth() const;
 	int GetHeight() const;
+	void DrawPart(HDC hDC, int x, int y, int xPart, int yPart, int wPart, int hPart, BOOL bTrans, COLORREF crTransColor);
 };

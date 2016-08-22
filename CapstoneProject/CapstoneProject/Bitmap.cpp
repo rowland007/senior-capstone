@@ -19,6 +19,7 @@ Date                Comment
 18Jul16	Made Get functions const
 20Jul16	Put functions all on line and added comments.
 2Aug16	Changed BOOL to bool, TRUE to true, and FALSE to false.
+21Aug16	Added DrawPart fuction to handle frames for Sprites
 ************************************************************************/
 #include "Bitmap.h"
 
@@ -233,4 +234,26 @@ int Bitmap::GetWidth() const
 int Bitmap::GetHeight() const
 {
 	return m_iHeight;
+}
+
+void Bitmap::DrawPart(HDC hDC, int x, int y, int xPart, int yPart, int wPart, int hPart, BOOL bTrans, COLORREF crTransColor)
+{
+	if (m_hBitmap != NULL)
+	{
+		// Create a memory device context for the bitmap
+		HDC hMemDC = CreateCompatibleDC(hDC);
+
+		// Select the bitmap into the device context
+		HBITMAP hOldBitmap = (HBITMAP)SelectObject(hMemDC, m_hBitmap);
+
+		// Draw the bitmap to the destination device context
+		if (bTrans)
+			TransparentBlt(hDC, x, y, wPart, hPart, hMemDC, xPart, yPart, wPart, hPart, crTransColor);
+		else
+			BitBlt(hDC, x, y, wPart, hPart, hMemDC, xPart, yPart, SRCCOPY);
+
+		// Restore and delete the memory device context
+		SelectObject(hMemDC, hOldBitmap);
+		DeleteDC(hMemDC);
+	}
 }
