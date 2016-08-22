@@ -22,7 +22,8 @@ Date                Comment
 20Jul16	Engine now has the game window open maximized. Added keyboard support.
 2Aug16	Changed BOOL to bool, TRUE to true, and FALSE to false.
 3Aug16	Moved implementation of general and accessor methods from GameEngine.h
-18Aug16	Added functions and variables to handle Sprites and MIDI files
+18Aug16	Added functions and variables to handle Sprites
+21Aug16	Check for sprite collisions
 ************************************************************************/
 #include "GameEngine.h"
 
@@ -85,6 +86,26 @@ LRESULT CALLBACK WndProc(HWND hWindow, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	// Route all Windows messages to the game engine
 	return GameEngine::GetEngine()->HandleEvent(hWindow, msg, wParam, lParam);
+}
+
+bool GameEngine::CheckSpriteCollision(Sprite * pTestSprite)
+{
+	// See if the sprite has collided with any other sprites
+	vector<Sprite*>::iterator siSprite;
+	for (siSprite = m_vSprites.begin(); siSprite != m_vSprites.end(); siSprite++)
+	{
+		// Make sure not to check for collision with itself
+		if (pTestSprite == (*siSprite))
+			continue;
+
+		// Test the collision
+		if (pTestSprite->TestCollision(*siSprite))
+			// Collision detected
+			return SpriteCollision((*siSprite), pTestSprite);
+	}
+
+	// No collision
+	return FALSE;
 }
 
 //-----------------------------------------------------------------
@@ -281,7 +302,7 @@ void GameEngine::AddSprite(Sprite* pSprite)
       // Find a spot in the sprite vector to insert the sprite by its z-order
       vector<Sprite*>::iterator siSprite;
       for (siSprite = m_vSprites.begin(); siSprite != m_vSprites.end(); siSprite++)
-        if (pSprite->GetZOrder() < (*siSprite)->GetZOrder())
+        if (pSprite->GetZorder() < (*siSprite)->GetZorder())
         {
           // Insert the sprite into the sprite vector
           m_vSprites.insert(siSprite, pSprite);
@@ -323,7 +344,7 @@ void GameEngine::UpdateSprites()
     // Handle the SA_ADDSPRITE sprite action
     if (saSpriteAction & SA_ADDSPRITE)
       // Allow the sprite to add its sprite
-      AddSprite((*siSprite)->AddSprite());
+      //AddSprite((*siSprite)->AddSprite());
 
     // Handle the SA_KILL sprite action
     if (saSpriteAction & SA_KILL)
@@ -367,57 +388,4 @@ Sprite* GameEngine::IsPointInSprite(int x, int y)
 
   // The point is not in a sprite
   return NULL;
-}
-
-void GameEngine::PlayMIDISong(LPTSTR szMIDIFileName, BOOL bRestart)
-{
-  // See if the MIDI player needs to be opened
-  if (m_uiMIDIPlayerID == 0)
-  {
-    // Open the MIDI player by specifying the device and filename
-    MCI_OPEN_PARMS mciOpenParms;
-    mciOpenParms.lpstrDeviceType = "sequencer";
-    mciOpenParms.lpstrElementName = szMIDIFileName;
-    if (mciSendCommand(NULL, MCI_OPEN, MCI_OPEN_TYPE | MCI_OPEN_ELEMENT,
-      (DWORD_PTR)&mciOpenParms) == 0)
-      // Get the ID for the MIDI player
-      m_uiMIDIPlayerID = mciOpenParms.wDeviceID;
-    else
-      // There was a problem, so just return
-      return;
-  }
-
-  // Restart the MIDI song, if necessary
-  if (bRestart)
-  {
-    MCI_SEEK_PARMS mciSeekParms;
-    if (mciSendCommand(m_uiMIDIPlayerID, MCI_SEEK, MCI_SEEK_TO_START,
-      (DWORD_PTR)&mciSeekParms) != 0)
-      // There was a problem, so close the MIDI player
-      CloseMIDIPlayer();
-  }
-
-  // Play the MIDI song
-  MCI_PLAY_PARMS mciPlayParms;
-  if (mciSendCommand(m_uiMIDIPlayerID, MCI_PLAY, 0,
-    (DWORD_PTR)&mciPlayParms) != 0)
-    // There was a problem, so close the MIDI player
-    CloseMIDIPlayer();
-}
-
-void GameEngine::PauseMIDISong()
-{
-  // Pause the currently playing song, if possible
-  if (m_uiMIDIPlayerID != 0)
-    mciSendCommand(m_uiMIDIPlayerID, MCI_PAUSE, 0, NULL);
-}
-
-void GameEngine::CloseMIDIPlayer()
-{
-  // Close the MIDI player, if possible
-  if (m_uiMIDIPlayerID != 0)
-  {
-    mciSendCommand(m_uiMIDIPlayerID, MCI_CLOSE, 0, NULL);
-    m_uiMIDIPlayerID = 0;
-  }
 }
