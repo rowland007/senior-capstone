@@ -31,7 +31,7 @@ Sprite::Sprite(Bitmap* pBitmap)
   SetRect(&m_rcPosition, 0, 0, pBitmap->GetWidth(), pBitmap->GetHeight());
   CalcCollisionRect();
   m_ptVelocity.x = m_ptVelocity.y = 0;
-  m_iZOrder = 0;
+  m_iZorder = 0;
   SetRect(&m_rcBounds, 0, 0, 640, 480);
   m_baBoundsAction = BA_STOP;
   m_bHidden = false;
@@ -52,7 +52,7 @@ Sprite::Sprite(Bitmap* pBitmap, RECT& rcBounds, BOUNDSACTION baBoundsAction)
   SetRect(&m_rcPosition, iXPos, iYPos, iXPos + pBitmap->GetWidth(), iYPos + pBitmap->GetHeight());
   CalcCollisionRect();
   m_ptVelocity.x = m_ptVelocity.y = 0;
-  m_iZOrder = 0;
+  m_iZorder = 0;
   CopyRect(&m_rcBounds, &rcBounds);
   m_baBoundsAction = baBoundsAction;
   m_bHidden = false;
@@ -69,7 +69,7 @@ Sprite::Sprite(Bitmap* pBitmap, POINT ptPosition, POINT ptVelocity, int iZOrder,
   SetRect(&m_rcPosition, ptPosition.x, ptPosition.y, ptPosition.x + pBitmap->GetWidth(), ptPosition.y + pBitmap->GetHeight());
   CalcCollisionRect();
   m_ptVelocity = ptVelocity;
-  m_iZOrder = iZOrder;
+  m_iZorder = iZOrder;
   CopyRect(&m_rcBounds, &rcBounds);
   m_baBoundsAction = baBoundsAction;
   m_bHidden = false;
@@ -188,14 +188,44 @@ void Sprite::Draw(HDC hDC)
     if (m_iNumFrames == 1)
       m_pBitmap->Draw(hDC, m_rcPosition.left, m_rcPosition.top, true);
     else
-      m_pBitmap->DrawPart(hDC, m_rcPosition.left, m_rcPosition.top,
-        0, m_iCurFrame * GetHeight(), GetWidth(), GetHeight(), true);
+      m_pBitmap->DrawPart(hDC, m_rcPosition.left, m_rcPosition.top, 0, m_iCurFrame * GetHeight(), GetWidth(), GetHeight(), true, RGB(255,0,255));
   }
 }
 
-Bitmap Sprite::GetBitmap() const
+bool Sprite::IsPointInside(int x, int y)
+{
+	POINT ptPoint;
+	ptPoint.x = x;
+	ptPoint.y = y;
+	return PtInRect(&m_rcPosition, ptPoint);
+}
+
+bool Sprite::TestCollision(Sprite * pTestSprite)
+{
+	RECT& rcTest = pTestSprite->GetCollision();
+	return m_rcCollision.left <= rcTest.right && rcTest.left <= m_rcCollision.right && m_rcCollision.top <= rcTest.bottom && rcTest.top <= m_rcCollision.bottom;
+}
+
+void Sprite::Kill()
+{
+	m_bDying = true;
+}
+
+Bitmap* Sprite::GetBitmap() const
 {
 	return m_pBitmap;
+}
+
+void Sprite::SetNumFrames(int iNumFrames, bool bOneCycle)
+{
+	// Set the number of frames and the one-cycle setting
+	m_iNumFrames = iNumFrames;
+	m_bOneCycle = bOneCycle;
+
+	// Recalculate the position
+	RECT rect = GetPosition();
+	rect.bottom = rect.top + ((rect.bottom - rect.top) / iNumFrames);
+	SetPosition(rect);
 }
 
 void Sprite::SetFrameDelay(int iFrameDelay)
@@ -203,19 +233,51 @@ void Sprite::SetFrameDelay(int iFrameDelay)
 	m_iFrameDelay = iFrameDelay;
 }
 
-RECT Sprite::GetPosition() const
+RECT& Sprite::GetPosition() 
 {
 	return m_rcPosition;
 }
 
-RECT Sprite::GetCollision() const
+void Sprite::SetPosition(int x, int y)
+{
+	OffsetRect(&m_rcPosition, x - m_rcPosition.left, y - m_rcPosition.top);
+	CalcCollisionRect();
+}
+
+void Sprite::SetPosition(POINT ptPosition)
+{
+	OffsetRect(&m_rcPosition, ptPosition.x - m_rcPosition.left,	ptPosition.y - m_rcPosition.top);
+	CalcCollisionRect();
+}
+
+void Sprite::SetPosition(RECT & rcPosition)
+{
+	CopyRect(&m_rcPosition, &rcPosition);
+	CalcCollisionRect();
+}
+
+void Sprite::OffsetPosition(int x, int y)
+{
+	OffsetRect(&m_rcPosition, x, y);
+	CalcCollisionRect();
+}
+
+RECT& Sprite::GetCollision() 
 {
 	return m_rcCollision;
 }
 
-POINT Sprite::GetVelocity() const
+POINT Sprite::GetVelocity() 
 {
-	return m_ptVeloctiy;
+	return m_ptVelocity;
+}
+
+void Sprite::SetVelocity(int x, int y)
+{
+}
+
+void Sprite::SetVelocity(POINT ptVelocity)
+{
 }
 
 bool Sprite::GetZorder() const
@@ -256,4 +318,31 @@ int Sprite::GetWidth() const
 int Sprite::GetHeight() const
 {
 	return m_pBitmap->GetHeight() / m_iNumFrames;
+}
+
+void Sprite::UpdateFrame()
+{
+	if ((m_iFrameDelay >= 0) && (--m_iFrameTrigger <= 0))
+	{
+		// Reset the frame trigger;
+		m_iFrameTrigger = m_iFrameDelay;
+
+		// Increment the frame
+		if (++m_iCurFrame >= m_iNumFrames)
+		{
+			// If it's a one-cycle frame animation, kill the sprite
+			if (m_bOneCycle)
+				m_bDying = true;
+			else
+				m_iCurFrame = 0;
+		}
+	}
+}
+
+void Sprite::CalcCollisionRect()
+{
+	int iXShrink = (m_rcPosition.left - m_rcPosition.right) / 12;
+	int iYShrink = (m_rcPosition.top - m_rcPosition.bottom) / 12;
+	CopyRect(&m_rcCollision, &m_rcPosition);
+	InflateRect(&m_rcCollision, iXShrink, iYShrink);
 }

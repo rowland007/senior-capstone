@@ -17,7 +17,7 @@ Modifications:
 Date                Comment
 ----    ------------------------------------------------
 22Jul16	Added const to getter functions. Removed implementation.
-************************************************************************/!
+************************************************************************/
 #pragma once
 #include <Windows.h>
 #include "Bitmap.h"
@@ -39,7 +39,7 @@ class Sprite
 public:
 	Sprite(Bitmap *pBitmap);
 	Sprite(Bitmap *pBitmap, RECT &rcBounds, BOUNDSACTION baBoundsAction = BA_STOP);
-	Sprite(Bitmap *pBitmap, POINT ptPosition, POINT ptVelocity, int iZorder, RECT &rcBounds, BOUNDSACTION = BA_STOP);
+	Sprite(Bitmap *pBitmap, POINT ptPosition, POINT ptVelocity, int iZorder, RECT &rcBounds, BOUNDSACTION baBoundsAction = BA_STOP);
 	virtual ~Sprite();
 	virtual SPRITEACTION Update();
 	Sprite *AddSprite;
@@ -50,13 +50,13 @@ public:
 	Bitmap *GetBitmap() const;
 	void SetNumFrames(int iNumFrames, bool bOneCycle = false);
 	void SetFrameDelay(int iFrameDelay);
-	RECT &GetPosition() const;
+	RECT &GetPosition();
 	void SetPosition(int x, int y);
 	void SetPosition(POINT ptPosition);
-	void setPosition(RECT &rcPosition);
+	void SetPosition(RECT &rcPosition);
 	void OffsetPosition(int x, int y);
-	RECT &GetCollision() const;
-	POINT GetVelocity() const;
+	RECT &GetCollision();
+	POINT GetVelocity();
 	void SetVelocity(int x, int y);
 	void SetVelocity(POINT ptVelocity);
 	bool GetZorder() const;
@@ -74,7 +74,7 @@ protected:
 	int				m_iFrameDelay;
 	int				m_iFrameTrigger;
 	int				m_iZorder;
-	POINT			m_ptVeloctiy;
+	POINT			m_ptVelocity;
 	RECT			m_rcPosition;
 	RECT			m_rcCollision;
 	RECT			m_rcBounds;
