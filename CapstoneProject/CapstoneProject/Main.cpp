@@ -34,10 +34,14 @@ Date                Comment
 #include "Sprite.h"
 
 //Required global variables
-const bool isTest = true;
-bool isLoading;
-HINSTANCE g_hInstance;
-GameEngine *g_pGame;
+const bool			isTest = true;
+bool				isLoading;
+HINSTANCE			g_hInstance;
+GameEngine			*g_pGame;
+bool	            g_bGameOver;
+int					g_iGameOverDelay;
+HDC					g_hOffscreenDC;
+HBITMAP				g_hOffscreenBitmap;
 
 //Load resources into memory
 Bitmap* g_pLoadScreen;
@@ -66,7 +70,7 @@ void GameStart(HWND hWindow)
 
 	isLoading = true;
 	g_pLoadScreen = new Bitmap(GetDC(hWindow), IDB_BITMAP1, g_hInstance);
-	g_pLoadScreenText = new Bitmap(hDC, IDB_BITMAP2, g_hInstance);
+	g_pLoadScreenText = new Bitmap(GetDC(hWindow), IDB_BITMAP2, g_hInstance);
 }
 
 void GameEnd()
@@ -146,7 +150,7 @@ void GameCycle()
     	{
      	//Switch back to the LoadingScreen
       	isLoading = true;
-      	NewGame();
+      	//NewGame();
     	}
 }
 
@@ -214,6 +218,9 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
   	// See if a player missile and an alien have collided
   	Bitmap* pHitter = pSpriteHitter->GetBitmap();
   	Bitmap* pHittee = pSpriteHittee->GetBitmap();
+
+	/**********************The Following is an example of what happens here
+
   	if ((pHitter == g_pMissileBitmap && (pHittee == g_pBlobboBitmap || pHittee == g_pJellyBitmap || pHittee == g_pTimmyBitmap)) || 
 	  			(pHittee == g_pMissileBitmap && (pHitter == g_pBlobboBitmap || pHitter == g_pJellyBitmap || pHitter == g_pTimmyBitmap)))
   	{
@@ -278,11 +285,15 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
     	}
   	}
 
+	******************End of Example******************/
+
   	return false;
 }
 
 void SpriteDying(Sprite* pSpriteDying)
 {
+	/******************The Following is an example of what would happen here
+
   	// See if an alien missile sprite is dying
   	if (pSpriteDying->GetBitmap() == g_pBMissileBitmap || pSpriteDying->GetBitmap() == g_pJMissileBitmap || pSpriteDying->GetBitmap() == g_pTMissileBitmap)
   	{
@@ -297,6 +308,8 @@ void SpriteDying(Sprite* pSpriteDying)
     	pSprite->SetPosition(rcPos.left, rcPos.top);
     	g_pGame->AddSprite(pSprite);
   	}
+
+	*******************End of Example*****************************************/
 }
 
 //-----------------------------------------------------------------
