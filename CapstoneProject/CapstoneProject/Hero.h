@@ -42,8 +42,8 @@ public:
 	void IncreaseHealthMeter();
 
 private:
-	int health;
-	int healthMeter;
-	WEAPONTYPE weapon;
+	int m_iHealth;
+	int m_iHealthMeter;
+	WEAPONTYPE m_wtWeapon;
 };
 
