@@ -27,11 +27,14 @@ Date                Comment
 3Aug16	Set screen size in GameEngine constructor parameters
 18Aug16	Added offscreen device for double buffering and sprite collision detection
 23Aug16	Removed '#include "Bitmap.h"' - Was causing redefinition errors
+24Aug16	Added Construct.h and Dungeon.h
 ************************************************************************/
 #include <Windows.h>
 #include "GameEngine.h"
 #include "Resource.h"
 #include "Sprite.h"
+#include "Construct.h"
+#include "Dungeon.h"
 
 //Required global variables
 const bool			isTest = true;
