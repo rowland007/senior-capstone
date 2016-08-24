@@ -23,3 +23,12 @@ Date                Comment
 #include "Resource.h"
 #include "EnemyBoss.h"
 #include "Hero.h"
+
+//Resources that are required
+//Bitmap:
+//      Floor
+//Sprites:
+//      Hero
+//      Left/Right/Top/Bottom/Corner Walls
+//      Enemy 
+//      Boomerang/Arrow

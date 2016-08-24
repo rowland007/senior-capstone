@@ -22,3 +22,14 @@ Date                Comment
 #pragma once
 #include "Resource.h"
 #include "Hero.h"
+
+//Resources that are required
+//Bitmap:
+//      Floor
+//      TextBox
+//Sprites:
+//      Hero
+//      Left/Right/Top/Bottom/Corner Walls
+//      Mentor 
+//      Boomerang/Arrow/Sword
+//      Text
