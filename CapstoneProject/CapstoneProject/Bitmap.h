@@ -35,17 +35,17 @@ protected:
 
 public:
 	Bitmap();
-	Bitmap(HDC hDC, LPTSTR szFilename);
-	Bitmap(HDC hDC, UINT uiResID, HINSTANCE hInstance);
-	Bitmap(HDC hDC, int iWidth, int iHeight, COLORREF crColor = RGB(0, 0, 0));
+	Bitmap(HDC, LPTSTR);
+	Bitmap(HDC, UINT, HINSTANCE);
+	Bitmap(HDC, int, int, COLORREF crColor = RGB(0, 0, 0));
 	virtual ~Bitmap();
 
 	//General Methods
-	bool Create(HDC hDC, LPTSTR szFilename);
-	bool Create(HDC hDC, UINT uiResID, HINSTANCE hInstance);
-	bool Create(HDC hDC, int iWidth, int iHeight, COLORREF crColor);
-	void Draw(HDC hDC, int x, int y, bool bTrans = false, COLORREF crTransColor = RGB(255, 0, 255));
+	bool Create(HDC, LPTSTR);
+	bool Create(HDC, UINT, HINSTANCE);
+	bool Create(HDC, int, int, COLORREF);
+	void Draw(HDC, int, int, bool bTrans = false, COLORREF crTransColor = RGB(255, 0, 255));
 	int GetWidth() const;
 	int GetHeight() const;
-	void DrawPart(HDC hDC, int x, int y, int xPart, int yPart, int wPart, int hPart, BOOL bTrans, COLORREF crTransColor);
+	void DrawPart(HDC, int, int, int, int, int, int, BOOL, COLORREF);
 };
