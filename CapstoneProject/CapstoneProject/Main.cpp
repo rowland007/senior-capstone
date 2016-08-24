@@ -26,11 +26,11 @@ Date                Comment
 22Jul16	Modified HandleKeys to a switch/case.
 3Aug16	Set screen size in GameEngine constructor parameters
 18Aug16	Added offscreen device for double buffering and sprite collision detection
+23Aug16	Removed '#include "Bitmap.h"' - Was causing redefinition errors
 ************************************************************************/
 #include <Windows.h>
 #include "GameEngine.h"
 #include "Resource.h"
-#include "Bitmap.h"
 #include "Sprite.h"
 
 //Required global variables
