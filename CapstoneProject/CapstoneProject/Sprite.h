@@ -37,34 +37,34 @@ const BOUNDSACTION	BA_STOP		= 0,
 class Sprite
 {
 public:
-	Sprite(Bitmap *pBitmap);
-	Sprite(Bitmap *pBitmap, RECT &rcBounds, BOUNDSACTION baBoundsAction = BA_STOP);
-	Sprite(Bitmap *pBitmap, POINT ptPosition, POINT ptVelocity, int iZorder, RECT &rcBounds, BOUNDSACTION baBoundsAction = BA_STOP);
+	Sprite(Bitmap*);
+	Sprite(Bitmap*, RECT&, BOUNDSACTION baBoundsAction = BA_STOP);
+	Sprite(Bitmap*, POINT, POINT, int, RECT&, BOUNDSACTION baBoundsAction = BA_STOP);
 	virtual ~Sprite();
 	virtual SPRITEACTION Update();
 	Sprite *AddSprite;
-	void Draw(HDC hDC);
-	bool IsPointInside(int x, int y);
-	bool TestCollision(Sprite *pTestSprite);
+	void Draw(HDC);
+	bool IsPointInside(int, int);
+	bool TestCollision(Sprite*);
 	void Kill();
 	Bitmap *GetBitmap() const;
-	void SetNumFrames(int iNumFrames, bool bOneCycle = false);
-	void SetFrameDelay(int iFrameDelay);
+	void SetNumFrames(int, bool bOneCycle = false);
+	void SetFrameDelay(int);
 	RECT &GetPosition();
-	void SetPosition(int x, int y);
-	void SetPosition(POINT ptPosition);
-	void SetPosition(RECT &rcPosition);
-	void OffsetPosition(int x, int y);
+	void SetPosition(int, int);
+	void SetPosition(POINT);
+	void SetPosition(RECT&);
+	void OffsetPosition(int, int);
 	RECT &GetCollision();
 	POINT GetVelocity();
-	void SetVelocity(int x, int y);
-	void SetVelocity(POINT ptVelocity);
+	void SetVelocity(int, int);
+	void SetVelocity(POINT);
 	bool GetZorder() const;
-	void SetZorder(int iZorder);
-	void SetBounds(RECT &rcBounds);
-	void SetBoundsAction(BOUNDSACTION ba);
+	void SetZorder(int);
+	void SetBounds(RECT&);
+	void SetBoundsAction(BOUNDSACTION);
 	bool IsHidden() const;
-	void SetHidden(bool bHidden);
+	void SetHidden(bool);
 	int GetWidth() const;
 	int GetHeight() const;
 protected:
