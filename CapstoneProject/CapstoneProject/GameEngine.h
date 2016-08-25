@@ -68,6 +68,8 @@ protected:
 	int                 m_iFrameDelay;
 	bool                m_bSleep;
 	vector<Sprite*>		m_vSprites;
+	DEVMODE				m_devmode;
+	long				m_lResult;
 
 	//Helper Methods
 	bool				CheckSpriteCollision(Sprite*);
@@ -100,5 +102,6 @@ public:
 	int       GetFrameDelay() const;
 	void      SetFrameRate(int);
 	bool      GetSleep() const;
-	void      SetSleep(bool );
+	void      SetSleep(bool);
+	void	  SetScreenResolution();
 };

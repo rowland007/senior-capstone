@@ -127,10 +127,12 @@ GameEngine::GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle
 	m_iHeight = iHeight;
 	m_iFrameDelay = 50;   // 20 FPS default
 	m_bSleep = true;
+	SetScreenResolution();
 }
 
 GameEngine::~GameEngine()
 {
+	ChangeDisplaySettings(NULL, 0);
 }
 
 GameEngine* GameEngine::GetEngine()
@@ -291,6 +293,16 @@ void GameEngine::SetSleep(bool bSleep)
 { 
 	m_bSleep = bSleep; 
 }
+void GameEngine::SetScreenResolution()
+{
+	m_devmode.dmPelsWidth = 800;
+	m_devmode.dmPelsHeight = 600;
+	m_devmode.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;
+	m_devmode.dmSize = sizeof(DEVMODE);
+
+	m_lResult = ChangeDisplaySettings(&m_devmode, 0);
+}
+
 void GameEngine::AddSprite(Sprite* pSprite)
 {
   // Add a sprite to the sprite vector

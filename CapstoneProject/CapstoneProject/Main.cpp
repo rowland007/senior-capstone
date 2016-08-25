@@ -53,7 +53,7 @@ Bitmap* g_pLoadScreenText;
 bool GameInitialize(HINSTANCE hInstance)
 {
 	//Create the game engine
-	g_pGame = new GameEngine(hInstance, TEXT("Capstone Project"), TEXT("Dungeon Warrior"), IDI_ICON1, IDI_ICON1, 1920, 1080);
+	g_pGame = new GameEngine(hInstance, TEXT("Capstone Project"), TEXT("Dungeon Warrior"), IDI_ICON1, IDI_ICON1, 800, 600);
 
 	if (g_pGame == NULL)
 		return false;
