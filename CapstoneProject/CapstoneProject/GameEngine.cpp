@@ -174,14 +174,13 @@ bool GameEngine::Initialize(int iCmdShow)
 		iYWindowPos = (GetSystemMetrics(SM_CYSCREEN) - iWindowHeight) / 2;
 
 	// Create the window
-	m_hWindow = CreateWindow(m_szWindowClass, m_szTitle, WS_POPUPWINDOW |
-		WS_CAPTION | WS_MINIMIZEBOX, iXWindowPos, iYWindowPos, iWindowWidth,
+	m_hWindow = CreateWindow(m_szWindowClass, m_szTitle, WS_MAXIMIZE, iXWindowPos, iYWindowPos, iWindowWidth,
 		iWindowHeight, NULL, NULL, m_hInstance, NULL);
 	if (!m_hWindow)
 		return false;
 
 	// Show and update the window
-	ShowWindow(m_hWindow, SW_MAXIMIZE);
+	ShowWindow(m_hWindow, SW_SHOWMAXIMIZED);
 	UpdateWindow(m_hWindow);
 
 	return true;
