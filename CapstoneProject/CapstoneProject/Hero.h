@@ -28,7 +28,7 @@ const WEAPONTYPE	WT_SWORD = 0,
 class Hero : public Sprite
 {
 public:
-	Hero();
+	Hero(Bitmap*, RECT&, BOUNDSACTION);
 	~Hero();
 	void MoveLeft();
 	void MoveRight();

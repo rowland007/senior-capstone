@@ -9,6 +9,7 @@ Input:			HeroWalking is 192x24 with 8 frames. Each frame is 24x24.
 				HeroSword is 384x27 with 12 frames. Each frame is 32x27.
 				HeroBoomerang is 64x24 with 2 frames. Each frame is 32x24.
 				HeroBow is 96x24 with 3 frames. Each frame is 32x24.
+				HeroDamage is 56x24.
 				HeroDying is 240x24 with 10 frames. Each frame is 24x24.
 				SwordSwing is 864x40 with 12 frames. Each frame is 72x40.
 				Boomerang is 64x16 with 4 frames. Each frame is 16x16.
@@ -28,7 +29,7 @@ Date                Comment
 
 
 
-Hero::Hero() : m_iHealth(3), m_iHealthMeter(3)
+Hero::Hero(Bitmap* pBitmap, RECT& rcBounds,	BOUNDSACTION baBoundsAction = BA_STOP) : Sprite(pBitmap, rcBounds, baBoundsAction), m_iHealth(3), m_iHealthMeter(3)
 {
 }
 
