@@ -30,6 +30,7 @@ Date                Comment
 24Aug16	Added Construct.h and Dungeon.h
 ************************************************************************/
 #include <Windows.h>
+#include <Wingdi.h>
 #include "GameEngine.h"
 #include "Resource.h"
 #include "Sprite.h"
@@ -119,7 +120,7 @@ void GamePaint(HDC hDC)
 	if (isLoading)
 	{
 		g_pLoadScreen->Draw(hDC, 0, 0);
-		g_pLoadScreenText->Draw(hDC, 120, 315, true);
+		g_pLoadScreenText->Draw(hDC, 75, 50, true);
 	}
 	else
 	{
