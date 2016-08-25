@@ -28,6 +28,7 @@ Date                Comment
 18Aug16	Added offscreen device for double buffering and sprite collision detection
 23Aug16	Removed '#include "Bitmap.h"' - Was causing redefinition errors
 24Aug16	Added Construct.h and Dungeon.h
+25Aug16 Added Start/Settings/Quit text and SelectorSprite
 ************************************************************************/
 #include <Windows.h>
 #include <Wingdi.h>
@@ -46,10 +47,15 @@ bool	            g_bGameOver;
 int					g_iGameOverDelay;
 HDC					g_hOffscreenDC;
 HBITMAP				g_hOffscreenBitmap;
+static RECT			g_rcLeft;
+static RECT			g_rcMiddle;
+static RECT			g_rcRight;
 
 //Load resources into memory
 Bitmap* g_pLoadScreen;
 Bitmap* g_pLoadScreenText;
+Bitmap* g_pLoadScreenSelectorBitmap;
+Sprite* g_pLoadScreenSelectorSprite;
 
 bool GameInitialize(HINSTANCE hInstance)
 {
@@ -59,7 +65,7 @@ bool GameInitialize(HINSTANCE hInstance)
 	if (g_pGame == NULL)
 		return false;
 
-	g_pGame->SetFrameRate(15);
+	g_pGame->SetFrameRate(5);
 	g_hInstance = hInstance;
 	
 	return true;
@@ -67,14 +73,24 @@ bool GameInitialize(HINSTANCE hInstance)
 
 void GameStart(HWND hWindow)
 {
+	g_bGameOver = false;
 	  // Create the offscreen device context and bitmap
   	g_hOffscreenDC = CreateCompatibleDC(GetDC(hWindow));
   	g_hOffscreenBitmap = CreateCompatibleBitmap(GetDC(hWindow), g_pGame->GetWidth(), g_pGame->GetHeight());
   	SelectObject(g_hOffscreenDC, g_hOffscreenBitmap);
 
 	isLoading = true;
+	SetRect(&g_rcLeft, 125, 500, 150, 520);
+	SetRect(&g_rcMiddle, 275, 500, 300, 520);
+	SetRect(&g_rcRight, 425, 500, 450, 520);
 	g_pLoadScreen = new Bitmap(GetDC(hWindow), IDB_BITMAP1, g_hInstance);
 	g_pLoadScreenText = new Bitmap(GetDC(hWindow), IDB_BITMAP2, g_hInstance);
+	g_pLoadScreenSelectorBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP3, g_hInstance);
+	RECT rcLoadBounds = { 128, 498, 450, 519 };
+	g_pLoadScreenSelectorSprite = new Sprite(g_pLoadScreenSelectorBitmap, rcLoadBounds);
+	g_pLoadScreenSelectorSprite->SetPosition(130, 500);
+	g_pLoadScreenSelectorSprite->SetNumFrames(1);
+	g_pGame->AddSprite(g_pLoadScreenSelectorSprite);
 }
 
 void GameEnd()
@@ -84,6 +100,10 @@ void GameEnd()
   	DeleteDC(g_hOffscreenDC); 
 
 	//Deallocation of memory
+	delete g_pLoadScreenSelectorSprite;
+	g_pLoadScreenSelectorSprite = NULL;
+	delete g_pLoadScreenSelectorBitmap;
+	g_pLoadScreenSelectorBitmap = NULL;
 	delete g_pLoadScreenText;
 	g_pLoadScreenText = NULL;
 	delete g_pLoadScreen;
@@ -124,6 +144,7 @@ void GamePaint(HDC hDC)
 		TextOut(hDC, 150, 500, TEXT("START"), 5);
 		TextOut(hDC, 300, 500, TEXT("SETTINGS"), 8);
 		TextOut(hDC, 450, 500, TEXT("QUIT"), 4);
+		g_pGame->DrawSprites(hDC);
 
 	}
 	else
@@ -170,35 +191,82 @@ void HandleKeys(WPARAM wParam)
 	HDC		hDC;
 	HWND	hWindow = g_pGame->GetWindow();
 	hDC = GetDC(hWindow);
+	RECT& selRC = g_pLoadScreenSelectorSprite->GetPosition();
 
 	switch (wParam)
 	{
 	case VK_LEFT:
 		if (isTest)
 		{
-			GamePaint(hDC);
-			TextOut(hDC, 1100, 990, TEXT("LEFT KEY"), 9);
+			TextOut(hDC, 0, 0, TEXT("LEFT KEY"), 8);
+		}
+		if (isLoading)
+		{
+			if (selRC.left > g_rcLeft.left && selRC.left < g_rcRight.left)
+			{
+				//Check to see if the Selector is on the middle selection
+				//Then move to the left side.
+				g_pLoadScreenSelectorSprite->SetPosition(130, 500);
+				break;
+			}
+			if (selRC.left > g_rcMiddle.left)
+			{
+				//Check to see if the Selector is on the right selection
+				//Then move to the middle selection.
+				g_pLoadScreenSelectorSprite->SetPosition(280, 500);
+				break;
+			}
+			if (selRC.left < g_rcMiddle.left)
+			{
+				//Check to see if the selector is on the left side.
+				//Then wrap around to the right selection.
+				g_pLoadScreenSelectorSprite->SetPosition(430, 500);
+				break;
+			}
 		}
 		break;
 	case VK_RIGHT:
 		if (isTest)
 		{
-			GamePaint(hDC);
-			TextOut(hDC, 1100, 990, TEXT("RIGHT KEY"), 10);
+			TextOut(hDC, 0, 0, TEXT("RIGHT KEY"), 9);
+		}
+		if (isLoading)
+		{
+			if (selRC.left < g_rcRight.left && selRC.left > g_rcLeft.left)
+			{
+				//Check to see if the Selector is on the middle selection
+				//Then move to the right side.
+				g_pLoadScreenSelectorSprite->SetPosition(430, 500);
+				break;
+			}
+			if (selRC.left > g_rcMiddle.left)
+			{
+				//Check to see if the Selector is on the right selection
+				//Then move to the left selection.
+				g_pLoadScreenSelectorSprite->SetPosition(130, 500);
+				break;
+			}
+			if (selRC.left < g_rcMiddle.left)
+			{
+				//Check to see if the selector is on the left side.
+				//Then wrap around to the middle selection.
+				g_pLoadScreenSelectorSprite->SetPosition(280, 500);
+				break;
+			}
 		}
 		break;
 	case VK_UP:
 		if (isTest)
 		{
 			GamePaint(hDC);
-			TextOut(hDC, 1100, 990, TEXT("UP KEY"), 6);
+			TextOut(hDC, 0, 0, TEXT("UP KEY"), 6);
 		}
 		break;
 	case VK_DOWN:
 		if (isTest)
 		{
 			GamePaint(hDC);
-			TextOut(hDC, 1100, 990, TEXT("DOWN KEY"), 9);
+			TextOut(hDC, 0, 0, TEXT("DOWN KEY"), 8);
 		}
 		break;
 	case VK_SPACE:
@@ -209,7 +277,7 @@ void HandleKeys(WPARAM wParam)
 		if (isTest)
 		{
 			GamePaint(hDC);
-			TextOut(hDC, 1100, 990, TEXT("BOOM-BOOM KEY"), 14);
+			TextOut(hDC, 0, 0, TEXT("BOOM-BOOM KEY"), 14);
 		}
 		break;
 	case VK_RETURN:
@@ -331,10 +399,9 @@ void NewGame()
   	// Initialize the game variables
   	g_bGameOver = false;
 
-  	if (isLoading)
-  	{
-    	// Add 
-  	}
+	if (isLoading)
+	{
+	}
   	else
   	{
     	// Create 

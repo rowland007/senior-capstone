@@ -24,6 +24,8 @@ Date                Comment
 3Aug16	Moved implementation of general and accessor methods from GameEngine.h
 18Aug16	Added functions and variables to handle Sprites
 21Aug16	Check for sprite collisions
+24Aug16	Added screen resolution mod to set resolution to 800x600
+25Aug16 Temp disabled screen resolution mod for debugging - no issue with mod
 ************************************************************************/
 #include "GameEngine.h"
 
@@ -127,7 +129,7 @@ GameEngine::GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle
 	m_iHeight = iHeight;
 	m_iFrameDelay = 50;   // 20 FPS default
 	m_bSleep = true;
-	SetScreenResolution();
+	//SetScreenResolution();
 }
 
 GameEngine::~GameEngine()
