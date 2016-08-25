@@ -20,7 +20,7 @@ Date                Comment
 
 
 
-EnemyBoss::EnemyBoss() : m_iHealth(15)
+EnemyBoss::EnemyBoss(Bitmap* pBitmap, RECT& rcBounds, BOUNDSACTION baBoundsAction = BA_STOP) : Sprite(pBitmap, rcBounds, baBoundsAction), m_iHealth(15)
 {
 }
 

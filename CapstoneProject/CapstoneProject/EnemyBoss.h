@@ -23,7 +23,7 @@ Date                Comment
 class EnemyBoss : public Sprite
 {
 public:
-	EnemyBoss();
+	EnemyBoss(Bitmap*, RECT&, BOUNDSACTION);
 	~EnemyBoss();
 	void SetHealth(int);
 	int GetHealth() const;
