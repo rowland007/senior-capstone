@@ -121,6 +121,10 @@ void GamePaint(HDC hDC)
 	{
 		g_pLoadScreen->Draw(hDC, 0, 0);
 		g_pLoadScreenText->Draw(hDC, 75, 50, true);
+		TextOut(hDC, 150, 500, TEXT("START"), 5);
+		TextOut(hDC, 300, 500, TEXT("SETTINGS"), 8);
+		TextOut(hDC, 450, 500, TEXT("QUIT"), 4);
+
 	}
 	else
 	{
