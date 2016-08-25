@@ -5,7 +5,14 @@ Class:			Hero
 Instructor:		Dan Randall
 Date:			23 August 2016
 Description:
-Input:
+Input:			HeroWalking is 192x24 with 8 frames. Each frame is 24x24.
+				HeroSword is 384x27 with 12 frames. Each frame is 32x27.
+				HeroBoomerang is 64x24 with 2 frames. Each frame is 32x24.
+				HeroBow is 96x24 with 3 frames. Each frame is 32x24.
+				HeroDying is 240x24 with 10 frames. Each frame is 24x24.
+				SwordSwing is 864x40 with 12 frames. Each frame is 72x40.
+				Boomerang is 64x16 with 4 frames. Each frame is 16x16.
+				Arrow is 144x16 with 9 frames. Each frame is 16x16.
 Output:
 
 Compilation instructions:
