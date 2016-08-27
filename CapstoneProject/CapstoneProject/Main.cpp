@@ -55,6 +55,7 @@ static RECT			g_rcRight;
 Bitmap* g_pLoadScreen;
 Bitmap* g_pLoadScreenText;
 Bitmap* g_pLoadScreenSelectorBitmap;
+Bitmap* g_pLoadScreenDialogBox;
 Sprite* g_pLoadScreenSelectorSprite;
 
 bool GameInitialize(HINSTANCE hInstance)
@@ -80,15 +81,16 @@ void GameStart(HWND hWindow)
   	SelectObject(g_hOffscreenDC, g_hOffscreenBitmap);
 
 	isLoading = true;
-	SetRect(&g_rcLeft, 125, 500, 150, 520);
-	SetRect(&g_rcMiddle, 275, 500, 300, 520);
-	SetRect(&g_rcRight, 425, 500, 450, 520);
+	SetRect(&g_rcLeft, 255, 540, 275, 580);
+	SetRect(&g_rcMiddle, 330, 540, 350, 580);
+	SetRect(&g_rcRight, 430, 540, 450, 580);
 	g_pLoadScreen = new Bitmap(GetDC(hWindow), IDB_BITMAP1, g_hInstance);
 	g_pLoadScreenText = new Bitmap(GetDC(hWindow), IDB_BITMAP2, g_hInstance);
 	g_pLoadScreenSelectorBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP3, g_hInstance);
-	RECT rcLoadBounds = { 128, 498, 450, 519 };
+	g_pLoadScreenDialogBox = new Bitmap(GetDC(hWindow), IDB_BITMAP4, g_hInstance);
+	RECT rcLoadBounds = { 250, 540, 450, 580 };
 	g_pLoadScreenSelectorSprite = new Sprite(g_pLoadScreenSelectorBitmap, rcLoadBounds);
-	g_pLoadScreenSelectorSprite->SetPosition(130, 500);
+	g_pLoadScreenSelectorSprite->SetPosition(255, 550);
 	g_pLoadScreenSelectorSprite->SetNumFrames(1);
 	g_pGame->AddSprite(g_pLoadScreenSelectorSprite);
 }
@@ -141,9 +143,10 @@ void GamePaint(HDC hDC)
 	{
 		g_pLoadScreen->Draw(hDC, 0, 0);
 		g_pLoadScreenText->Draw(hDC, 75, 50, true);
-		TextOut(hDC, 150, 500, TEXT("START"), 5);
-		TextOut(hDC, 300, 500, TEXT("SETTINGS"), 8);
-		TextOut(hDC, 450, 500, TEXT("QUIT"), 4);
+		g_pLoadScreenDialogBox->Draw(hDC, 250, 520);
+		TextOut(hDC, 275, 550, TEXT("START"), 5);
+		TextOut(hDC, 350, 550, TEXT("SETTINGS"), 8);
+		TextOut(hDC, 450, 550, TEXT("QUIT"), 4);
 		g_pGame->DrawSprites(hDC);
 
 	}
@@ -206,21 +209,21 @@ void HandleKeys(WPARAM wParam)
 			{
 				//Check to see if the Selector is on the middle selection
 				//Then move to the left side.
-				g_pLoadScreenSelectorSprite->SetPosition(130, 500);
+				g_pLoadScreenSelectorSprite->SetPosition(255, 550);
 				break;
 			}
 			if (selRC.left > g_rcMiddle.left)
 			{
 				//Check to see if the Selector is on the right selection
 				//Then move to the middle selection.
-				g_pLoadScreenSelectorSprite->SetPosition(280, 500);
+				g_pLoadScreenSelectorSprite->SetPosition(330, 550);
 				break;
 			}
 			if (selRC.left < g_rcMiddle.left)
 			{
 				//Check to see if the selector is on the left side.
 				//Then wrap around to the right selection.
-				g_pLoadScreenSelectorSprite->SetPosition(430, 500);
+				g_pLoadScreenSelectorSprite->SetPosition(430, 550);
 				break;
 			}
 		}
@@ -236,21 +239,21 @@ void HandleKeys(WPARAM wParam)
 			{
 				//Check to see if the Selector is on the middle selection
 				//Then move to the right side.
-				g_pLoadScreenSelectorSprite->SetPosition(430, 500);
+				g_pLoadScreenSelectorSprite->SetPosition(430, 550);
 				break;
 			}
 			if (selRC.left > g_rcMiddle.left)
 			{
 				//Check to see if the Selector is on the right selection
 				//Then move to the left selection.
-				g_pLoadScreenSelectorSprite->SetPosition(130, 500);
+				g_pLoadScreenSelectorSprite->SetPosition(255, 550);
 				break;
 			}
 			if (selRC.left < g_rcMiddle.left)
 			{
 				//Check to see if the selector is on the left side.
 				//Then wrap around to the middle selection.
-				g_pLoadScreenSelectorSprite->SetPosition(280, 500);
+				g_pLoadScreenSelectorSprite->SetPosition(330, 550);
 				break;
 			}
 		}
