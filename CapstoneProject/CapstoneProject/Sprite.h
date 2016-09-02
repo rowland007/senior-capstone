@@ -1,4 +1,3 @@
-//! Uses a Bitmap to create a moveable Sprite.
 /************************************************************************
 Program:		CapstoneProject
 Author:			Randy Rowland
@@ -37,6 +36,12 @@ const BOUNDSACTION	BA_STOP		= 0, ///< When a sprite hits the end of its boundry 
 					BA_BOUNCE	= 2, ///< When a sprite hits the end of its boundry it will bounce back off that end in the opposite direction.
 					BA_DIE		= 3; ///< When the boundry is hit, this will kill the sprite.
 
+/*! \brief Takes a bitmap and turns it into a sprite with position, velocity, z-order, bounding rect, collision, and  visiblity.
+ *
+ *  This class depends on Bitmap to function. Does not extend Bitmap. There are three different types of constructors used to create 
+ *  a sprite.  This class controls how the sprite moves, how the sprite will interact with its boundries.  It will either stop, wrap,
+ *  bounce, or die at the boundry.  There are also three SPRITEACTIONs that set what the sprite is doing.
+ */
 class Sprite
 {
 public:
@@ -82,24 +87,79 @@ public:
     /// @param x coordinate X
     /// @param y coordinate Y
 	bool IsPointInside(int, int);
+    
+    /// Returns true if the Sprite runs into its boundry rectangle.
+    /// @param pTestSprite pointer to the sprite that needs to be tested
 	bool TestCollision(Sprite*);
+    
+    /// Sets the sprite's member variable to dying.
 	void Kill();
+    
+    /// Pointer to the Bitmap of the sprite
+    /// @see Bitmap
 	Bitmap *GetBitmap() const;
+    
+    /// Used to set how many frames to use for sprite animation.
+    /// @param iNumFrames how many frames there are
+    /// @param bOneCycle Used to determine if the animation should loop. Default is to loop.
 	void SetNumFrames(int, bool bOneCycle = false);
+    
+    /// How long the sprite will stay on one frame before switching to the next frame.
 	void SetFrameDelay(int);
+    
+    /// Returns the position of the sprite by using a rectangle around the frame of the bitmap
 	RECT &GetPosition();
-	void SetPosition(int, int);
-	void SetPosition(POINT);
+    
+    /// Sets the position of the sprite on the screen using X and Y coordinates.
+    /// @param X The X coordinate
+    /// @param Y The Y coordinate
+    void SetPosition(int, int);
+	
+    /// Sets the position of the sprite on the screen using the type POINT.
+    /// @param ptPosition The position of the sprite using a POINT type.
+    void SetPosition(POINT);
+    
+    /// Sets the position of the sprite on the screen using a rectangle
+    /// @param rcPosition The positions of the rectangle
 	void SetPosition(RECT&);
+
+    /// Used to offset the position of a sprite by using X and Y pixels
+    /// @param X Number of X pixels used to offset sprite horizontally
+    /// @param Y Number of Y pixels used to offset sprite vertically     
 	void OffsetPosition(int, int);
+    
+    /// Returns the smaller collision rectangle that is around the sprite
 	RECT &GetCollision();
+    
+    /// Returns the velocity of the sprite in the terms of a POINT.
 	POINT GetVelocity();
+    
+    /// Sets the velocity of the spirte by using X and Y pixels
+    /// @param X The number of pixels you need the sprite to move horizontally every update
+    /// @param Y The number of pixels you need the sprite to move vertically every update
 	void SetVelocity(int, int);
+    
+    /// Sets the velocity of the sprite by using a POINT type
+    /// @param ptVelocity 
 	void SetVelocity(POINT);
+    
+    /// Returns if the sprite has a Z-order that is used in layering
 	bool GetZorder() const;
+    
+    /// Sets the Z-order of the sprite in layered sprites
+    /// @param iZOrder A number used to set the which layer you want the sprite on
 	void SetZorder(int);
+    
+    /// Sets a rectangle that is used to allow the movement of the sprite within the rectangle
+    /// @param rcBounds The rectangle that will be set around the sprite 
 	void SetBounds(RECT&);
+    
+    /// Sets the bounds action of the sprite. Sprite will either stop, bounce back, or wrap to the other side of the screen.
+    /// @param baBoundsAction The action you want to set to the sprite
+    /// @see BOUNDSACTION
 	void SetBoundsAction(BOUNDSACTION);
+    
+    /// Returns true if the spirte is hidden from the screen
 	bool IsHidden() const;
     
     /// Used to show or hide the sprite.
