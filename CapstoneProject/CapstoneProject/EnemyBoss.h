@@ -16,22 +16,45 @@ Known bugs/missing features:
 Modifications:
 Date                Comment
 ----    ------------------------------------------------
+31Aug16 Added comments for doxygen documentation generation
 ************************************************************************/
 #pragma once
 #include "Sprite.h"
 
+/*! \brief Extends the Sprite class to give enemies extra variables and methods special to them.
+ *
+ *  This class extends the Sprite class to give enemies health and movements.
+ */
 class EnemyBoss : public Sprite
 {
 public:
+	/// Creates an enemy sprite using the Bitmap/Sprite constructor
+	/// @param pBitmap A pointer to the bitmap image
+	/// @param rcBounds A rectangle to contain the movements of the sprite within it
+	/// @param baBoundsAction The action that will be taken when the sprite hits the outter edge of the rcBounds rectangle
+	/// @see Sprite
 	EnemyBoss(Bitmap*, RECT&, BOUNDSACTION);
+
+	/// Empty
 	~EnemyBoss();
+
+	/// Sets the health of the enemy so it can take multiple collisions before dying
+	/// @param iHealth The health in which you want the enemy to have
 	void SetHealth(int);
+
+	/// Gets the how much health is left of the enemy
 	int GetHealth() const;
+
+	/// Will have the sprite move randomly on the screen
 	void MoveRandomly();
+
+	/// Will have the sprite chase the Hero sprite
 	void MoveChase();
+
+	/// Will have the sprite avoid the Hero sprite 
 	void MoveRunAway();
 
 private:
-	int m_iHealth;
+	int m_iHealth; ///< Stores the health of the enemy sprite
 };
 
