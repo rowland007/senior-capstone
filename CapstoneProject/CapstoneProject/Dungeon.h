@@ -18,12 +18,19 @@ Known bugs/missing features:
 Modifications:
 Date                Comment
 ----    ------------------------------------------------
+31Aug16 Added comments for doxygen documentation generation
 ************************************************************************/
 #pragma once
 #include "Resource.h"
 #include "EnemyBoss.h"
 #include "Hero.h"
 
+/*! \brief Used to load Bitmaps and Sprites into memory for this level
+ *
+ *  Loads Bitmaps that will make up the level design and sprites.
+ */
+
+//TODO:
 //Resources that are required
 //Bitmap:
 //      Floor

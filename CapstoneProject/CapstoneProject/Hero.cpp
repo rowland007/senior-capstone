@@ -54,9 +54,9 @@ void Hero::MoveDown()
 {
 }
 
-void Hero::SetWeapon(WEAPONTYPE weapon)
+void Hero::SetWeapon(WEAPONTYPE wtWeapon)
 {
-	m_wtWeapon = weapon;
+	m_wtWeapon = wtWeapon;
 }
 
 WEAPONTYPE Hero::GetWeapon() const
@@ -64,9 +64,9 @@ WEAPONTYPE Hero::GetWeapon() const
 	return WEAPONTYPE();
 }
 
-void Hero::SetHealth(int health)
+void Hero::SetHealth(int iHealth)
 {
-	m_iHealth = health;
+	m_iHealth = iHealth;
 }
 
 int Hero::GetHealth() const

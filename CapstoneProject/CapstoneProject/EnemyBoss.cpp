@@ -29,14 +29,14 @@ EnemyBoss::~EnemyBoss()
 {
 }
 
-void EnemyBoss::SetHealth(int health)
+void EnemyBoss::SetHealth(int iHealth)
 {
-	m_iHealth = health;
+	m_iHealth = iHealth;
 }
 
 int EnemyBoss::GetHealth() const
 {
-	return 0;
+	return m_iHealth;
 }
 
 void EnemyBoss::MoveRandomly()
