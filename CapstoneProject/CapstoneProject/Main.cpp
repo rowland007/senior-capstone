@@ -111,7 +111,7 @@ void GameStart(HWND hWindow)
 	g_pGame->AddSprite(g_pLoadScreenSelectorSprite);
 
 	//Load the Bitmaps and Sprites for the Construct
-	g_pConstructFloor = new Bitmap(GetDC(hWindow), IDB_BITMAP5 ,g_hInstance);
+	g_pConstructFloor = new Bitmap(GetDC(hWindow), IDB_BITMAP5,g_hInstance);
 
 	//Load the Bitmaps and Sprites for the Dungeon 
 	//g_pDungeonFloor = new Bitmap(GetDC(hWindow), ,g_hInstance);
@@ -164,7 +164,7 @@ void GamePaint(HDC hDC)
 	{
 		g_pLoadScreen->Draw(hDC, 0, 0);
 		g_pLoadScreenText->Draw(hDC, 75, 50, true);
-		g_pDialogBox->Draw(hDC, 250, 800 - g_pDialogBox->GetHeight());
+		g_pDialogBox->Draw(hDC, 250, g_pGame->GetHeight() - g_pDialogBox->GetHeight());
 		if (isSettings)
 		{
 			TextOut(hDC, 275, 550, TEXT("ENABLED"), 7);
@@ -183,14 +183,14 @@ void GamePaint(HDC hDC)
 	if (isConstruct)
 	{
 		//Tile the floor with the floor bitmap
-		for (int y = 0; y < (800 - g_pDialogBox->GetHeight()) - g_pConstructFloor->GetHeight(); y += g_pConstructFloor->GetHeight())
+		for (int y = 0; y < (g_pGame->GetHeight() - g_pDialogBox->GetHeight()) - g_pConstructFloor->GetHeight(); y += g_pConstructFloor->GetHeight())
 			for (int x = 0; x < g_pGame->GetWidth(); x += g_pConstructFloor->GetWidth())
 				g_pConstructFloor->Draw(hDC, x, y);
 	}
 	if (isDungeon)
 	{
 		//Tile the floor with the floor bitmap
-		//for (int y = 0; y < (800 - g_pDialogBox->GetHeight()) - g_pDungeonFloor->GetHeight(); y += g_pDungeonFloor->GetHeight())
+		//for (int y = 0; y < (600 - g_pDialogBox->GetHeight()) - g_pDungeonFloor->GetHeight(); y += g_pDungeonFloor->GetHeight())
 			//for (int x = 0; x < g_pGame->GetWidth(); x += g_pDungeonFloor->GetWidth())
 				//g_pDungeonFloor->Draw(hDC, x, y);
 	}
@@ -329,26 +329,8 @@ void HandleKeys(WPARAM wParam)
 	case VK_SPACE:
 		if (isLoading)
 		{
-			//Select START, SETTINGS, QUIT 
-			//if START: isLoading = false; isConstruct = true;
-			//if SETTINGS: isSettings = true;
-				//if ENABLED: isTest = true;
-				//if DISABLED: isTest = false;
-				//if BACK: isSettings = false;
-			//if QUIT: g_pGame.GameEnd();
-			if (selRC.left == g_rcLeft.left)
+			if (isSettings)
 			{
-				//The selector should be on START here. Make sure Settings are off and transition from Loading to Construct.  
-				isSettings = false;
-				isLoading = false;
-				isConstruct = true;
-			}
-			if (selRC.left == g_rcMiddle.left)
-			{
-				//The selector should be on settings here. Enable the settings menu.  
-				isSettings = true;
-				//Reposition selector to beginning of menu 
-				g_pLoadScreenSelectorSprite->SetPosition(255, 550);
 				if (selRC.left == g_rcLeft.left)
 				{
 					//This will enable Test mode.  
@@ -363,14 +345,43 @@ void HandleKeys(WPARAM wParam)
 				{
 					//Stop the settings menu and return to main menu
 					isSettings = false;
+					//Reposition selector to beginning of menu 
+					g_pLoadScreenSelectorSprite->SetPosition(255, 550);
 				}
 			}
-			if (selRC.left == g_rcRight.left)
+			else
 			{
-				//Selector should be on QUIT. Run GameEnd to clear memory.  
-				GameEnd();
+				if (selRC.left == g_rcLeft.left)
+				{
+					//The selector should be on START here. Make sure Settings are off and transition from Loading to Construct.  
+					isLoading = false;
+					isConstruct = true;
+				}
+				if (selRC.left == g_rcMiddle.left)
+				{
+					//The selector should be on settings here. Enable the settings menu.  
+					isSettings = true;
+					//Reposition selector to beginning of menu 
+					g_pLoadScreenSelectorSprite->SetPosition(255, 550);
+
+				}
+				if (selRC.left == g_rcRight.left)
+				{
+					//Change screen resolution back to normal.
+					ChangeDisplaySettings(NULL, 0);
+					try
+					{ 
+						GameEnd();
+					}
+					catch (exception &e)
+					{
+						MessageBox(g_pGame->GetWindow(), TEXT(e.what()), TEXT("GameEnd() Error"), MB_OK);
+					}					
+					//Selector should be on QUIT. 
+					PostQuitMessage(0);
+				}
+
 			}
-			
 		}
 		if (isTest)
 		{
@@ -388,13 +399,59 @@ void HandleKeys(WPARAM wParam)
 	case VK_RETURN:
 		if (isLoading)
 		{
-			//Select START, SETTINGS, QUIT 
-			//if START: isLoading = false; isConstruct = true;
-			//if SETTINGS: isSettings = true;
-				//if ENABLED: isTest = true;
-				//if DISABLED: isTest = false;
-				//if BACK: isSettings = false;
-			//if QUIT: g_pGame.GameEnd();
+			if (isSettings)
+			{
+				if (selRC.left == g_rcLeft.left)
+				{
+					//This will enable Test mode.  
+					isTest = true;
+				}
+				if (selRC.left == g_rcMiddle.left)
+				{
+					//This will disable Test mode.  
+					isTest = false;
+				}
+				if (selRC.left == g_rcRight.left)
+				{
+					//Stop the settings menu and return to main menu
+					isSettings = false;
+					//Reposition selector to beginning of menu 
+					g_pLoadScreenSelectorSprite->SetPosition(255, 550);
+				}
+			}
+			else
+			{
+				if (selRC.left == g_rcLeft.left)
+				{
+					//The selector should be on START here. Make sure Settings are off and transition from Loading to Construct.  
+					isLoading = false;
+					isConstruct = true;
+				}
+				if (selRC.left == g_rcMiddle.left)
+				{
+					//The selector should be on settings here. Enable the settings menu.  
+					isSettings = true;
+					//Reposition selector to beginning of menu 
+					g_pLoadScreenSelectorSprite->SetPosition(255, 550);
+
+				}
+				if (selRC.left == g_rcRight.left)
+				{
+					//Change screen resolution back to normal.
+					ChangeDisplaySettings(NULL, 0);
+					try
+					{
+						GameEnd();
+					}
+					catch (exception &e)
+					{
+						MessageBox(g_pGame->GetWindow(), TEXT(e.what()), TEXT("GameEnd() Error"), MB_OK);
+					}
+					//Selector should be on QUIT. 
+					PostQuitMessage(0);
+				}
+
+			}
 		}
 		if (isConstruct)
 		{

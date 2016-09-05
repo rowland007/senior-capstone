@@ -129,7 +129,7 @@ GameEngine::GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle
 	m_iHeight = iHeight;
 	m_iFrameDelay = 50;   // 20 FPS default
 	m_bSleep = true;
-	//SetScreenResolution();
+	SetScreenResolution();
 }
 
 GameEngine::~GameEngine()
