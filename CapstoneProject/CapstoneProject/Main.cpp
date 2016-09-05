@@ -41,9 +41,9 @@ Date                Comment
 //Required global variables
 bool				isTest = false;
 bool				isSettings = false;
-bool				isConstruct = false;
-bool				isDungeon = false;
-bool				isLoading = true;
+bool				isConstruct;
+bool				isDungeon;
+bool				isLoading;
 HINSTANCE			g_hInstance;
 GameEngine			*g_pGame;
 bool	            g_bGameOver;
@@ -67,10 +67,21 @@ Bitmap* g_pConstructUpperWallBitmap;
 Bitmap* g_pConstructLowerWallBitmap;
 Bitmap* g_pConstructRightWallBitmap;
 Bitmap* g_pConstructLeftWallBitmap;
+Bitmap* g_pConstructTopRightBitmap;
+Bitmap* g_pConstructTopLeftBitmap;
+Bitmap* g_pConstructBottomRightBitmap;
+Bitmap* g_pConstructBottomLeftBitmap;
 
 //Load Sprites into memory
 Sprite* g_pLoadScreenSelectorSprite;
-Sprite* g_pConstructUpperWallSprite[60];
+Sprite* g_pConstructUpperWallSprite[52];
+Sprite* g_pConstructLowerWallSprite[52];
+Sprite* g_pConstructRightWallSprite[34];
+Sprite* g_pConstructLeftWallSprite[34];
+Sprite* g_pConstructTopRightSprite;
+Sprite* g_pConstructTopLeftSprite;
+Sprite* g_pConstructBottomRightSprite;
+Sprite* g_pConstructBottomLeftSprite;
 Hero* g_pHero;  
 
 bool GameInitialize(HINSTANCE hInstance)
@@ -97,7 +108,9 @@ void GameStart(HWND hWindow)
   	SelectObject(g_hOffscreenDC, g_hOffscreenBitmap);
 
 	//This sets the "level" to the loading screen
-	isLoading = true;
+	isLoading = false;
+	isConstruct = true;
+	isDungeon = false;
 
 	//Create 3 little rectangles to be used for the sprite that is the menu item selector
 	//Will be used to determine which rectangle the sprite is within  
@@ -121,14 +134,45 @@ void GameStart(HWND hWindow)
 	//Load the Bitmaps and Sprites for the Construct
 	g_pConstructFloor = new Bitmap(GetDC(hWindow), IDB_BITMAP5, g_hInstance);
 	g_pConstructUpperWallBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP6, g_hInstance);
+	g_pConstructLowerWallBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP7, g_hInstance);
+	g_pConstructRightWallBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP8, g_hInstance);
+	g_pConstructLeftWallBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP9, g_hInstance);
+	g_pConstructTopRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP10, g_hInstance);
+	g_pConstructTopLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP11, g_hInstance);
+	g_pConstructBottomRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP12, g_hInstance);
+	g_pConstructBottomLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP13, g_hInstance);
 	//Figure out how many wall sprites are needed and use a for loop to add them to the vector
 	for (int x = 0, counter = 0; x < g_pGame->GetWidth(); x += g_pConstructFloor->GetWidth(), ++counter)
 	{
 		g_pConstructUpperWallSprite[counter] = new Sprite(g_pConstructUpperWallBitmap, g_rcFullWindow);
+		g_pConstructLowerWallSprite[counter] = new Sprite(g_pConstructLowerWallBitmap, g_rcFullWindow);
 		g_pConstructUpperWallSprite[counter]->SetPosition(x, 0);
+		g_pConstructLowerWallSprite[counter]->SetPosition(x, 575 - g_pDialogBox->GetHeight() - g_pConstructLowerWallBitmap->GetHeight());
 		g_pGame->AddConstructSprite(g_pConstructUpperWallSprite[counter]);
-
+		g_pGame->AddConstructSprite(g_pConstructLowerWallSprite[counter]);
 	}
+	for (int y = 0, counter = 0; y < 575 - g_pDialogBox->GetHeight() - g_pConstructRightWallBitmap->GetHeight(); y += g_pConstructRightWallBitmap->GetHeight(), counter++)
+	{
+		g_pConstructRightWallSprite[counter] = new Sprite(g_pConstructRightWallBitmap, g_rcFullWindow);
+		g_pConstructLeftWallSprite[counter] = new Sprite(g_pConstructLeftWallBitmap, g_rcFullWindow);
+		g_pConstructRightWallSprite[counter]->SetPosition(g_pGame->GetWidth() - g_pConstructRightWallBitmap->GetWidth(), y);
+		g_pConstructLeftWallSprite[counter]->SetPosition(0, y);
+		g_pGame->AddConstructSprite(g_pConstructRightWallSprite[counter]);
+		g_pGame->AddConstructSprite(g_pConstructLeftWallSprite[counter]);
+	}
+	g_pConstructTopRightSprite = new Sprite(g_pConstructTopRightBitmap, g_rcFullWindow);
+	g_pConstructTopRightSprite->SetPosition(g_pGame->GetWidth() - g_pConstructTopRightBitmap->GetWidth(), 0);
+	g_pGame->AddConstructSprite(g_pConstructTopRightSprite);
+	g_pConstructTopLeftSprite = new Sprite(g_pConstructTopLeftBitmap, g_rcFullWindow);
+	g_pConstructTopLeftSprite->SetPosition(0, 0);
+	g_pGame->AddConstructSprite(g_pConstructTopLeftSprite);
+	g_pConstructBottomRightSprite = new Sprite(g_pConstructBottomRightBitmap, g_rcFullWindow);
+	g_pConstructBottomRightSprite->SetPosition(g_pGame->GetWidth() - g_pConstructBottomRightBitmap->GetWidth(), 575 - g_pDialogBox->GetHeight() - g_pConstructBottomRightBitmap->GetWidth());
+	g_pGame->AddConstructSprite(g_pConstructBottomRightSprite);
+	g_pConstructBottomLeftSprite = new Sprite(g_pConstructBottomLeftBitmap, g_rcFullWindow);
+	g_pConstructBottomLeftSprite->SetPosition(0, 575 - g_pDialogBox->GetHeight() - g_pConstructBottomLeftBitmap->GetWidth());
+	g_pGame->AddConstructSprite(g_pConstructBottomLeftSprite);
+
 	//Load the Bitmaps and Sprites for the Dungeon 
 	//g_pDungeonFloor = new Bitmap(GetDC(hWindow), ,g_hInstance);
 }
