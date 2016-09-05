@@ -111,10 +111,10 @@ void GameStart(HWND hWindow)
 	g_pGame->AddSprite(g_pLoadScreenSelectorSprite);
 
 	//Load the Bitmaps and Sprites for the Construct
-	g_pConstructFloor = new Bitmap(GetDC(hWindow), ,g_hInstance);
+	g_pConstructFloor = new Bitmap(GetDC(hWindow), IDB_BITMAP5 ,g_hInstance);
 
 	//Load the Bitmaps and Sprites for the Dungeon 
-	g_pDungeonFloor = new Bitmap(GetDC(hWindow), ,g_hInstance);
+	//g_pDungeonFloor = new Bitmap(GetDC(hWindow), ,g_hInstance);
 }
 
 void GameEnd()
@@ -164,7 +164,7 @@ void GamePaint(HDC hDC)
 	{
 		g_pLoadScreen->Draw(hDC, 0, 0);
 		g_pLoadScreenText->Draw(hDC, 75, 50, true);
-		g_pDialogBox->Draw(hDC, 250, 800 - g_pDialogBox.GetHeight());
+		g_pDialogBox->Draw(hDC, 250, 800 - g_pDialogBox->GetHeight());
 		if (isSettings)
 		{
 			TextOut(hDC, 275, 550, TEXT("ENABLED"), 7);
@@ -183,16 +183,16 @@ void GamePaint(HDC hDC)
 	if (isConstruct)
 	{
 		//Tile the floor with the floor bitmap
-		for(int y = 0; y < (800 - g_pDialogBox.GetHeight()) - g_pConstructFloor.GetHeight(); y += g_pConstructFloor.GetHeight())
-			for(int x = 0; x < g_pGame.GetWidth(); x += g_pConstructFloor.GetWidth())
-      			g_pConstructFloor->Draw(hDC, x, y)
+		for (int y = 0; y < (800 - g_pDialogBox->GetHeight()) - g_pConstructFloor->GetHeight(); y += g_pConstructFloor->GetHeight())
+			for (int x = 0; x < g_pGame->GetWidth(); x += g_pConstructFloor->GetWidth())
+				g_pConstructFloor->Draw(hDC, x, y);
 	}
 	if (isDungeon)
 	{
 		//Tile the floor with the floor bitmap
-		for(int y = 0; y < (800 - g_pDialogBox.GetHeight()) - g_pDungeonFloor.GetHeight(); y += g_pDungeonFloor.GetHeight())
-			for(int x = 0; x < g_pGame.GetWidth(); x += g_pDungeonFloor.GetWidth())
-      			g_pDungeonFloor->Draw(hDC, x, y)
+		//for (int y = 0; y < (800 - g_pDialogBox->GetHeight()) - g_pDungeonFloor->GetHeight(); y += g_pDungeonFloor->GetHeight())
+			//for (int x = 0; x < g_pGame->GetWidth(); x += g_pDungeonFloor->GetWidth())
+				//g_pDungeonFloor->Draw(hDC, x, y);
 	}
 }
 
@@ -269,7 +269,7 @@ void HandleKeys(WPARAM wParam)
 		}
 		if (isConstruct || isDungeon)
 		{
-			g_pHero.MoveLeft();
+			g_pHero->MoveLeft();
 		}
 		break;
 	case VK_RIGHT:
@@ -303,7 +303,7 @@ void HandleKeys(WPARAM wParam)
 		}
 		if (isConstruct || isDungeon)
 		{
-			g_pHero.MoveRight();
+			g_pHero->MoveRight();
 		}
 		break;
 	case VK_UP:
@@ -313,7 +313,7 @@ void HandleKeys(WPARAM wParam)
 		}
 		if (isConstruct || isDungeon)
 		{
-			g_pHero.MoveUp();
+			g_pHero->MoveUp();
 		}
 		break;
 	case VK_DOWN:
@@ -323,7 +323,7 @@ void HandleKeys(WPARAM wParam)
 		}
 		if (isConstruct || isDungeon)
 		{
-			g_pHero.MoveDown();
+			g_pHero->MoveDown();
 		}
 		break;
 	case VK_SPACE:
@@ -368,7 +368,7 @@ void HandleKeys(WPARAM wParam)
 			if (selRC.left == g_rcRight.left)
 			{
 				//Selector should be on QUIT. Run GameEnd to clear memory.  
-				g_pGame.GameEnd();
+				GameEnd();
 			}
 			
 		}
@@ -378,7 +378,7 @@ void HandleKeys(WPARAM wParam)
 		}
 		if (isDungeon)
 		{
-			g_pHero.UseWeapon();
+			g_pHero->UseWeapon();
 		}
 		if (isConstruct)
 		{
