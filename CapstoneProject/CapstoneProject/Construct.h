@@ -32,8 +32,13 @@ Date                Comment
 //TODO:
 //Resources that are required
 //Bitmap:
-//      Floor
-//      TextBox
+//      Floor:
+//		{
+//			for(y=0; y < (800-DialogBox.GetHeight() - Floor.GetHeight(); y+=Floor.GetHeight())
+//				for(x=0; x < g_pGame.GetWidth(); x+=Floor.GetWidth())
+//      			Floor->Draw(hDC,X, Y)
+//		}
+//      TextBox: DialogBox->Draw(hDC, 250, 800 - DialogBox.GetHeight())
 //Sprites:
 //      Hero
 //      Left/Right/Top/Bottom/Corner Walls

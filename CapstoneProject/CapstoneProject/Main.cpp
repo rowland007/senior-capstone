@@ -39,8 +39,11 @@ Date                Comment
 #include "Dungeon.h"
 
 //Required global variables
-const bool			isTest = true;
-bool				isLoading;
+bool				isTest = false;
+bool				isSettings = false;
+bool				isConstruct = false;
+bool				isDungeon = false;
+bool				isLoading = true;
 HINSTANCE			g_hInstance;
 GameEngine			*g_pGame;
 bool	            g_bGameOver;
@@ -51,12 +54,18 @@ static RECT			g_rcLeft;
 static RECT			g_rcMiddle;
 static RECT			g_rcRight;
 
-//Load resources into memory
+//Load Bitmaps into memory
 Bitmap* g_pLoadScreen;
 Bitmap* g_pLoadScreenText;
 Bitmap* g_pLoadScreenSelectorBitmap;
-Bitmap* g_pLoadScreenDialogBox;
+Bitmap* g_pDialogBox;
+Bitmap* g_pConstructFloor;
+Bitmap* g_pDungeonFloor;
+Bitmap* g_pHeroBitmap;
+
+//Load Sprites into memory
 Sprite* g_pLoadScreenSelectorSprite;
+Hero* g_pHero;  
 
 bool GameInitialize(HINSTANCE hInstance)
 {
@@ -75,24 +84,37 @@ bool GameInitialize(HINSTANCE hInstance)
 void GameStart(HWND hWindow)
 {
 	g_bGameOver = false;
-	  // Create the offscreen device context and bitmap
+
+	// Create the offscreen device context and bitmap
   	g_hOffscreenDC = CreateCompatibleDC(GetDC(hWindow));
   	g_hOffscreenBitmap = CreateCompatibleBitmap(GetDC(hWindow), g_pGame->GetWidth(), g_pGame->GetHeight());
   	SelectObject(g_hOffscreenDC, g_hOffscreenBitmap);
 
+	//This sets the "level" to the loading screen
 	isLoading = true;
+
+	//Create 3 little rectangles to be used for the sprite that is the menu item selector
+	//Will be used to determine which rectangle the sprite is within  
 	SetRect(&g_rcLeft, 255, 540, 275, 580);
 	SetRect(&g_rcMiddle, 330, 540, 350, 580);
 	SetRect(&g_rcRight, 430, 540, 450, 580);
+
+	//Load the Bitmaps and Sprites for the loading screen
 	g_pLoadScreen = new Bitmap(GetDC(hWindow), IDB_BITMAP1, g_hInstance);
 	g_pLoadScreenText = new Bitmap(GetDC(hWindow), IDB_BITMAP2, g_hInstance);
 	g_pLoadScreenSelectorBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP3, g_hInstance);
-	g_pLoadScreenDialogBox = new Bitmap(GetDC(hWindow), IDB_BITMAP4, g_hInstance);
-	RECT rcLoadBounds = { 250, 540, 450, 580 };
+	g_pDialogBox = new Bitmap(GetDC(hWindow), IDB_BITMAP4, g_hInstance);
+	RECT rcLoadBounds = { 250, 540, 450, 580 }; ///< This bounds is only used for the SelectorSprite and keeps it within the dialog box.
 	g_pLoadScreenSelectorSprite = new Sprite(g_pLoadScreenSelectorBitmap, rcLoadBounds);
 	g_pLoadScreenSelectorSprite->SetPosition(255, 550);
 	g_pLoadScreenSelectorSprite->SetNumFrames(1);
 	g_pGame->AddSprite(g_pLoadScreenSelectorSprite);
+
+	//Load the Bitmaps and Sprites for the Construct
+	g_pConstructFloor = new Bitmap(GetDC(hWindow), ,g_hInstance);
+
+	//Load the Bitmaps and Sprites for the Dungeon 
+	g_pDungeonFloor = new Bitmap(GetDC(hWindow), ,g_hInstance);
 }
 
 void GameEnd()
@@ -102,8 +124,7 @@ void GameEnd()
   	DeleteDC(g_hOffscreenDC); 
 
 	//Deallocation of memory
-	delete g_pLoadScreenSelectorSprite;
-	g_pLoadScreenSelectorSprite = NULL;
+  	g_pGame->CleanupSprites();
 	delete g_pLoadScreenSelectorBitmap;
 	g_pLoadScreenSelectorBitmap = NULL;
 	delete g_pLoadScreenText;
@@ -143,16 +164,35 @@ void GamePaint(HDC hDC)
 	{
 		g_pLoadScreen->Draw(hDC, 0, 0);
 		g_pLoadScreenText->Draw(hDC, 75, 50, true);
-		g_pLoadScreenDialogBox->Draw(hDC, 250, 520);
-		TextOut(hDC, 275, 550, TEXT("START"), 5);
-		TextOut(hDC, 350, 550, TEXT("SETTINGS"), 8);
-		TextOut(hDC, 450, 550, TEXT("QUIT"), 4);
+		g_pDialogBox->Draw(hDC, 250, 800 - g_pDialogBox.GetHeight());
+		if (isSettings)
+		{
+			TextOut(hDC, 275, 550, TEXT("ENABLED"), 7);
+			TextOut(hDC, 350, 550, TEXT("DISABLED"), 8);
+			TextOut (hDC, 450, 550, TEXT("BACK"), 4);
+		}
+		else
+		{
+			TextOut(hDC, 275, 550, TEXT("START"), 5);
+			TextOut(hDC, 350, 550, TEXT("SETTINGS"), 8);
+			TextOut(hDC, 450, 550, TEXT("QUIT"), 4);
+		}
 		g_pGame->DrawSprites(hDC);
 
 	}
-	else
+	if (isConstruct)
 	{
-		//g_pGame->DrawSprites(hDC); or something like that here
+		//Tile the floor with the floor bitmap
+		for(int y = 0; y < (800 - g_pDialogBox.GetHeight()) - g_pConstructFloor.GetHeight(); y += g_pConstructFloor.GetHeight())
+			for(int x = 0; x < g_pGame.GetWidth(); x += g_pConstructFloor.GetWidth())
+      			g_pConstructFloor->Draw(hDC, x, y)
+	}
+	if (isDungeon)
+	{
+		//Tile the floor with the floor bitmap
+		for(int y = 0; y < (800 - g_pDialogBox.GetHeight()) - g_pDungeonFloor.GetHeight(); y += g_pDungeonFloor.GetHeight())
+			for(int x = 0; x < g_pGame.GetWidth(); x += g_pDungeonFloor.GetWidth())
+      			g_pDungeonFloor->Draw(hDC, x, y)
 	}
 }
 
@@ -227,6 +267,10 @@ void HandleKeys(WPARAM wParam)
 				break;
 			}
 		}
+		if (isConstruct || isDungeon)
+		{
+			g_pHero.MoveLeft();
+		}
 		break;
 	case VK_RIGHT:
 		if (isTest)
@@ -257,37 +301,107 @@ void HandleKeys(WPARAM wParam)
 				break;
 			}
 		}
+		if (isConstruct || isDungeon)
+		{
+			g_pHero.MoveRight();
+		}
 		break;
 	case VK_UP:
 		if (isTest)
 		{
-			GamePaint(hDC);
 			TextOut(hDC, 0, 0, TEXT("UP KEY"), 6);
+		}
+		if (isConstruct || isDungeon)
+		{
+			g_pHero.MoveUp();
 		}
 		break;
 	case VK_DOWN:
 		if (isTest)
 		{
-			GamePaint(hDC);
 			TextOut(hDC, 0, 0, TEXT("DOWN KEY"), 8);
+		}
+		if (isConstruct || isDungeon)
+		{
+			g_pHero.MoveDown();
 		}
 		break;
 	case VK_SPACE:
 		if (isLoading)
 		{
-			isLoading = false;
+			//Select START, SETTINGS, QUIT 
+			//if START: isLoading = false; isConstruct = true;
+			//if SETTINGS: isSettings = true;
+				//if ENABLED: isTest = true;
+				//if DISABLED: isTest = false;
+				//if BACK: isSettings = false;
+			//if QUIT: g_pGame.GameEnd();
+			if (selRC.left == g_rcLeft.left)
+			{
+				//The selector should be on START here. Make sure Settings are off and transition from Loading to Construct.  
+				isSettings = false;
+				isLoading = false;
+				isConstruct = true;
+			}
+			if (selRC.left == g_rcMiddle.left)
+			{
+				//The selector should be on settings here. Enable the settings menu.  
+				isSettings = true;
+				//Reposition selector to beginning of menu 
+				g_pLoadScreenSelectorSprite->SetPosition(255, 550);
+				if (selRC.left == g_rcLeft.left)
+				{
+					//This will enable Test mode.  
+					isTest = true;
+				}
+				if (selRC.left == g_rcMiddle.left)
+				{
+					//This will disable Test mode.  
+					isTest = false;
+				}
+				if (selRC.left == g_rcRight.left)
+				{
+					//Stop the settings menu and return to main menu
+					isSettings = false;
+				}
+			}
+			if (selRC.left == g_rcRight.left)
+			{
+				//Selector should be on QUIT. Run GameEnd to clear memory.  
+				g_pGame.GameEnd();
+			}
+			
 		}
 		if (isTest)
 		{
-			GamePaint(hDC);
 			TextOut(hDC, 0, 0, TEXT("BOOM-BOOM KEY"), 14);
+		}
+		if (isDungeon)
+		{
+			g_pHero.UseWeapon();
+		}
+		if (isConstruct)
+		{
+			//Get Hero's location, if touching a weapon, this will select weapon
 		}
 		break;
 	case VK_RETURN:
-		isLoading = false;
+		if (isLoading)
+		{
+			//Select START, SETTINGS, QUIT 
+			//if START: isLoading = false; isConstruct = true;
+			//if SETTINGS: isSettings = true;
+				//if ENABLED: isTest = true;
+				//if DISABLED: isTest = false;
+				//if BACK: isSettings = false;
+			//if QUIT: g_pGame.GameEnd();
+		}
+		if (isConstruct)
+		{
+			//Get Hero's location, if touching a weapon, this will select weapon
+		}
 		break;
 	default:
-		GamePaint(hDC);
 		break;
 	}
 	ReleaseDC(hWindow, hDC);
