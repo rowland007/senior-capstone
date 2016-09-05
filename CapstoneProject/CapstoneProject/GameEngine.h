@@ -105,10 +105,10 @@ protected:
 	HWND                m_hWindow; ///< Handle to the window
 	TCHAR               m_szWindowClass[32]; ///< Used to store the name of the WindowClass that will register with Task Manager
 	TCHAR               m_szTitle[32]; ///< Used to store the name of the title that will be displayed in the title bar of the window
-	WORD                m_wIcon ///< Used to hold the icon that will display on the task bar 
+	WORD                m_wIcon; ///< Used to hold the icon that will display on the task bar 
 	WORD			 	m_wSmallIcon; ///< Used to hold the icon that will display on the title bar of the window
-	int                 m_iWidth ///< The width in pixels of the game size. NOT the window size.
-	int  				m_iHeight ///< The Height in pixels of the game size. NOT the window size.  
+	int                 m_iWidth; ///< The width in pixels of the game size. NOT the window size.
+	int  				m_iHeight; ///< The Height in pixels of the game size. NOT the window size.  
 	int                 m_iFrameDelay; ///< Used to slow down the GameEngine so humans can see what is happening on screen
 	bool                m_bSleep; ///< Used to hold the status of the GameEngine. To pause or unpause.
 	vector<Sprite*>		m_vSprites; ///< A vector to hold all the sprites. Easier to cycle through a vector to determine Sprites status.
