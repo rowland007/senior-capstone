@@ -116,7 +116,7 @@ void GameStart(HWND hWindow)
 	g_pLoadScreenSelectorSprite = new Sprite(g_pLoadScreenSelectorBitmap, rcLoadBounds);
 	g_pLoadScreenSelectorSprite->SetPosition(255, 550);
 	g_pLoadScreenSelectorSprite->SetNumFrames(1);
-	g_pGame->AddSprite(g_pLoadScreenSelectorSprite);
+	g_pGame->AddLoadingSprite(g_pLoadScreenSelectorSprite);
 
 	//Load the Bitmaps and Sprites for the Construct
 	g_pConstructFloor = new Bitmap(GetDC(hWindow), IDB_BITMAP5, g_hInstance);
@@ -126,7 +126,7 @@ void GameStart(HWND hWindow)
 	{
 		g_pConstructUpperWallSprite[counter] = new Sprite(g_pConstructUpperWallBitmap, g_rcFullWindow);
 		g_pConstructUpperWallSprite[counter]->SetPosition(x, 0);
-		g_pGame->AddSprite(g_pConstructUpperWallSprite[counter]);
+		g_pGame->AddConstructSprite(g_pConstructUpperWallSprite[counter]);
 
 	}
 	//Load the Bitmaps and Sprites for the Dungeon 
@@ -180,7 +180,7 @@ void GamePaint(HDC hDC)
 	{
 		g_pLoadScreen->Draw(hDC, 0, 0);
 		g_pLoadScreenText->Draw(hDC, 75, 50, true);
-		g_pDialogBox->Draw(hDC, 250, 570 - g_pDialogBox->GetHeight());
+		g_pDialogBox->Draw(hDC, 250, 575 - g_pDialogBox->GetHeight());
 		if (isSettings)
 		{
 			TextOut(hDC, 275, 550, TEXT("ENABLED"), 7);
@@ -193,17 +193,18 @@ void GamePaint(HDC hDC)
 			TextOut(hDC, 350, 550, TEXT("SETTINGS"), 8);
 			TextOut(hDC, 450, 550, TEXT("QUIT"), 4);
 		}
-		g_pGame->DrawSprites(hDC);
+		g_pGame->DrawLoadingSprites(hDC);
 
 	}
 	if (isConstruct)
 	{
+		g_pDialogBox->Draw(hDC, 250, 575 - g_pDialogBox->GetHeight());
 		//Tile the floor with the floor bitmap
-		for (int y = 0; y < (570 - g_pDialogBox->GetHeight()) - g_pConstructFloor->GetHeight(); y += g_pConstructFloor->GetHeight())
+		for (int y = 0; y < (575 - g_pDialogBox->GetHeight()) - g_pConstructFloor->GetHeight(); y += g_pConstructFloor->GetHeight())
 			for (int x = 0; x < g_pGame->GetWidth(); x += g_pConstructFloor->GetWidth())
 				g_pConstructFloor->Draw(hDC, x, y);
 
-		g_pGame->DrawSprites(hDC);
+		g_pGame->DrawConstructSprites(hDC);
 
 	}
 	if (isDungeon)
@@ -219,9 +220,13 @@ void GameCycle()
 {
   	if (!g_bGameOver)
   	{
- 
-    	// Update the sprites
-    	g_pGame->UpdateSprites();
+		// Update the sprites
+		if(isLoading)			
+    		g_pGame->UpdateLoadingSprites();
+		if(isConstruct)
+			g_pGame->UpdateConstructSprites();
+		if(isDungeon)
+			g_pGame->UpdateDungeonSprites();
 
     	// Obtain a device context for repainting the game
     	HWND  hWindow = g_pGame->GetWindow();
@@ -373,8 +378,8 @@ void HandleKeys(WPARAM wParam)
 				if (selRC.left == g_rcLeft.left)
 				{
 					//The selector should be on START here. Make sure Settings are off and transition from Loading to Construct.  
-					isLoading = false;
 					isConstruct = true;
+					isLoading = false;
 				}
 				if (selRC.left == g_rcMiddle.left)
 				{
@@ -437,8 +442,8 @@ void HandleKeys(WPARAM wParam)
 				if (selRC.left == g_rcLeft.left)
 				{
 					//The selector should be on START here. Make sure Settings are off and transition from Loading to Construct.  
-					isLoading = false;
 					isConstruct = true;
+					isLoading = false;
 				}
 				if (selRC.left == g_rcMiddle.left)
 				{

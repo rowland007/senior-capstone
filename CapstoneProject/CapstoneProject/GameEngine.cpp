@@ -94,7 +94,29 @@ bool GameEngine::CheckSpriteCollision(Sprite * pTestSprite)
 {
 	// See if the sprite has collided with any other sprites
 	vector<Sprite*>::iterator siSprite;
-	for (siSprite = m_vSprites.begin(); siSprite != m_vSprites.end(); siSprite++)
+	for (siSprite = m_vDungeonSprites.begin(); siSprite != m_vDungeonSprites.end(); siSprite++)
+	{
+		// Make sure not to check for collision with itself
+		if (pTestSprite == (*siSprite))
+			continue;
+
+		// Test the collision
+		if (pTestSprite->TestCollision(*siSprite))
+			// Collision detected
+			return SpriteCollision((*siSprite), pTestSprite);
+	}
+	for (siSprite = m_vConstructSprites.begin(); siSprite != m_vConstructSprites.end(); siSprite++)
+	{
+		// Make sure not to check for collision with itself
+		if (pTestSprite == (*siSprite))
+			continue;
+
+		// Test the collision
+		if (pTestSprite->TestCollision(*siSprite))
+			// Collision detected
+			return SpriteCollision((*siSprite), pTestSprite);
+	}
+	for (siSprite = m_vLoadingSprites.begin(); siSprite != m_vLoadingSprites.end(); siSprite++)
 	{
 		// Make sure not to check for collision with itself
 		if (pTestSprite == (*siSprite))
@@ -304,49 +326,113 @@ void GameEngine::SetScreenResolution()
 	m_lResult = ChangeDisplaySettings(&m_devmode, 0);
 }
 
-void GameEngine::AddSprite(Sprite* pSprite)
+void GameEngine::AddLoadingSprite(Sprite* pSprite)
 {
   // Add a sprite to the sprite vector
   if (pSprite != NULL)
   {
     // See if there are sprites already in the sprite vector
-    if (m_vSprites.size() > 0)
+    if (m_vLoadingSprites.size() > 0)
     {
       // Find a spot in the sprite vector to insert the sprite by its z-order
       vector<Sprite*>::iterator siSprite;
-      for (siSprite = m_vSprites.begin(); siSprite != m_vSprites.end(); siSprite++)
+      for (siSprite = m_vLoadingSprites.begin(); siSprite != m_vLoadingSprites.end(); siSprite++)
         if (pSprite->GetZorder() < (*siSprite)->GetZorder())
         {
           // Insert the sprite into the sprite vector
-          m_vSprites.insert(siSprite, pSprite);
+          m_vLoadingSprites.insert(siSprite, pSprite);
           return;
         }
     }
 
     // The sprite's z-order is highest, so add it to the end of the vector
-    m_vSprites.push_back(pSprite);
+    m_vLoadingSprites.push_back(pSprite);
   }
 }
 
-void GameEngine::DrawSprites(HDC hDC)
+void GameEngine::AddConstructSprite(Sprite* pSprite)
+{
+	// Add a sprite to the sprite vector
+	if (pSprite != NULL)
+	{
+		// See if there are sprites already in the sprite vector
+		if (m_vConstructSprites.size() > 0)
+		{
+			// Find a spot in the sprite vector to insert the sprite by its z-order
+			vector<Sprite*>::iterator siSprite;
+			for (siSprite = m_vConstructSprites.begin(); siSprite != m_vConstructSprites.end(); siSprite++)
+				if (pSprite->GetZorder() < (*siSprite)->GetZorder())
+				{
+					// Insert the sprite into the sprite vector
+					m_vConstructSprites.insert(siSprite, pSprite);
+					return;
+				}
+		}
+
+		// The sprite's z-order is highest, so add it to the end of the vector
+		m_vConstructSprites.push_back(pSprite);
+	}
+}
+
+void GameEngine::AddDungeonSprite(Sprite* pSprite)
+{
+	// Add a sprite to the sprite vector
+	if (pSprite != NULL)
+	{
+		// See if there are sprites already in the sprite vector
+		if (m_vDungeonSprites.size() > 0)
+		{
+			// Find a spot in the sprite vector to insert the sprite by its z-order
+			vector<Sprite*>::iterator siSprite;
+			for (siSprite = m_vDungeonSprites.begin(); siSprite != m_vDungeonSprites.end(); siSprite++)
+				if (pSprite->GetZorder() < (*siSprite)->GetZorder())
+				{
+					// Insert the sprite into the sprite vector
+					m_vDungeonSprites.insert(siSprite, pSprite);
+					return;
+				}
+		}
+
+		// The sprite's z-order is highest, so add it to the end of the vector
+		m_vDungeonSprites.push_back(pSprite);
+	}
+}
+
+void GameEngine::DrawLoadingSprites(HDC hDC)
 {
   // Draw the sprites in the sprite vector
   vector<Sprite*>::iterator siSprite;
-  for (siSprite = m_vSprites.begin(); siSprite != m_vSprites.end(); siSprite++)
+  for (siSprite = m_vLoadingSprites.begin(); siSprite != m_vLoadingSprites.end(); siSprite++)
     (*siSprite)->Draw(hDC);
 }
 
-void GameEngine::UpdateSprites()
+void GameEngine::DrawConstructSprites(HDC hDC)
+{
+	// Draw the sprites in the sprite vector
+	vector<Sprite*>::iterator siSprite;
+	for (siSprite = m_vConstructSprites.begin(); siSprite != m_vConstructSprites.end(); siSprite++)
+		(*siSprite)->Draw(hDC);
+}
+
+void GameEngine::DrawDungeonSprites(HDC hDC)
+{
+	// Draw the sprites in the sprite vector
+	vector<Sprite*>::iterator siSprite;
+	for (siSprite = m_vDungeonSprites.begin(); siSprite != m_vDungeonSprites.end(); siSprite++)
+		(*siSprite)->Draw(hDC);
+}
+
+void GameEngine::UpdateLoadingSprites()
 {
   // Expand the capacity of the sprite vector, if necessary
-  if (m_vSprites.size() >= (m_vSprites.capacity() / 2))
-    m_vSprites.reserve(m_vSprites.capacity() * 2);
+  if (m_vLoadingSprites.size() >= (m_vLoadingSprites.capacity() / 2))
+    m_vLoadingSprites.reserve(m_vLoadingSprites.capacity() * 2);
 
   // Update the sprites in the sprite vector
   RECT          rcOldSpritePos;
   SPRITEACTION  saSpriteAction;
   vector<Sprite*>::iterator siSprite;
-  for (siSprite = m_vSprites.begin(); siSprite != m_vSprites.end(); siSprite++)
+  for (siSprite = m_vLoadingSprites.begin(); siSprite != m_vLoadingSprites.end(); siSprite++)
   {
     // Save the old sprite position in case we need to restore it
     rcOldSpritePos = (*siSprite)->GetPosition();
@@ -367,7 +453,7 @@ void GameEngine::UpdateSprites()
 
       // Kill the sprite
       delete (*siSprite);
-      m_vSprites.erase(siSprite);
+      m_vLoadingSprites.erase(siSprite);
       siSprite--;
       continue;
     }
@@ -379,15 +465,112 @@ void GameEngine::UpdateSprites()
   }
 }
 
+void GameEngine::UpdateConstructSprites()
+{
+	// Expand the capacity of the sprite vector, if necessary
+	if (m_vConstructSprites.size() >= (m_vConstructSprites.capacity() / 2))
+		m_vConstructSprites.reserve(m_vConstructSprites.capacity() * 2);
+
+	// Update the sprites in the sprite vector
+	RECT          rcOldSpritePos;
+	SPRITEACTION  saSpriteAction;
+	vector<Sprite*>::iterator siSprite;
+	for (siSprite = m_vConstructSprites.begin(); siSprite != m_vConstructSprites.end(); siSprite++)
+	{
+		// Save the old sprite position in case we need to restore it
+		rcOldSpritePos = (*siSprite)->GetPosition();
+
+		// Update the sprite
+		saSpriteAction = (*siSprite)->Update();
+
+		// Handle the SA_ADDSPRITE sprite action
+		if (saSpriteAction & SA_ADDSPRITE)
+			// Allow the sprite to add its sprite
+			//AddSprite((*siSprite)->AddSprite());
+
+			// Handle the SA_KILL sprite action
+			if (saSpriteAction & SA_KILL)
+			{
+				// Notify the game that the sprite is dying
+				SpriteDying(*siSprite);
+
+				// Kill the sprite
+				delete (*siSprite);
+				m_vConstructSprites.erase(siSprite);
+				siSprite--;
+				continue;
+			}
+
+		// See if the sprite collided with any others
+		if (CheckSpriteCollision(*siSprite))
+			// Restore the old sprite position
+			(*siSprite)->SetPosition(rcOldSpritePos);
+	}
+}
+
+void GameEngine::UpdateDungeonSprites()
+{
+	// Expand the capacity of the sprite vector, if necessary
+	if (m_vDungeonSprites.size() >= (m_vDungeonSprites.capacity() / 2))
+		m_vDungeonSprites.reserve(m_vDungeonSprites.capacity() * 2);
+
+	// Update the sprites in the sprite vector
+	RECT          rcOldSpritePos;
+	SPRITEACTION  saSpriteAction;
+	vector<Sprite*>::iterator siSprite;
+	for (siSprite = m_vDungeonSprites.begin(); siSprite != m_vDungeonSprites.end(); siSprite++)
+	{
+		// Save the old sprite position in case we need to restore it
+		rcOldSpritePos = (*siSprite)->GetPosition();
+
+		// Update the sprite
+		saSpriteAction = (*siSprite)->Update();
+
+		// Handle the SA_ADDSPRITE sprite action
+		if (saSpriteAction & SA_ADDSPRITE)
+			// Allow the sprite to add its sprite
+			//AddSprite((*siSprite)->AddSprite());
+
+			// Handle the SA_KILL sprite action
+			if (saSpriteAction & SA_KILL)
+			{
+				// Notify the game that the sprite is dying
+				SpriteDying(*siSprite);
+
+				// Kill the sprite
+				delete (*siSprite);
+				m_vDungeonSprites.erase(siSprite);
+				siSprite--;
+				continue;
+			}
+
+		// See if the sprite collided with any others
+		if (CheckSpriteCollision(*siSprite))
+			// Restore the old sprite position
+			(*siSprite)->SetPosition(rcOldSpritePos);
+	}
+}
 void GameEngine::CleanupSprites()
 {
   // Delete and remove the sprites in the sprite vector
   vector<Sprite*>::iterator siSprite;
-  for (siSprite = m_vSprites.begin(); siSprite != m_vSprites.end(); siSprite++)
+  for (siSprite = m_vLoadingSprites.begin(); siSprite != m_vLoadingSprites.end(); siSprite++)
   {
     delete (*siSprite);
-    m_vSprites.erase(siSprite);
+    m_vLoadingSprites.erase(siSprite);
     siSprite--;
+  }
+  for (siSprite = m_vConstructSprites.begin(); siSprite != m_vConstructSprites.end(); siSprite++)
+  {
+	  delete (*siSprite);
+	  m_vConstructSprites.erase(siSprite);
+	  siSprite--;
+  }
+  for (siSprite = m_vDungeonSprites.begin(); siSprite != m_vDungeonSprites.end(); siSprite++)
+  {
+	  delete (*siSprite);
+	  m_vDungeonSprites.erase(siSprite);
+	  siSprite--;
   }
 }
 
@@ -395,9 +578,17 @@ Sprite* GameEngine::IsPointInSprite(int x, int y)
 {
   // See if the point is in a sprite in the sprite vector
   vector<Sprite*>::reverse_iterator siSprite;
-  for (siSprite = m_vSprites.rbegin(); siSprite != m_vSprites.rend(); siSprite++)
+  for (siSprite = m_vDungeonSprites.rbegin(); siSprite != m_vDungeonSprites.rend(); siSprite++)
     if (!(*siSprite)->IsHidden() && (*siSprite)->IsPointInside(x, y))
       return (*siSprite);
+
+  for (siSprite = m_vConstructSprites.rbegin(); siSprite != m_vConstructSprites.rend(); siSprite++)
+	  if (!(*siSprite)->IsHidden() && (*siSprite)->IsPointInside(x, y))
+		  return (*siSprite);
+
+  for (siSprite = m_vLoadingSprites.rbegin(); siSprite != m_vLoadingSprites.rend(); siSprite++)
+	  if (!(*siSprite)->IsHidden() && (*siSprite)->IsPointInside(x, y))
+		  return (*siSprite);
 
   // The point is not in a sprite
   return NULL;

@@ -111,7 +111,9 @@ protected:
 	int  				m_iHeight; ///< The Height in pixels of the game size. NOT the window size.  
 	int                 m_iFrameDelay; ///< Used to slow down the GameEngine so humans can see what is happening on screen
 	bool                m_bSleep; ///< Used to hold the status of the GameEngine. To pause or unpause.
-	vector<Sprite*>		m_vSprites; ///< A vector to hold all the sprites. Easier to cycle through a vector to determine Sprites status.
+	vector<Sprite*>		m_vLoadingSprites; ///< A vector to hold all the sprites. Easier to cycle through a vector to determine Sprites status.
+	vector<Sprite*>		m_vConstructSprites; ///< A vector to hold all the sprites. Easier to cycle through a vector to determine Sprites status.
+	vector<Sprite*>		m_vDungeonSprites; ///< A vector to hold all the sprites. Easier to cycle through a vector to determine Sprites status.
 	DEVMODE				m_devmode; ///< Data structure containing info about the display device. Used to change screen resolution.
 	long				m_lResult; ///< Holds the results of the DEVMODE changes.  
 
@@ -154,14 +156,38 @@ public:
 	/// Pushes a Sprite object into the Sprite vector  
 	/// @param A pointer to the Sprite that will be added to the vector
 	/// @see m_vSprites
-	void				AddSprite(Sprite*);
+	void				AddLoadingSprite(Sprite*);
 
-	/// Transverses the Sprite vector calling each Sprite's Draw function.  
+	/// Pushes a Sprite object into the Sprite vector  
+	/// @param A pointer to the Sprite that will be added to the vector
+	/// @see m_vSprites
+	void				AddConstructSprite(Sprite*);
+
+	/// Pushes a Sprite object into the Sprite vector  
+	/// @param A pointer to the Sprite that will be added to the vector
+	/// @see m_vSprites
+	void				AddDungeonSprite(Sprite*);
+
+	/// Transverses the Sprite vector calling each Sprite's Draw function on the loading screen  
 	/// @param hDC Handle to the device context.  
-	void				DrawSprites(HDC);
+	void				DrawLoadingSprites(HDC);
+
+	/// Transverses the Sprite vector calling each Sprite's Draw function in the Construct level  
+	/// @param hDC Handle to the device context.  
+	void				DrawConstructSprites(HDC);
+
+	/// Transverses the Sprite vector calling each Sprite's Draw function in the dungeon level.  
+	/// @param hDC Handle to the device context.  
+	void				DrawDungeonSprites(HDC);
 
 	/// Expands the Sprite vector if necessary, updates the sprites positions, checks to see if a sprite was added or dying, and finally checks for collisions.
-	void				UpdateSprites();
+	void UpdateLoadingSprites();
+
+	/// Expands the Sprite vector if necessary, updates the sprites positions, checks to see if a sprite was added or dying, and finally checks for collisions.
+	void UpdateConstructSprites();
+
+	/// Expands the Sprite vector if necessary, updates the sprites positions, checks to see if a sprite was added or dying, and finally checks for collisions.
+	void UpdateDungeonSprites();
 
 	/// Transverses the Sprite vector to delete Sprite objects from memory.  
 	void				CleanupSprites();
