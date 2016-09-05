@@ -50,6 +50,7 @@ bool	            g_bGameOver;
 int					g_iGameOverDelay;
 HDC					g_hOffscreenDC;
 HBITMAP				g_hOffscreenBitmap;
+RECT				g_rcFullWindow;
 static RECT			g_rcLeft;
 static RECT			g_rcMiddle;
 static RECT			g_rcRight;
@@ -62,9 +63,14 @@ Bitmap* g_pDialogBox;
 Bitmap* g_pConstructFloor;
 Bitmap* g_pDungeonFloor;
 Bitmap* g_pHeroBitmap;
+Bitmap* g_pConstructUpperWallBitmap;
+Bitmap* g_pConstructLowerWallBitmap;
+Bitmap* g_pConstructRightWallBitmap;
+Bitmap* g_pConstructLeftWallBitmap;
 
 //Load Sprites into memory
 Sprite* g_pLoadScreenSelectorSprite;
+Sprite* g_pConstructUpperWallSprite[60];
 Hero* g_pHero;  
 
 bool GameInitialize(HINSTANCE hInstance)
@@ -98,6 +104,8 @@ void GameStart(HWND hWindow)
 	SetRect(&g_rcLeft, 255, 540, 275, 580);
 	SetRect(&g_rcMiddle, 330, 540, 350, 580);
 	SetRect(&g_rcRight, 430, 540, 450, 580);
+	//Set the window as a rectangle
+	SetRect(&g_rcFullWindow, 0, 0, g_pGame->GetWidth(), g_pGame->GetHeight());
 
 	//Load the Bitmaps and Sprites for the loading screen
 	g_pLoadScreen = new Bitmap(GetDC(hWindow), IDB_BITMAP1, g_hInstance);
@@ -111,8 +119,16 @@ void GameStart(HWND hWindow)
 	g_pGame->AddSprite(g_pLoadScreenSelectorSprite);
 
 	//Load the Bitmaps and Sprites for the Construct
-	g_pConstructFloor = new Bitmap(GetDC(hWindow), IDB_BITMAP5,g_hInstance);
+	g_pConstructFloor = new Bitmap(GetDC(hWindow), IDB_BITMAP5, g_hInstance);
+	g_pConstructUpperWallBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP6, g_hInstance);
+	//Figure out how many wall sprites are needed and use a for loop to add them to the vector
+	for (int x = 0, counter = 0; x < g_pGame->GetWidth(); x += g_pConstructFloor->GetWidth(), ++counter)
+	{
+		g_pConstructUpperWallSprite[counter] = new Sprite(g_pConstructUpperWallBitmap, g_rcFullWindow);
+		g_pConstructUpperWallSprite[counter]->SetPosition(x, 0);
+		g_pGame->AddSprite(g_pConstructUpperWallSprite[counter]);
 
+	}
 	//Load the Bitmaps and Sprites for the Dungeon 
 	//g_pDungeonFloor = new Bitmap(GetDC(hWindow), ,g_hInstance);
 }
@@ -164,7 +180,7 @@ void GamePaint(HDC hDC)
 	{
 		g_pLoadScreen->Draw(hDC, 0, 0);
 		g_pLoadScreenText->Draw(hDC, 75, 50, true);
-		g_pDialogBox->Draw(hDC, 250, g_pGame->GetHeight() - g_pDialogBox->GetHeight());
+		g_pDialogBox->Draw(hDC, 250, 570 - g_pDialogBox->GetHeight());
 		if (isSettings)
 		{
 			TextOut(hDC, 275, 550, TEXT("ENABLED"), 7);
@@ -183,14 +199,17 @@ void GamePaint(HDC hDC)
 	if (isConstruct)
 	{
 		//Tile the floor with the floor bitmap
-		for (int y = 0; y < (g_pGame->GetHeight() - g_pDialogBox->GetHeight()) - g_pConstructFloor->GetHeight(); y += g_pConstructFloor->GetHeight())
+		for (int y = 0; y < (570 - g_pDialogBox->GetHeight()) - g_pConstructFloor->GetHeight(); y += g_pConstructFloor->GetHeight())
 			for (int x = 0; x < g_pGame->GetWidth(); x += g_pConstructFloor->GetWidth())
 				g_pConstructFloor->Draw(hDC, x, y);
+
+		g_pGame->DrawSprites(hDC);
+
 	}
 	if (isDungeon)
 	{
 		//Tile the floor with the floor bitmap
-		//for (int y = 0; y < (600 - g_pDialogBox->GetHeight()) - g_pDungeonFloor->GetHeight(); y += g_pDungeonFloor->GetHeight())
+		//for (int y = 0; y < (580 - g_pDialogBox->GetHeight()) - g_pDungeonFloor->GetHeight(); y += g_pDungeonFloor->GetHeight())
 			//for (int x = 0; x < g_pGame->GetWidth(); x += g_pDungeonFloor->GetWidth())
 				//g_pDungeonFloor->Draw(hDC, x, y);
 	}
@@ -368,15 +387,7 @@ void HandleKeys(WPARAM wParam)
 				if (selRC.left == g_rcRight.left)
 				{
 					//Change screen resolution back to normal.
-					ChangeDisplaySettings(NULL, 0);
-					try
-					{ 
-						GameEnd();
-					}
-					catch (exception &e)
-					{
-						MessageBox(g_pGame->GetWindow(), TEXT(e.what()), TEXT("GameEnd() Error"), MB_OK);
-					}					
+					ChangeDisplaySettings(NULL, 0);				
 					//Selector should be on QUIT. 
 					PostQuitMessage(0);
 				}
@@ -394,6 +405,8 @@ void HandleKeys(WPARAM wParam)
 		if (isConstruct)
 		{
 			//Get Hero's location, if touching a weapon, this will select weapon
+			isLoading = true; ///< Remove later...just to get back to quit
+			isConstruct = false;
 		}
 		break;
 	case VK_RETURN:
@@ -438,15 +451,7 @@ void HandleKeys(WPARAM wParam)
 				if (selRC.left == g_rcRight.left)
 				{
 					//Change screen resolution back to normal.
-					ChangeDisplaySettings(NULL, 0);
-					try
-					{
-						GameEnd();
-					}
-					catch (exception &e)
-					{
-						MessageBox(g_pGame->GetWindow(), TEXT(e.what()), TEXT("GameEnd() Error"), MB_OK);
-					}
+					ChangeDisplaySettings(NULL, 0);				
 					//Selector should be on QUIT. 
 					PostQuitMessage(0);
 				}
@@ -456,6 +461,8 @@ void HandleKeys(WPARAM wParam)
 		if (isConstruct)
 		{
 			//Get Hero's location, if touching a weapon, this will select weapon
+			isLoading = true; ///< Remove later...just to get back to quit
+			isConstruct = false;
 		}
 		break;
 	default:
