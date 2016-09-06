@@ -305,6 +305,9 @@ void GamePaint(HDC hDC)
 	if (isConstruct)
 	{
 		g_pDialogBox->Draw(hDC, 250, 575 - g_pDialogBox->GetHeight());
+		TextOut(hDC, 260, (575 - g_pDialogBox->GetHeight()) + 10, TEXT("WISEMAN: Welcome Dungeon Warrior,"), 33);
+		TextOut(hDC, 260, (575 - g_pDialogBox->GetHeight()) + 28, TEXT("select your weapon that will defeat"), 35);
+		TextOut(hDC, 260, (575 - g_pDialogBox->GetHeight()) + 46, TEXT("the monsters!"), 13);
 		//Tile the floor with the floor bitmap
 		for (int y = 0; y < (575 - g_pDialogBox->GetHeight()) - g_pConstructFloor->GetHeight(); y += g_pConstructFloor->GetHeight())
 			for (int x = 0; x < g_pGame->GetWidth(); x += g_pConstructFloor->GetWidth())
