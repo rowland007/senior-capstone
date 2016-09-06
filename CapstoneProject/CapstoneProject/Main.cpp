@@ -77,6 +77,10 @@ Bitmap* g_pConstructLeftWindowBitmap;
 Bitmap* g_pConstructTopWindowBitmap;
 Bitmap* g_pConstructBottomWindowBitmap;
 Bitmap* g_pConstructFireplaceBitmap;
+Bitmap* g_pConstructMentorBitmap;
+Bitmap* g_pConstructBowBitmap;
+Bitmap* g_pConstructBoomerangBitmap;
+Bitmap* g_pConstructSwordBitmap;
 
 
 //Load Sprites into memory
@@ -95,6 +99,10 @@ Sprite* g_pConstructLeftWindowSprite;
 Sprite* g_pConstructTopWindowSprite;
 Sprite* g_pConstructBottomWindowSprite;
 Sprite* g_pConstructFireplaceSprite;
+Sprite* g_pConstructMentorSprite;
+Sprite* g_pConstructBowSprite;
+Sprite* g_pConstructBoomerangSprite;
+Sprite* g_pConstructSwordSprite;
 Hero* g_pHero;  
 
 bool GameInitialize(HINSTANCE hInstance)
@@ -160,6 +168,10 @@ void GameStart(HWND hWindow)
 	g_pConstructTopWindowBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP17, g_hInstance);
 	g_pConstructBottomWindowBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP18, g_hInstance);
 	g_pConstructFireplaceBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP19, g_hInstance);
+	g_pConstructMentorBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP20, g_hInstance);
+	g_pConstructBowBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP21, g_hInstance);
+	g_pConstructBoomerangBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP22, g_hInstance);
+	g_pConstructSwordBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP23, g_hInstance);
 	//Figure out how many wall sprites are needed and use a for loop to add them to the vector
 	for (int x = 0, counter = 0; x < g_pGame->GetWidth(); x += g_pConstructFloor->GetWidth(), ++counter)
 	{
@@ -204,11 +216,23 @@ void GameStart(HWND hWindow)
 	g_pConstructBottomWindowSprite = new Sprite(g_pConstructBottomWindowBitmap, g_rcFullWindow);
 	g_pConstructBottomWindowSprite->SetPosition((g_pGame->GetWidth() / 4)*3 - (g_pConstructRightWindowBitmap->GetHeight() / 2), 575 - g_pDialogBox->GetHeight() - g_pConstructBottomWindowBitmap->GetHeight());
 	g_pGame->AddConstructSprite(g_pConstructBottomWindowSprite);
-
-
 	g_pConstructFireplaceSprite = new Sprite(g_pConstructFireplaceBitmap, g_rcFullWindow);
 	g_pConstructFireplaceSprite->SetPosition((g_pGame->GetWidth() / 3)*2, 0);
 	g_pGame->AddConstructSprite(g_pConstructFireplaceSprite);
+	g_pConstructMentorSprite = new Sprite(g_pConstructMentorBitmap, g_rcFullWindow);
+	g_pConstructMentorSprite->SetFrameDelay(3);
+	g_pConstructMentorSprite->SetNumFrames(2);
+	g_pConstructMentorSprite->SetPosition(g_pGame->GetWidth() / 7, 60);
+	g_pGame->AddConstructSprite(g_pConstructMentorSprite);
+	g_pConstructBowSprite = new Sprite(g_pConstructBowBitmap, g_rcFullWindow);
+	g_pConstructBowSprite->SetPosition((g_pGame->GetWidth() / 7) * 2, 80);
+	g_pGame->AddConstructSprite(g_pConstructBowSprite);
+	g_pConstructBoomerangSprite = new Sprite(g_pConstructBoomerangBitmap, g_rcFullWindow);
+	g_pConstructBoomerangSprite->SetPosition((g_pGame->GetWidth() / 7) * 3, 80);
+	g_pGame->AddConstructSprite(g_pConstructBoomerangSprite);
+	g_pConstructSwordSprite = new Sprite(g_pConstructSwordBitmap, g_rcFullWindow);
+	g_pConstructSwordSprite->SetPosition((g_pGame->GetWidth() / 7) * 4, 80);
+	g_pGame->AddConstructSprite(g_pConstructSwordSprite);
 
 	//Load the Bitmaps and Sprites for the Dungeon 
 	//g_pDungeonFloor = new Bitmap(GetDC(hWindow), ,g_hInstance);
