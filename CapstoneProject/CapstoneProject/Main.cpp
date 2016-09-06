@@ -29,6 +29,7 @@ Date                Comment
 23Aug16	Removed '#include "Bitmap.h"' - Was causing redefinition errors
 24Aug16	Added Construct.h and Dungeon.h
 25Aug16 Added Start/Settings/Quit text and SelectorSprite
+4Sep16	Added several bitmaps/sprits to build Construct level.
 ************************************************************************/
 #include <Windows.h>
 #include <Wingdi.h>

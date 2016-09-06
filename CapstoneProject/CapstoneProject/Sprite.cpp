@@ -16,6 +16,7 @@ Known bugs/missing features:
 Modifications:
 Date                Comment
 ----    ------------------------------------------------
+5Sep16	Modified class to orient frames horizontally compared to vertically.
 ************************************************************************/
 #include "Sprite.h"
 
@@ -188,7 +189,7 @@ void Sprite::Draw(HDC hDC)
     if (m_iNumFrames == 1)
       m_pBitmap->Draw(hDC, m_rcPosition.left, m_rcPosition.top, true);
     else
-      m_pBitmap->DrawPart(hDC, m_rcPosition.left, m_rcPosition.top, 0, m_iCurFrame * GetHeight(), GetWidth(), GetHeight(), true, RGB(255,0,255));
+      m_pBitmap->DrawPart(hDC, m_rcPosition.left, m_rcPosition.top, m_iCurFrame * GetWidth(), 0, GetWidth(), GetHeight(), true, RGB(255,0,255));
   }
 }
 
@@ -224,7 +225,7 @@ void Sprite::SetNumFrames(int iNumFrames, bool bOneCycle)
 
 	// Recalculate the position
 	RECT rect = GetPosition();
-	rect.bottom = rect.top + ((rect.bottom - rect.top) / iNumFrames);
+	rect.left = rect.left + ((rect.right - rect.left) / iNumFrames);
 	SetPosition(rect);
 }
 
@@ -312,12 +313,12 @@ void Sprite::SetHidden(bool bHidden)
 
 int Sprite::GetWidth() const
 {
-	return m_pBitmap->GetWidth();
+	return m_pBitmap->GetWidth() / m_iNumFrames;
 }
 
 int Sprite::GetHeight() const
 {
-	return m_pBitmap->GetHeight() / m_iNumFrames;
+	return m_pBitmap->GetHeight();
 }
 
 void Sprite::UpdateFrame()
