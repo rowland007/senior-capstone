@@ -33,6 +33,7 @@ Date                Comment
 ************************************************************************/
 #include <Windows.h>
 #include <Wingdi.h>
+#include <stdlib.h>
 #include "GameEngine.h"
 #include "Resource.h"
 #include "Sprite.h"
@@ -185,6 +186,9 @@ bool GameInitialize(HINSTANCE hInstance)
 
 void GameStart(HWND hWindow)
 {
+	// Seed the random number generator
+	srand(GetTickCount());
+
 	g_bGameOver = false;
 
 	// Create the offscreen device context and bitmap
@@ -404,7 +408,7 @@ void GameStart(HWND hWindow)
 		g_pEnemyTenticalSprite[x] = new EnemyBoss(g_pEnemyTenticalBitmap, g_rcEnemeyBounds, BA_BOUNCE);
 		g_pEnemyTenticalSprite[x]->SetNumFrames(3);
 		g_pEnemyTenticalSprite[x]->SetFrameDelay(1);
-		g_pEnemyTenticalSprite[x]->MoveRandomly();
+		g_pEnemyTenticalSprite[x]->MoveRandomly(800, 640 - (16 + g_pDungeonLowerWallBitmap->GetHeight() + g_pDialogBox->GetHeight()));
 		g_pEnemyTenticalDieSprite[x] = new EnemyBoss(g_pEnemyTenticalDieBitmap, g_rcEnemeyBounds, BA_BOUNCE);
 		g_pEnemyTenticalDieSprite[x]->SetNumFrames(3, true);
 		g_pEnemyTenticalDieSprite[x]->SetFrameDelay(1);

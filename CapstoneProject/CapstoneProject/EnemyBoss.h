@@ -46,7 +46,7 @@ public:
 	int GetHealth() const;
 
 	/// Will have the sprite move randomly on the screen
-	void MoveRandomly();
+	void MoveRandomly(int, int);
 
 	/// Will have the sprite chase the Hero sprite
 	void MoveChase();
