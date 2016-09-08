@@ -56,14 +56,16 @@ static RECT			g_rcLeft;
 static RECT			g_rcMiddle;
 static RECT			g_rcRight;
 
+///////////////////////////////
 //Load Bitmaps into memory
+///////////////////////////////
+//Load Screen
 Bitmap* g_pLoadScreen;
 Bitmap* g_pLoadScreenText;
 Bitmap* g_pLoadScreenSelectorBitmap;
-Bitmap* g_pDialogBox;
+Bitmap* g_pDialogBox; //used in Construct and Load Screen
+//Construct
 Bitmap* g_pConstructFloor;
-Bitmap* g_pDungeonFloor;
-Bitmap* g_pHeroBitmap;
 Bitmap* g_pConstructUpperWallBitmap;
 Bitmap* g_pConstructLowerWallBitmap;
 Bitmap* g_pConstructRightWallBitmap;
@@ -82,10 +84,36 @@ Bitmap* g_pConstructMentorBitmap;
 Bitmap* g_pConstructBowBitmap;
 Bitmap* g_pConstructBoomerangBitmap;
 Bitmap* g_pConstructSwordBitmap;
+//Dungeon
+Bitmap* g_pDungeonFloor;
+Bitmap* g_pDungeonUpperWallBitmap;
+Bitmap* g_pDungeonLowerWallBitmap;
+Bitmap* g_pDungeonRightWallBitmap;
+Bitmap* g_pDungeonLeftWallBitmap;
+Bitmap* g_pDungeonTopRightBitmap;
+Bitmap* g_pDungeonTopLeftBitmap;
+Bitmap* g_pDungeonBottomRightBitmap;
+Bitmap* g_pDungeonBottomLeftBitmap;
+Bitmap* g_pDungeonUpperVinesBitmap;
+Bitmap* g_pDungeonLowerVinesBitmap;
+Bitmap* g_pDungeonRightVinesBitmap;
+Bitmap* g_pDungeonLeftVinesBitmap;
+Bitmap* g_pDungeonFirepitBitmap;
+Bitmap* g_pDungeonGoldSkullBitmap;
+Bitmap* g_pDungeonSkullBitmap;
+Bitmap* g_pDungeonLtGreenSkullBitmap;
+//Hero
+Bitmap* g_pHeroBitmap;
+//Enemies
 
 
+
+//////////////////////////////////////
 //Load Sprites into memory
+//////////////////////////////////////
+//Load Screen
 Sprite* g_pLoadScreenSelectorSprite;
+//Construct
 Sprite* g_pConstructUpperWallSprite[52];
 Sprite* g_pConstructLowerWallSprite[52];
 Sprite* g_pConstructRightWallSprite[34];
@@ -104,7 +132,26 @@ Sprite* g_pConstructMentorSprite;
 Sprite* g_pConstructBowSprite;
 Sprite* g_pConstructBoomerangSprite;
 Sprite* g_pConstructSwordSprite;
-Hero* g_pHero;  
+//Dungeon
+Sprite* g_pDungeonUpperWallSprite[52];
+Sprite* g_pDungeonLowerWallSprite[52];
+Sprite* g_pDungeonRightWallSprite[34];
+Sprite* g_pDungeonLeftWallSprite[34];
+Sprite* g_pDungeonTopRightSprite;
+Sprite* g_pDungeonTopLeftSprite;
+Sprite* g_pDungeonBottomRightSprite;
+Sprite* g_pDungeonBottomLeftSprite;
+Sprite* g_pDungeonUpperVinesSprite;
+Sprite* g_pDungeonLowerVinesSprite;
+Sprite* g_pDungeonRightVinesSprite;
+Sprite* g_pDungeonLeftVinesSprite;
+Sprite* g_pDungeonFirepitSprite;
+Sprite* g_pDungeonGoldSkullSprite;
+Sprite* g_pDungeonSkullSprite;
+Sprite* g_pDungeonLtGreenSkullSprite;
+//Hero
+Hero* g_pHero;
+//Enemies
 
 bool GameInitialize(HINSTANCE hInstance)
 {
@@ -131,8 +178,8 @@ void GameStart(HWND hWindow)
 
 	//This sets the "level" to the loading screen
 	isLoading = false;
-	isConstruct = true;
-	isDungeon = false;
+	isConstruct = false;
+	isDungeon = true;
 
 	//Create 3 little rectangles to be used for the sprite that is the menu item selector
 	//Will be used to determine which rectangle the sprite is within  
@@ -234,9 +281,71 @@ void GameStart(HWND hWindow)
 	g_pConstructSwordSprite = new Sprite(g_pConstructSwordBitmap, g_rcFullWindow);
 	g_pConstructSwordSprite->SetPosition((g_pGame->GetWidth() / 7) * 4, 80);
 	g_pGame->AddConstructSprite(g_pConstructSwordSprite);
-
 	//Load the Bitmaps and Sprites for the Dungeon 
-	//g_pDungeonFloor = new Bitmap(GetDC(hWindow), ,g_hInstance);
+	g_pDungeonFloor = new Bitmap(GetDC(hWindow), IDB_BITMAP24, g_hInstance);
+	g_pDungeonUpperWallBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP25, g_hInstance);
+	g_pDungeonLowerWallBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP26, g_hInstance);
+	g_pDungeonRightWallBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP27, g_hInstance);
+	g_pDungeonLeftWallBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP28, g_hInstance);
+	g_pDungeonTopRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP29, g_hInstance);
+	g_pDungeonTopLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP30, g_hInstance);
+	g_pDungeonBottomRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP31, g_hInstance);
+	g_pDungeonBottomLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP32, g_hInstance);
+	g_pDungeonUpperVinesBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP33, g_hInstance);
+	g_pDungeonLowerVinesBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP34, g_hInstance);
+	g_pDungeonRightVinesBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP35, g_hInstance);
+	g_pDungeonLeftVinesBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP36, g_hInstance);
+	g_pDungeonFirepitBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP37, g_hInstance);
+	g_pDungeonGoldSkullBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP38, g_hInstance);
+	g_pDungeonSkullBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP39, g_hInstance);
+	g_pDungeonLtGreenSkullBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP40, g_hInstance);
+	//Figure out how many wall sprites are needed and use a for loop to add them to the vector
+	for (int x = 0, counter = 0; x < g_pGame->GetWidth(); x += g_pDungeonFloor->GetWidth(), ++counter)
+	{
+		g_pDungeonUpperWallSprite[counter] = new Sprite(g_pDungeonUpperWallBitmap, g_rcFullWindow);
+		g_pDungeonLowerWallSprite[counter] = new Sprite(g_pDungeonLowerWallBitmap, g_rcFullWindow);
+		g_pDungeonUpperWallSprite[counter]->SetPosition(x, 0);
+		g_pDungeonLowerWallSprite[counter]->SetPosition(x, 575 - g_pDialogBox->GetHeight() - g_pDungeonLowerWallBitmap->GetHeight());
+		g_pGame->AddDungeonSprite(g_pDungeonUpperWallSprite[counter]);
+		g_pGame->AddDungeonSprite(g_pDungeonLowerWallSprite[counter]);
+	}
+	//To keep the dungeon size the same size as the construct, we will still check against the DialogBox even though the dialog box won't be used in the dungeon
+	for (int y = 0, counter = 0; y < 575 - g_pDialogBox->GetHeight() - g_pDungeonRightWallBitmap->GetHeight(); y += g_pDungeonRightWallBitmap->GetHeight(), counter++)
+	{
+		g_pDungeonRightWallSprite[counter] = new Sprite(g_pDungeonRightWallBitmap, g_rcFullWindow);
+		g_pDungeonLeftWallSprite[counter] = new Sprite(g_pDungeonLeftWallBitmap, g_rcFullWindow);
+		g_pDungeonRightWallSprite[counter]->SetPosition(g_pGame->GetWidth() - g_pDungeonRightWallBitmap->GetWidth(), y);
+		g_pDungeonLeftWallSprite[counter]->SetPosition(0, y);
+		g_pGame->AddDungeonSprite(g_pDungeonRightWallSprite[counter]);
+		g_pGame->AddDungeonSprite(g_pDungeonLeftWallSprite[counter]);
+	}
+	g_pDungeonTopRightSprite = new Sprite(g_pDungeonTopRightBitmap, g_rcFullWindow);
+	g_pDungeonTopRightSprite->SetPosition(g_pGame->GetWidth() - g_pDungeonTopRightBitmap->GetWidth(), 0);
+	g_pGame->AddDungeonSprite(g_pDungeonTopRightSprite);
+	g_pDungeonTopLeftSprite = new Sprite(g_pDungeonTopLeftBitmap, g_rcFullWindow);
+	g_pDungeonTopLeftSprite->SetPosition(0, 0);
+	g_pGame->AddDungeonSprite(g_pDungeonTopLeftSprite);
+	g_pDungeonBottomRightSprite = new Sprite(g_pDungeonBottomRightBitmap, g_rcFullWindow);
+	g_pDungeonBottomRightSprite->SetPosition(g_pGame->GetWidth() - g_pDungeonBottomRightBitmap->GetWidth(), 575 - g_pDialogBox->GetHeight() - g_pDungeonBottomRightBitmap->GetWidth());
+	g_pGame->AddDungeonSprite(g_pDungeonBottomRightSprite);
+	g_pDungeonBottomLeftSprite = new Sprite(g_pDungeonBottomLeftBitmap, g_rcFullWindow);
+	g_pDungeonBottomLeftSprite->SetPosition(0, 575 - g_pDialogBox->GetHeight() - g_pDungeonBottomLeftBitmap->GetWidth());
+	g_pGame->AddDungeonSprite(g_pDungeonBottomLeftSprite);
+	g_pDungeonRightVinesSprite = new Sprite(g_pDungeonRightVinesBitmap, g_rcFullWindow);
+	g_pDungeonRightVinesSprite->SetPosition(g_pGame->GetWidth() - g_pDungeonRightVinesBitmap->GetWidth(), (g_pGame->GetHeight() / 2) - (g_pDungeonRightVinesBitmap->GetHeight() / 2));
+	g_pGame->AddDungeonSprite(g_pDungeonRightVinesSprite);
+	g_pDungeonLeftVinesSprite = new Sprite(g_pDungeonLeftVinesBitmap, g_rcFullWindow);
+	g_pDungeonLeftVinesSprite->SetPosition(0, (g_pGame->GetHeight() / 2) - (g_pDungeonLeftVinesBitmap->GetHeight() / 2));
+	g_pGame->AddDungeonSprite(g_pDungeonLeftVinesSprite);
+	g_pDungeonUpperVinesSprite = new Sprite(g_pDungeonUpperVinesBitmap, g_rcFullWindow);
+	g_pDungeonLowerVinesSprite = new Sprite(g_pDungeonLowerVinesBitmap, g_rcFullWindow);
+	g_pDungeonLowerVinesSprite->SetPosition((g_pGame->GetWidth() / 4) * 3 - (g_pDungeonRightVinesBitmap->GetHeight() / 2), 575 - g_pDialogBox->GetHeight() - g_pDungeonLowerVinesBitmap->GetHeight());
+	g_pGame->AddDungeonSprite(g_pDungeonLowerVinesSprite);
+	g_pDungeonFirepitSprite = new Sprite(g_pDungeonFirepitBitmap, g_rcFullWindow);
+	g_pDungeonFirepitSprite->SetFrameDelay(0);
+	g_pDungeonFirepitSprite->SetNumFrames(3);
+	g_pDungeonFirepitSprite->SetPosition(g_pGame->GetWidth() - (g_pDungeonRightWallBitmap->GetWidth() + (g_pDungeonFirepitBitmap->GetWidth()/3)), g_pDungeonUpperWallBitmap->GetHeight());
+	g_pGame->AddDungeonSprite(g_pDungeonFirepitSprite);
 }
 
 void GameEnd()
@@ -319,9 +428,11 @@ void GamePaint(HDC hDC)
 	if (isDungeon)
 	{
 		//Tile the floor with the floor bitmap
-		//for (int y = 0; y < (580 - g_pDialogBox->GetHeight()) - g_pDungeonFloor->GetHeight(); y += g_pDungeonFloor->GetHeight())
-			//for (int x = 0; x < g_pGame->GetWidth(); x += g_pDungeonFloor->GetWidth())
-				//g_pDungeonFloor->Draw(hDC, x, y);
+		for (int y = 0; y < (580 - g_pDialogBox->GetHeight()) - g_pDungeonFloor->GetHeight(); y += g_pDungeonFloor->GetHeight())
+			for (int x = 0; x < g_pGame->GetWidth(); x += g_pDungeonFloor->GetWidth())
+				g_pDungeonFloor->Draw(hDC, x, y);
+
+		g_pGame->DrawDungeonSprites(hDC);
 	}
 }
 
@@ -514,7 +625,10 @@ void HandleKeys(WPARAM wParam)
 		}
 		if (isDungeon)
 		{
-			g_pHero->UseWeapon();
+			//g_pHero->UseWeapon();
+			/////////////////////////////////////////////////////////////
+			isLoading = true; ///< Remove later...just to get back to quit
+			isDungeon = false;
 		}
 		if (isConstruct)
 		{
