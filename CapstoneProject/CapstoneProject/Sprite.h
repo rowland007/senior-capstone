@@ -106,6 +106,11 @@ public:
     
     /// How long the sprite will stay on one frame before switching to the next frame.
 	void SetFrameDelay(int);
+
+	/// Used to change the Bitmap image that the sprite uses.
+	/// @param pBitmap The pointer to the bitmap
+	/// @see Bitmap
+	void SetBitmap(Bitmap*);
     
     /// Returns the position of the sprite by using a rectangle around the frame of the bitmap
 	RECT &GetPosition();

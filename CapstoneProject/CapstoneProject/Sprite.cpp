@@ -234,7 +234,12 @@ void Sprite::SetFrameDelay(int iFrameDelay)
 	m_iFrameDelay = iFrameDelay;
 }
 
-RECT& Sprite::GetPosition() 
+void Sprite::SetBitmap(Bitmap *pBitmap)
+{
+	m_pBitmap = pBitmap;
+}
+
+RECT& Sprite::GetPosition()
 {
 	return m_rcPosition;
 }
