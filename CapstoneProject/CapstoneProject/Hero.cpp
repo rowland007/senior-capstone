@@ -23,10 +23,46 @@ Known bugs/missing features:
 Modifications:
 Date                Comment
 ----    ------------------------------------------------
-
+10Sep16	Made global pointers for all the bitmaps the hero class will use
+11Sep16 Created a bunch of case statements used to change animation dependent on the direction and weapon.
 ************************************************************************/
 #include "Hero.h"
 
+/// All the bitmaps that are used by the Hero
+///Hero himself
+Bitmap *g_pHeroWalkingLeftBitmap;
+Bitmap *g_pHeroWalkingRightBitmap;
+Bitmap *g_pHeroWalkingUpBitmap;
+Bitmap *g_pHeroWalkingDownBitmap;
+Bitmap *g_pHeroDamageLeftBitmap;
+Bitmap *g_pHeroDamageRightBitmap;
+Bitmap *g_pHeroDamageUpBitmap;
+Bitmap *g_pHeroDamageDownBitmap;
+Bitmap *g_pHeroDyingBitmap;
+Bitmap *g_pHeroWinBitmap;
+Bitmap *g_pHeroBoomerangLeftBitmap;
+Bitmap *g_pHeroBoomerangRightBitmap;
+Bitmap *g_pHeroBoomerangDownBitmap;
+Bitmap *g_pHeroBoomerangUpBitmap;
+Bitmap *g_pHeroBowLeftBitmap;
+Bitmap *g_pHeroBowRightBitmap;
+Bitmap *g_pHeroBowUpBitmap;
+Bitmap *g_pHeroBowDownBitmap;
+Bitmap *g_pHeroSwordLeftBitmap;
+Bitmap *g_pHeroSwordRightBitmap;
+Bitmap *g_pHeroSwordUpBitmap;
+Bitmap *g_pHeroSwordDownBitmap;
+
+///Weapons
+Bitmap *g_pArrowLeftBitmap;
+Bitmap *g_pArrowRightBitmap;
+Bitmap *g_pArrowUpBitmap;
+Bitmap *g_pArrowDownBitmap;
+Bitmap *g_pBoomerangBitmap;
+Bitmap *g_pSwordSwingLeftBitmap;
+Bitmap *g_pSwordSwingRightBitmap;
+Bitmap *g_pSwordSwingUpBitmap;
+Bitmap *g_pSwordSwingDownBitmap;
 
 
 Hero::Hero(Bitmap* pBitmap, RECT& rcBounds,	BOUNDSACTION baBoundsAction = BA_STOP) : Sprite(pBitmap, rcBounds, baBoundsAction), m_iHealth(3), m_iHealthMeter(3)
@@ -40,18 +76,118 @@ Hero::~Hero()
 
 void Hero::MoveLeft()
 {
+	Bitmap *pNewBitmap;
+	int iNumFrames;
+
+	switch (GetWeapon())
+	{
+	case WT_BOOMERANG:
+		pNewBitmap = g_pHeroBoomerangLeftBitmap;
+		iNumFrames = 2;
+		break;
+	case WT_BOW:
+		pNewBitmap = g_pHeroBowLeftBitmap;
+		iNumFrames = 2;
+		break;
+	case WT_SWORD:
+		pNewBitmap = g_pHeroWalkingLeftBitmap;
+		iNumFrames = 8;
+		break;
+	default:
+		pNewBitmap = g_pHeroWalkingLeftBitmap;
+		iNumFrames = 8;
+	}
+	m_fdDirection = FD_LEFT;
+	this->SetBitmap(pNewBitmap);
+	this->SetNumFrames(iNumFrames);
+	this->SetVelocity(-16, 0);
 }
 
 void Hero::MoveRight()
 {
+	Bitmap *pNewBitmap;
+	int iNumFrames;
+
+	switch (GetWeapon())
+	{
+	case WT_BOOMERANG:
+		pNewBitmap = g_pHeroBoomerangRightBitmap;
+		iNumFrames = 2;
+		break;
+	case WT_BOW:
+		pNewBitmap = g_pHeroBowRightBitmap;
+		iNumFrames = 2;
+		break;
+	case WT_SWORD:
+		pNewBitmap = g_pHeroWalkingRightBitmap;
+		iNumFrames = 8;
+		break;
+	default:
+		pNewBitmap = g_pHeroWalkingRightBitmap;
+		iNumFrames = 8;
+	}
+	m_fdDirection = FD_RIGHT;
+	this->SetBitmap(pNewBitmap);
+	this->SetNumFrames(iNumFrames);
+	this->SetVelocity(16, 0);
 }
 
 void Hero::MoveUp()
 {
+	Bitmap *pNewBitmap;
+	int iNumFrames;
+
+	switch (GetWeapon())
+	{
+	case WT_BOOMERANG:
+		pNewBitmap = g_pHeroBoomerangUpBitmap;
+		iNumFrames = 2;
+		break;
+	case WT_BOW:
+		pNewBitmap = g_pHeroBowUpBitmap;
+		iNumFrames = 2;
+		break;
+	case WT_SWORD:
+		pNewBitmap = g_pHeroWalkingUpBitmap;
+		iNumFrames = 8;
+		break;
+	default:
+		pNewBitmap = g_pHeroWalkingUpBitmap;
+		iNumFrames = 8;
+	}
+	m_fdDirection = FD_UP;
+	this->SetBitmap(pNewBitmap);
+	this->SetNumFrames(iNumFrames);
+	this->SetVelocity(0, -24);
 }
 
 void Hero::MoveDown()
 {
+	Bitmap *pNewBitmap;
+	int iNumFrames;
+
+	switch (GetWeapon())
+	{
+	case WT_BOOMERANG:
+		pNewBitmap = g_pHeroBoomerangDownBitmap;
+		iNumFrames = 2;
+		break;
+	case WT_BOW:
+		pNewBitmap = g_pHeroBowDownBitmap;
+		iNumFrames = 2;
+		break;
+	case WT_SWORD:
+		pNewBitmap = g_pHeroWalkingDownBitmap;
+		iNumFrames = 8;
+		break;
+	default:
+		pNewBitmap = g_pHeroWalkingDownBitmap;
+		iNumFrames = 8;
+	}
+	m_fdDirection = FD_DOWN;
+	this->SetBitmap(pNewBitmap);
+	this->SetNumFrames(iNumFrames);
+	this->SetVelocity(0, 24);
 }
 
 void Hero::SetWeapon(WEAPONTYPE wtWeapon)
@@ -62,6 +198,11 @@ void Hero::SetWeapon(WEAPONTYPE wtWeapon)
 WEAPONTYPE Hero::GetWeapon() const
 {
 	return WEAPONTYPE();
+}
+
+FACINGDIRECTION Hero::GetDirection() const
+{
+	return m_fdDirection;
 }
 
 void Hero::SetHealth(int iHealth)
@@ -76,6 +217,123 @@ int Hero::GetHealth() const
 
 void Hero::UseWeapon()
 {
+
+	switch (GetWeapon())
+	{
+	case WT_SWORD:
+		//Get direction hero is facing
+		//Set new bitmap and frames for that direction
+		//have animation run only once
+		//after animation completes, go back to last bitmap
+		Sprite *pSwordSwingSprite;
+		switch (GetDirection())
+		{
+		case FD_LEFT:
+			this->SetBitmap(g_pHeroSwordLeftBitmap);
+			this->SetNumFrames(12);
+			this->SetVelocity(0, 0);
+			pSwordSwingSprite = new Sprite(g_pSwordSwingLeftBitmap);
+			pSwordSwingSprite->SetNumFrames(12);
+			pSwordSwingSprite->SetPosition(this->GetPosition);
+			break;
+		case FD_RIGHT:
+			this->SetBitmap(g_pHeroSwordRightBitmap);
+			this->SetNumFrames(12);
+			this->SetVelocity(0, 0);
+			pSwordSwingSprite = new Sprite(g_pSwordSwingRightBitmap);
+			pSwordSwingSprite->SetNumFrames(12);
+			pSwordSwingSprite->SetPosition(this->GetPosition);
+			break;
+		case FD_UP:
+			this->SetBitmap(g_pHeroSwordUpBitmap);
+			this->SetNumFrames(12);
+			this->SetVelocity(0, 0);
+			pSwordSwingSprite = new Sprite(g_pSwordSwingUpBitmap);
+			pSwordSwingSprite->SetNumFrames(12);
+			pSwordSwingSprite->SetPosition(this->GetPosition);
+			break;
+		case FD_DOWN:
+			this->SetBitmap(g_pHeroSwordDownBitmap);
+			this->SetNumFrames(12);
+			this->SetVelocity(0, 0);
+			pSwordSwingSprite = new Sprite(g_pSwordSwingDownBitmap);
+			pSwordSwingSprite->SetNumFrames(12);
+			pSwordSwingSprite->SetPosition(this->GetPosition);
+			break;
+		default:
+			break;
+		}
+		break;
+	case WT_BOOMERANG:
+		// Need to setup a bounding area around the hero that moves with hero
+		Sprite *pBoomerangSprite = new Sprite(g_pBoomerangBitmap);
+		pBoomerangSprite->SetNumFrames(4);
+		//pBoomerangSprite->SetBounds(RECT&); ///< figure out the rect around the hero
+		switch (GetDirection())
+		{
+		case FD_LEFT:
+			pBoomerangSprite->SetPosition(this->GetPosition);
+			pBoomerangSprite->SetVelocity(-12, 0);
+			pBoomerangSprite->SetBoundsAction(BA_BOUNCE);
+			break;
+		case FD_RIGHT:
+			pBoomerangSprite->SetPosition(this->GetPosition);
+			pBoomerangSprite->SetVelocity(12, 0);
+			pBoomerangSprite->SetBoundsAction(BA_BOUNCE);
+			break;
+		case FD_UP:
+			pBoomerangSprite->SetPosition(this->GetPosition);
+			pBoomerangSprite->SetVelocity(0, -12);
+			pBoomerangSprite->SetBoundsAction(BA_BOUNCE);
+			break;
+		case FD_DOWN:
+			pBoomerangSprite->SetPosition(this->GetPosition);
+			pBoomerangSprite->SetVelocity(0, 12);
+			pBoomerangSprite->SetBoundsAction(BA_BOUNCE);
+			break;
+		default:
+			break;
+		}
+		break;
+	case WT_BOW:
+		Sprite* pArrowSprite;
+		switch (GetDirection())
+		{
+		case FD_LEFT:
+			pArrowSprite = new Sprite(g_pArrowLeftBitmap);
+			pArrowSprite->SetNumFrames(9);
+			pArrowSprite->SetBoundsAction(BA_DIE);
+			pArrowSprite->SetPosition(this->GetPosition);
+			pArrowSprite->SetVelocity(-16, 0);
+			break;
+		case FD_RIGHT:
+			pArrowSprite = new Sprite(g_pArrowRightBitmap);
+			pArrowSprite->SetNumFrames(9);
+			pArrowSprite->SetBoundsAction(BA_DIE);
+			pArrowSprite->SetPosition(this->GetPosition);
+			pArrowSprite->SetVelocity(16, 0);
+			break;
+		case FD_UP:
+			pArrowSprite = new Sprite(g_pArrowUpBitmap);
+			pArrowSprite->SetNumFrames(9);
+			pArrowSprite->SetBoundsAction(BA_DIE);
+			pArrowSprite->SetPosition(this->GetPosition);
+			pArrowSprite->SetVelocity(0, -16);
+			break;
+		case FD_DOWN:
+			pArrowSprite = new Sprite(g_pArrowDownBitmap);
+			pArrowSprite->SetNumFrames(9);
+			pArrowSprite->SetBoundsAction(BA_DIE);
+			pArrowSprite->SetPosition(this->GetPosition);
+			pArrowSprite->SetVelocity(0, 16);
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void Hero::IncreaseHealthMeter()

@@ -16,15 +16,24 @@ Modifications:
 Date                Comment
 ----    ------------------------------------------------
 31Aug16 Added comments for doxygen documentation generation
+11Sep16 Added the FACINGDIRECTION typedef and GetDirection()
+11Sep16 Moved the GetWeapon() function from a public method to a private method
 ************************************************************************/
 #pragma once
 #include "Sprite.h"
 
 /// WEAPONTYPE is used to keep track of which weapon the hero has
 typedef WORD		WEAPONTYPE;
-const WEAPONTYPE	WT_SWORD = 0,
-					WT_BOOMERANG = 1,
-					WT_BOW = 2;
+const WEAPONTYPE	WT_SWORD		= 0,
+					WT_BOOMERANG	= 1,
+					WT_BOW			= 2;
+
+/// FACINGDIRECTION is used to know which direction the hero is facing so the correct animation plays.
+typedef WORD			FACINGDIRECTION;
+const FACINGDIRECTION	FD_LEFT		= 0,
+						FD_RIGHT	= 1,
+						FD_UP		= 2,
+						FD_DOWN		= 3;
 
 /*! \brief Extends the Sprite class to give the hero extra variables and methods special to it.
  *
@@ -43,32 +52,31 @@ public:
 	/// Empty
 	~Hero();
 
-	/// Changes the Sprite's velocity to move left on the screen
+	/// Changes the Sprite's velocity to move left on the screen and associated bitmap
 	void MoveLeft();
 
-	/// Changes the Sprite's velocity to move right on the screen
+	/// Changes the Sprite's velocity to move right on the screen and associated bitmap
 	void MoveRight();
 
-	/// Changes the Sprite's velocity to move up on the screen
+	/// Changes the Sprite's velocity to move up on the screen and associated bitmap
 	void MoveUp();
 
-	/// Changes the Sprite's velocity to move down on the screen
-	void MoveDown();
+	/// Changes the Sprite's velocity to move down on the screen and associated bitmap
+ 	void MoveDown();
 
 	/// Sets the weapon type that the hero will use in game play
 	/// @param wtWeapon The weapon type to be stored
 	/// @see WEAPONTYPE
 	void SetWeapon(WEAPONTYPE);
 
-	/// Returns which weapon the hero is currently holding
-	/// @see WEAPONTYPE
-	WEAPONTYPE GetWeapon() const;
+
 
 	/// Sets the health of the hero
 	/// @param iHealth The health you want the hero to have but can't be more than the m_iHealthMeter
 	void SetHealth(int);
 
 	/// Returns how much health the sprite has left before dying
+	/// @return m_iHealth as an integer
 	int GetHealth() const;
 
 	/// Will change the sprites animation to show weapon usage and will also show it has the hitter in collision detection.  
@@ -82,5 +90,16 @@ private:
 	int m_iHealth; ///< The health of the Hero sprite.  Will allow it to collide more before dying
 	int m_iHealthMeter; ///< The health meter will show the player how much health the Hero sprite has
 	WEAPONTYPE m_wtWeapon; ///< Used to store which weapon the Hero sprite has 
+	FACINGDIRECTION m_fdDirection; ///< Used to store which direction the Hero is facing
+
+	/// Returns which weapon the hero is currently holding
+	/// @return m_wtWeapon as a WORD
+	/// @see WEAPONTYPE
+	WEAPONTYPE GetWeapon() const;
+
+	/// Returns the direction in which the hero is facing
+	/// @return m_fdDirection as a WORD
+	/// @see FACINGDIRECTION
+	FACINGDIRECTION GetDirection() const;
 };
 
