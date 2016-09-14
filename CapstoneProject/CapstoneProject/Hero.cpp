@@ -25,6 +25,7 @@ Date                Comment
 ----    ------------------------------------------------
 10Sep16	Made global pointers for all the bitmaps the hero class will use
 11Sep16 Created a bunch of case statements used to change animation dependent on the direction and weapon.
+12Sep16	GetWeapon() now returns address of a weapon sprite instead of being void
 ************************************************************************/
 #include "Hero.h"
 
@@ -218,14 +219,15 @@ int Hero::GetHealth() const
 Sprite* Hero::UseWeapon()
 {
 
-	switch (GetWeapon())
+	switch (m_wtWeapon)
 	{
 	case WT_SWORD:
+	{
 		//Get direction hero is facing
 		//Set new bitmap and frames for that direction
 		//have animation run only once
 		//after animation completes, go back to last bitmap
-		Sprite *pSwordSwingSprite;
+		Sprite *pSwordSwingSprite = NULL;
 		switch (GetDirection())
 		{
 		case FD_LEFT:
@@ -234,7 +236,8 @@ Sprite* Hero::UseWeapon()
 			this->SetVelocity(0, 0);
 			pSwordSwingSprite = new Sprite(g_pSwordSwingLeftBitmap);
 			pSwordSwingSprite->SetNumFrames(12);
-			pSwordSwingSprite->SetPosition(this->GetPosition);
+			pSwordSwingSprite->SetPosition(m_rcPosition);
+			return pSwordSwingSprite;
 			break;
 		case FD_RIGHT:
 			this->SetBitmap(g_pHeroSwordRightBitmap);
@@ -242,7 +245,8 @@ Sprite* Hero::UseWeapon()
 			this->SetVelocity(0, 0);
 			pSwordSwingSprite = new Sprite(g_pSwordSwingRightBitmap);
 			pSwordSwingSprite->SetNumFrames(12);
-			pSwordSwingSprite->SetPosition(this->GetPosition);
+			pSwordSwingSprite->SetPosition(m_rcPosition);
+			return pSwordSwingSprite;
 			break;
 		case FD_UP:
 			this->SetBitmap(g_pHeroSwordUpBitmap);
@@ -250,7 +254,8 @@ Sprite* Hero::UseWeapon()
 			this->SetVelocity(0, 0);
 			pSwordSwingSprite = new Sprite(g_pSwordSwingUpBitmap);
 			pSwordSwingSprite->SetNumFrames(12);
-			pSwordSwingSprite->SetPosition(this->GetPosition);
+			pSwordSwingSprite->SetPosition(m_rcPosition);
+			return pSwordSwingSprite;
 			break;
 		case FD_DOWN:
 			this->SetBitmap(g_pHeroSwordDownBitmap);
@@ -258,13 +263,16 @@ Sprite* Hero::UseWeapon()
 			this->SetVelocity(0, 0);
 			pSwordSwingSprite = new Sprite(g_pSwordSwingDownBitmap);
 			pSwordSwingSprite->SetNumFrames(12);
-			pSwordSwingSprite->SetPosition(this->GetPosition);
+			pSwordSwingSprite->SetPosition(m_rcPosition);
+			return pSwordSwingSprite;
 			break;
 		default:
 			break;
 		}
 		break;
+	}
 	case WT_BOOMERANG:
+	{
 		// Need to setup a bounding area around the hero that moves with hero
 		Sprite *pBoomerangSprite = new Sprite(g_pBoomerangBitmap);
 		pBoomerangSprite->SetNumFrames(4);
@@ -272,38 +280,44 @@ Sprite* Hero::UseWeapon()
 		switch (GetDirection())
 		{
 		case FD_LEFT:
-			pBoomerangSprite->SetPosition(this->GetPosition);
+			pBoomerangSprite->SetPosition(m_rcPosition);
 			pBoomerangSprite->SetVelocity(-12, 0);
 			pBoomerangSprite->SetBoundsAction(BA_BOUNCE);
+			return pBoomerangSprite;
 			break;
 		case FD_RIGHT:
-			pBoomerangSprite->SetPosition(this->GetPosition);
+			pBoomerangSprite->SetPosition(m_rcPosition);
 			pBoomerangSprite->SetVelocity(12, 0);
 			pBoomerangSprite->SetBoundsAction(BA_BOUNCE);
+			return pBoomerangSprite;
 			break;
 		case FD_UP:
-			pBoomerangSprite->SetPosition(this->GetPosition);
+			pBoomerangSprite->SetPosition(m_rcPosition);
 			pBoomerangSprite->SetVelocity(0, -12);
 			pBoomerangSprite->SetBoundsAction(BA_BOUNCE);
+			return pBoomerangSprite;
 			break;
 		case FD_DOWN:
-			pBoomerangSprite->SetPosition(this->GetPosition);
+			pBoomerangSprite->SetPosition(m_rcPosition);
 			pBoomerangSprite->SetVelocity(0, 12);
 			pBoomerangSprite->SetBoundsAction(BA_BOUNCE);
+			return pBoomerangSprite;
 			break;
 		default:
 			break;
 		}
 		break;
+	}
 	case WT_BOW:
-		Sprite* pArrowSprite;
+	{
+		Sprite* pArrowSprite = NULL;
 		switch (GetDirection())
 		{
 		case FD_LEFT:
 			pArrowSprite = new Sprite(g_pArrowLeftBitmap);
 			pArrowSprite->SetNumFrames(9);
 			pArrowSprite->SetBoundsAction(BA_DIE);
-			pArrowSprite->SetPosition(this->GetPosition);
+			pArrowSprite->SetPosition(m_rcPosition);
 			pArrowSprite->SetVelocity(-16, 0);
 			return pArrowSprite;
 			break;
@@ -311,27 +325,31 @@ Sprite* Hero::UseWeapon()
 			pArrowSprite = new Sprite(g_pArrowRightBitmap);
 			pArrowSprite->SetNumFrames(9);
 			pArrowSprite->SetBoundsAction(BA_DIE);
-			pArrowSprite->SetPosition(this->GetPosition);
+			pArrowSprite->SetPosition(m_rcPosition);
 			pArrowSprite->SetVelocity(16, 0);
+			return pArrowSprite;
 			break;
 		case FD_UP:
 			pArrowSprite = new Sprite(g_pArrowUpBitmap);
 			pArrowSprite->SetNumFrames(9);
 			pArrowSprite->SetBoundsAction(BA_DIE);
-			pArrowSprite->SetPosition(this->GetPosition);
+			pArrowSprite->SetPosition(m_rcPosition);
 			pArrowSprite->SetVelocity(0, -16);
+			return pArrowSprite;
 			break;
 		case FD_DOWN:
 			pArrowSprite = new Sprite(g_pArrowDownBitmap);
 			pArrowSprite->SetNumFrames(9);
 			pArrowSprite->SetBoundsAction(BA_DIE);
-			pArrowSprite->SetPosition(this->GetPosition);
+			pArrowSprite->SetPosition(m_rcPosition);
 			pArrowSprite->SetVelocity(0, 16);
+			return pArrowSprite;
 			break;
 		default:
 			break;
 		}
 		break;
+	}
 	default:
 		break;
 	}

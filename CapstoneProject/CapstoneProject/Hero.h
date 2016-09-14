@@ -18,6 +18,7 @@ Date                Comment
 31Aug16 Added comments for doxygen documentation generation
 11Sep16 Added the FACINGDIRECTION typedef and GetDirection()
 11Sep16 Moved the GetWeapon() function from a public method to a private method
+12Sep16	GetWeapon() now returns address of a weapon sprite instead of being void
 ************************************************************************/
 #pragma once
 #include "Sprite.h"
@@ -81,7 +82,7 @@ public:
 
 	/// Will change the sprites animation to show weapon usage and will also show it has the hitter in collision detection.  
 	/// This will make sure that the hero sprite doesn't lose health or die while weapon is in use.  
-	void UseWeapon();
+	Sprite *UseWeapon();
 
 	/// Used to increase the health meter and refill the Sprite to full health.  
 	void IncreaseHealthMeter();
