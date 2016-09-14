@@ -28,6 +28,7 @@ Date                Comment
 12Sep16	GetWeapon() now returns address of a weapon sprite instead of being void
 ************************************************************************/
 #include "Hero.h"
+#include "Resource.h"
 
 /// All the bitmaps that are used by the Hero
 ///Hero himself
@@ -68,6 +69,39 @@ Bitmap *g_pSwordSwingDownBitmap;
 
 Hero::Hero(Bitmap* pBitmap, RECT& rcBounds,	BOUNDSACTION baBoundsAction = BA_STOP) : Sprite(pBitmap, rcBounds, baBoundsAction), m_iHealth(3), m_iHealthMeter(3)
 {
+	//Initialize Hero bitmaps
+	g_pHeroWalkingLeftBitmap = new Bitmap(NULL, IDB_BITMAP49, NULL);
+	g_pHeroWalkingRightBitmap = new Bitmap(NULL, IDB_BITMAP50, NULL);
+	g_pHeroWalkingUpBitmap = new Bitmap(NULL, IDB_BITMAP51, NULL);
+	g_pHeroWalkingDownBitmap = new Bitmap(NULL, IDB_BITMAP52, NULL);
+	g_pHeroDamageLeftBitmap = new Bitmap(NULL, IDB_BITMAP53, NULL);
+	g_pHeroDamageRightBitmap = new Bitmap(NULL, IDB_BITMAP54, NULL);
+	g_pHeroDamageUpBitmap = new Bitmap(NULL, IDB_BITMAP55, NULL);
+	g_pHeroDamageDownBitmap = new Bitmap(NULL, IDB_BITMAP56, NULL);
+	g_pHeroDyingBitmap = new Bitmap(NULL, IDB_BITMAP57, NULL);
+	g_pHeroWinBitmap = new Bitmap(NULL, IDB_BITMAP58, NULL);
+	g_pHeroBoomerangLeftBitmap = new Bitmap(NULL, IDB_BITMAP59, NULL);
+	g_pHeroBoomerangRightBitmap = new Bitmap(NULL, IDB_BITMAP60, NULL);
+	g_pHeroBoomerangDownBitmap = new Bitmap(NULL, IDB_BITMAP61, NULL);
+	g_pHeroBoomerangUpBitmap = new Bitmap(NULL, IDB_BITMAP79, NULL);
+	g_pHeroBowLeftBitmap = new Bitmap(NULL, IDB_BITMAP62, NULL);
+	g_pHeroBowRightBitmap = new Bitmap(NULL, IDB_BITMAP63, NULL);
+	g_pHeroBowUpBitmap = new Bitmap(NULL, IDB_BITMAP64, NULL);
+	g_pHeroBowDownBitmap = new Bitmap(NULL, IDB_BITMAP65, NULL);
+	g_pHeroSwordLeftBitmap = new Bitmap(NULL, IDB_BITMAP66, NULL);
+	g_pHeroSwordRightBitmap = new Bitmap(NULL, IDB_BITMAP67, NULL);
+	g_pHeroSwordUpBitmap = new Bitmap(NULL, IDB_BITMAP68, NULL);
+	g_pHeroSwordDownBitmap = new Bitmap(NULL, IDB_BITMAP69, NULL);
+	//Initiazlize Weapon bitmaps
+	g_pArrowLeftBitmap = new Bitmap(NULL, IDB_BITMAP70, NULL);
+	g_pArrowRightBitmap = new Bitmap(NULL, IDB_BITMAP71, NULL);
+	g_pArrowUpBitmap = new Bitmap(NULL, IDB_BITMAP72, NULL);
+	g_pArrowDownBitmap = new Bitmap(NULL, IDB_BITMAP73, NULL);
+	g_pBoomerangBitmap = new Bitmap(NULL, IDB_BITMAP74, NULL);
+	g_pSwordSwingLeftBitmap = new Bitmap(NULL, IDB_BITMAP75, NULL);
+	g_pSwordSwingRightBitmap = new Bitmap(NULL, IDB_BITMAP76, NULL);
+	g_pSwordSwingUpBitmap = new Bitmap(NULL, IDB_BITMAP77, NULL);
+	g_pSwordSwingDownBitmap = new Bitmap(NULL, IDB_BITMAP78, NULL);
 }
 
 
