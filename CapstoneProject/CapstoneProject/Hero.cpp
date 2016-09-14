@@ -215,7 +215,7 @@ int Hero::GetHealth() const
 	return m_iHealth;
 }
 
-void Hero::UseWeapon()
+Sprite* Hero::UseWeapon()
 {
 
 	switch (GetWeapon())
@@ -305,6 +305,7 @@ void Hero::UseWeapon()
 			pArrowSprite->SetBoundsAction(BA_DIE);
 			pArrowSprite->SetPosition(this->GetPosition);
 			pArrowSprite->SetVelocity(-16, 0);
+			return pArrowSprite;
 			break;
 		case FD_RIGHT:
 			pArrowSprite = new Sprite(g_pArrowRightBitmap);
