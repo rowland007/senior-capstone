@@ -700,7 +700,7 @@ void HandleKeys(WPARAM wParam)
 		}
 		if (isDungeon)
 		{
-			//g_pHero->UseWeapon();
+			//g_pGame->AddDungeonSprite(g_pHero->UseWeapon());
 			/////////////////////////////////////////////////////////////
 			isLoading = true; ///< Remove later...just to get back to quit
 			isDungeon = false;
