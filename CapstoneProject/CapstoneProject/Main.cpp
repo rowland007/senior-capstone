@@ -198,8 +198,8 @@ void GameStart(HWND hWindow)
 
 	//This sets the "level" to the loading screen
 	isLoading = false;
-	isConstruct = false;
-	isDungeon = true;
+	isConstruct = true;
+	isDungeon = false;
 
 	//Create 3 little rectangles to be used for the sprite that is the menu item selector
 	//Will be used to determine which rectangle the sprite is within  
@@ -557,6 +557,12 @@ void HandleKeys(WPARAM wParam)
 
 	switch (wParam)
 	{
+	case VK_END:
+		//Change screen resolution back to normal.
+		ChangeDisplaySettings(NULL, 0);
+		//Selector should be on QUIT. 
+		PostQuitMessage(0);
+		break;
 	case VK_LEFT:
 		if (isTest)
 		{
@@ -701,15 +707,10 @@ void HandleKeys(WPARAM wParam)
 		if (isDungeon)
 		{
 			//g_pGame->AddDungeonSprite(g_pHero->UseWeapon());
-			/////////////////////////////////////////////////////////////
-			isLoading = true; ///< Remove later...just to get back to quit
-			isDungeon = false;
 		}
 		if (isConstruct)
 		{
 			//Get Hero's location, if touching a weapon, this will select weapon
-			isLoading = true; ///< Remove later...just to get back to quit
-			isConstruct = false;
 		}
 		break;
 	case VK_RETURN:
@@ -764,8 +765,6 @@ void HandleKeys(WPARAM wParam)
 		if (isConstruct)
 		{
 			//Get Hero's location, if touching a weapon, this will select weapon
-			isLoading = true; ///< Remove later...just to get back to quit
-			isConstruct = false;
 		}
 		break;
 	default:
