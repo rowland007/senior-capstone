@@ -441,9 +441,11 @@ void GameEngine::UpdateLoadingSprites()
     saSpriteAction = (*siSprite)->Update();
 
     // Handle the SA_ADDSPRITE sprite action
-    if (saSpriteAction & SA_ADDSPRITE)
-      // Allow the sprite to add its sprite
-      //AddSprite((*siSprite)->AddSprite());
+	if (saSpriteAction & SA_ADDSPRITE)
+	{
+		// Allow the sprite to add its sprite
+		//AddSprite((*siSprite)->AddSprite());
+	}
 
     // Handle the SA_KILL sprite action
     if (saSpriteAction & SA_KILL)
@@ -485,21 +487,23 @@ void GameEngine::UpdateConstructSprites()
 
 		// Handle the SA_ADDSPRITE sprite action
 		if (saSpriteAction & SA_ADDSPRITE)
+		{
 			// Allow the sprite to add its sprite
 			//AddSprite((*siSprite)->AddSprite());
+		}
 
-			// Handle the SA_KILL sprite action
-			if (saSpriteAction & SA_KILL)
-			{
-				// Notify the game that the sprite is dying
-				SpriteDying(*siSprite);
+		// Handle the SA_KILL sprite action
+		if (saSpriteAction & SA_KILL)
+		{
+			// Notify the game that the sprite is dying
+			SpriteDying(*siSprite);
 
-				// Kill the sprite
-				delete (*siSprite);
-				m_vConstructSprites.erase(siSprite);
-				siSprite--;
-				continue;
-			}
+			// Kill the sprite
+			delete (*siSprite);
+			m_vConstructSprites.erase(siSprite);
+			siSprite--;
+			continue;
+		}
 
 		// See if the sprite collided with any others
 		if (CheckSpriteCollision(*siSprite))
@@ -528,21 +532,23 @@ void GameEngine::UpdateDungeonSprites()
 
 		// Handle the SA_ADDSPRITE sprite action
 		if (saSpriteAction & SA_ADDSPRITE)
+		{
 			// Allow the sprite to add its sprite
-			//AddSprite((*siSprite)->AddSprite());
+			//AddDungeonSprite((*siSprite)->AddSprite());
+		}
 
-			// Handle the SA_KILL sprite action
-			if (saSpriteAction & SA_KILL)
-			{
-				// Notify the game that the sprite is dying
-				SpriteDying(*siSprite);
+		// Handle the SA_KILL sprite action
+		if (saSpriteAction & SA_KILL)
+		{
+			// Notify the game that the sprite is dying
+			SpriteDying(*siSprite);
 
-				// Kill the sprite
-				delete (*siSprite);
-				m_vDungeonSprites.erase(siSprite);
-				siSprite--;
-				continue;
-			}
+			// Kill the sprite
+			delete (*siSprite);
+			m_vDungeonSprites.erase(siSprite);
+			siSprite--;
+			continue;
+		}
 
 		// See if the sprite collided with any others
 		if (CheckSpriteCollision(*siSprite))
