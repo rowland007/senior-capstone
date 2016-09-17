@@ -17,9 +17,11 @@ Modifications:
 Date                Comment
 ----    ------------------------------------------------
 31Aug16 Added comments for doxygen documentation generation
+16Sep16 Added params to MoveRandomly and MoveRunAway methods 
 ************************************************************************/
 #pragma once
 #include "Sprite.h"
+#include "Hero.h"
 
 /*! \brief Extends the Sprite class to give enemies extra variables and methods special to them.
  *
@@ -46,13 +48,16 @@ public:
 	int GetHealth() const;
 
 	/// Will have the sprite move randomly on the screen
+	/// @param
+	/// @param
 	void MoveRandomly(int, int);
 
 	/// Will have the sprite chase the Hero sprite
 	void MoveChase();
 
 	/// Will have the sprite avoid the Hero sprite 
-	void MoveRunAway();
+	/// @param
+	void MoveRunAway(Hero*);
 
 private:
 	int m_iHealth; ///< Stores the health of the enemy sprite

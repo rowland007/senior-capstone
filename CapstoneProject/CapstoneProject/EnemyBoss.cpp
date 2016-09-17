@@ -15,6 +15,7 @@ Known bugs/missing features:
 Modifications:
 Date                Comment
 ----    ------------------------------------------------
+16Sep16	Completed the MoveRunAway function.
 ************************************************************************/
 #include "EnemyBoss.h"
 #include <stdlib.h>
@@ -49,6 +50,49 @@ void EnemyBoss::MoveChase()
 {
 }
 
-void EnemyBoss::MoveRunAway()
+void EnemyBoss::MoveRunAway(Hero *pHero)
 {
+
+	// Obtain the enemy's position
+	RECT rcEnemy, rcHero;
+	rcEnemy = this->GetPosition();
+
+	int iXCollision = 500, iYCollision = 400, iXYCollision = 900;
+	
+	// Get the hero's position
+	rcHero = pHero->GetPosition();
+
+	// Calculate the minimum XY collision distance
+	int iXCollisionDist = (rcEnemy.left + (rcEnemy.right - rcEnemy.left) / 2) -	(rcHero.left + (rcHero.right - rcHero.left) / 2);
+	int iYCollisionDist = (rcEnemy.top + (rcEnemy.bottom - rcEnemy.top) / 2) - (rcHero.top + (rcHero.bottom - rcHero.top) / 2);
+	if ((abs(iXCollisionDist) < abs(iXCollision)) || (abs(iYCollisionDist) < abs(iYCollision)))
+		if ((abs(iXCollisionDist) + abs(iYCollisionDist)) < iXYCollision)
+		{
+			iXYCollision = abs(iXCollision) + abs(iYCollision);
+			iXCollision = iXCollisionDist;
+			iYCollision = iYCollisionDist;
+		}
+
+	// Move to dodge the hero, if necessary
+	POINT ptVelocity;
+	ptVelocity = this->GetVelocity();
+	if (abs(iXCollision) < 60)
+	{
+		// Adjust the X velocity
+		if (iXCollision < 0)
+			ptVelocity.x = max(ptVelocity.x - 1, -8);
+		else
+			ptVelocity.x = min(ptVelocity.x + 1, 8);
+	}
+	if (abs(iYCollision) < 60)
+	{
+		// Adjust the Y velocity
+		if (iYCollision < 0)
+			ptVelocity.y = max(ptVelocity.y - 1, -8);
+		else
+			ptVelocity.y = min(ptVelocity.y + 1, 8);
+	}
+
+	// Update the enemy to the new position
+	this->SetVelocity(ptVelocity);
 }
