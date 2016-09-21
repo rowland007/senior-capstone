@@ -280,10 +280,14 @@ POINT Sprite::GetVelocity()
 
 void Sprite::SetVelocity(int x, int y)
 {
+	m_ptVelocity.x = x;
+	m_ptVelocity.y = y;
 }
 
 void Sprite::SetVelocity(POINT ptVelocity)
 {
+	m_ptVelocity.x = ptVelocity.x;
+	m_ptVelocity.y = ptVelocity.y;
 }
 
 bool Sprite::GetZorder() const
