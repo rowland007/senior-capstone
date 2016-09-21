@@ -107,6 +107,7 @@ Bitmap* g_pDungeonSkullBitmap;
 Bitmap* g_pDungeonLtGreenSkullBitmap;
 //Hero
 Bitmap* g_pHeroBitmap;
+Bitmap* g_pHeroHealthBitmap;
 //Enemies
 Bitmap* g_pEnemyBigPigBitmap;
 Bitmap* g_pEnemyExplosionBitmap;
@@ -427,6 +428,8 @@ void GameStart(HWND hWindow)
 		g_pHero = new Hero(g_pHeroBitmap, g_rcEnemeyBounds, BA_STOP);
 		g_pHero->SetPosition(g_pGame->GetWidth() / 2, g_pGame->GetHeight() / 2);
 		g_pGame->AddConstructSprite(g_pHero);
+		g_pHeroHealthBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP80, g_hInstance);
+
 	}
 }
 
@@ -506,6 +509,10 @@ void GamePaint(HDC hDC)
 
 		g_pGame->DrawConstructSprites(hDC);
 
+		//Draw Hero's health over everything
+		for (int x = g_pGame->GetWidth() - 12, counter = 0; counter < g_pHero->GetHealth(); counter++, x - 10)
+			g_pHeroHealthBitmap->Draw(hDC, x, 10);
+
 	}
 	if (isDungeon)
 	{
@@ -517,6 +524,10 @@ void GamePaint(HDC hDC)
 				g_pDungeonFloor->Draw(hDC, x, y);
 
 		g_pGame->DrawDungeonSprites(hDC);
+
+		//Draw Hero's health over everything
+		for (int x = g_pGame->GetWidth() - 12, counter = 0; counter < g_pHero->GetHealth(); counter++, x - 10)
+			g_pHeroHealthBitmap->Draw(hDC, x, 10);
 	}
 }
 
@@ -724,6 +735,9 @@ void HandleKeys(WPARAM wParam)
 				{
 					//This will enable Test mode.  
 					isTest = true;
+					//In normal game play the hero sprite will be added by the level
+					//In debug mode the sprite will never get added so will be by debug
+					g_pGame->AddDungeonSprite(g_pHero);
 				}
 				if (selRC.left == g_rcMiddle.left)
 				{
