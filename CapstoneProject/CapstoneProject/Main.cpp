@@ -566,11 +566,66 @@ void HandleKeys(WPARAM wParam)
 
 	switch (wParam)
 	{
+	case VK_NEXT:
+		if (isTest)
+		{
+			if (isLoading)
+			{
+				isConstruct = true;
+				isDungeon = false;
+				isLoading = false;
+				break;
+			}
+			if (isConstruct)
+			{
+				isDungeon = true;
+				isLoading = false;
+				isConstruct = false;
+				break;
+			}
+			if (isDungeon)
+			{
+				isLoading = true;
+				isConstruct = false;
+				isDungeon = false;
+				break;
+			}
+		}
+		break;
+	case VK_PRIOR:
+		if (isTest)
+		{
+			if (isLoading)
+			{
+				isDungeon = true;
+				isConstruct = false;
+				isLoading = false;
+				break;
+			}
+			if (isConstruct)
+			{
+				isLoading = true;
+				isDungeon = false;
+				isConstruct = false;
+				break;
+			}
+			if (isDungeon)
+			{
+				isConstruct = true;
+				isLoading = false;
+				isDungeon = false;
+				break;
+			}
+		}
+		break;
 	case VK_END:
-		//Change screen resolution back to normal.
-		ChangeDisplaySettings(NULL, 0);
-		//Selector should be on QUIT. 
-		PostQuitMessage(0);
+		if (isTest)
+		{
+			//Change screen resolution back to normal.
+			ChangeDisplaySettings(NULL, 0);
+			//Selector should be on QUIT. 
+			PostQuitMessage(0);
+		}
 		break;
 	case VK_LEFT:
 		if (isTest)
@@ -824,7 +879,11 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 			pSpriteHitter->SetVelocity(-pSpriteHitter->GetVelocity().x, -pSpriteHitter->GetVelocity().y);
 			//if hero's health is more than 1 subtract 1 but if hero's health is 1 then kill the sprite.
 			g_pHero->GetHealth() > 1 ? g_pHero->SetHealth(g_pHero->GetHealth() - 1) : pSpriteHittee->Kill(), g_bGameOver = true;
+			return true;
 		}
+
+		//@TODO:
+		/**************** Needs work
 		//Check to see if the boomerang has hit an enemy
 		if (pHitter == g_pBoomerangBitmap && pHittee == g_pEnemyTenticalBitmap)
 		{
@@ -882,9 +941,8 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 				pSprite->SetPosition(pSpriteHittee->GetPosition());
 				g_pGame->AddDungeonSprite(pSprite);
 			}
-		}
-	}
-
+		}*********************************/
+	}	
   	return false;
 }
 
