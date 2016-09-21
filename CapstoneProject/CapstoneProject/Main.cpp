@@ -197,8 +197,8 @@ void GameStart(HWND hWindow)
   	SelectObject(g_hOffscreenDC, g_hOffscreenBitmap);
 
 	//This sets the "level" to the loading screen
-	isLoading = false;
-	isConstruct = true;
+	isLoading = true;
+	isConstruct = false;
 	isDungeon = false;
 
 	//Create 3 little rectangles to be used for the sprite that is the menu item selector
@@ -420,6 +420,13 @@ void GameStart(HWND hWindow)
 		g_pGame->AddDungeonSprite(g_pEnemyMonkeyRightSprite[x]);
 		g_pGame->AddDungeonSprite(g_pEnemyTenticalSprite[x]);
 		g_pGame->AddDungeonSprite(g_pEnemyTenticalDieSprite[x]);
+
+		//Hero
+		g_pHeroBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP58, g_hInstance);
+		g_pHero = new Hero(g_pHeroBitmap, g_rcEnemeyBounds, BA_STOP);
+		g_pHero->SetPosition(g_pGame->GetWidth() / 2, g_pGame->GetHeight() / 2);
+		g_pGame->AddConstructSprite(g_pHero);
+		g_pGame->AddDungeonSprite(g_pHero);
 	}
 }
 
@@ -502,6 +509,8 @@ void GamePaint(HDC hDC)
 	}
 	if (isDungeon)
 	{
+		g_pDialogBox->Draw(hDC, 250, 575 - g_pDialogBox->GetHeight());
+		TextOut(hDC, 260, (575 - g_pDialogBox->GetHeight()) + 28, TEXT("Destory all the enemies!!"), 25);
 		//Tile the floor with the floor bitmap
 		for (int y = 0; y < (580 - g_pDialogBox->GetHeight()) - g_pDungeonFloor->GetHeight(); y += g_pDungeonFloor->GetHeight())
 			for (int x = 0; x < g_pGame->GetWidth(); x += g_pDungeonFloor->GetWidth())
@@ -772,9 +781,10 @@ void HandleKeys(WPARAM wParam)
 	}
 	ReleaseDC(hWindow, hDC);
 }
+
 bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 {
-  	// See if a player missile and an alien have collided
+  	// See if an enemy and hero have collided
   	Bitmap* pHitter = pSpriteHitter->GetBitmap();
   	Bitmap* pHittee = pSpriteHittee->GetBitmap();
 
