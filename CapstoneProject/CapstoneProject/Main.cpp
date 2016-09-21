@@ -31,6 +31,8 @@ Date                Comment
 25Aug16 Added Start/Settings/Quit text and SelectorSprite
 4Sep16	Added several bitmaps/sprits to build Construct level.
 20Sep16 Loading enemy sprites that were hidden into the vector was causing errors. Commented them out for now to continue on with game.
+21Sep16 Draw hero's health indicators to screen
+21Sep16 New debug modes: Page Up/Down will cycle through levels
 ************************************************************************/
 #include <Windows.h>
 #include <Wingdi.h>
@@ -984,8 +986,6 @@ void NewGame()
 	}
   	else
   	{
-    	// Create 
-    	// Play the background music
-    	//g_pGame->PlayMIDISong(TEXT(""));
+    	
   	}
 }
