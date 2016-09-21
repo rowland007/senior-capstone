@@ -30,6 +30,7 @@ Date                Comment
 24Aug16	Added Construct.h and Dungeon.h
 25Aug16 Added Start/Settings/Quit text and SelectorSprite
 4Sep16	Added several bitmaps/sprits to build Construct level.
+20Sep16 Loading enemy sprites that were hidden into the vector was causing errors. Commented them out for now to continue on with game.
 ************************************************************************/
 #include <Windows.h>
 #include <Wingdi.h>
@@ -197,9 +198,9 @@ void GameStart(HWND hWindow)
   	SelectObject(g_hOffscreenDC, g_hOffscreenBitmap);
 
 	//This sets the "level" to the loading screen
-	isLoading = true;
+	isLoading = false;
 	isConstruct = false;
-	isDungeon = false;
+	isDungeon = true;
 
 	//Create 3 little rectangles to be used for the sprite that is the menu item selector
 	//Will be used to determine which rectangle the sprite is within  
@@ -385,7 +386,7 @@ void GameStart(HWND hWindow)
 	g_pGame->AddDungeonSprite(g_pEnemyBigPigSprite);
 	for (int x = 0; x < 5; x++)
 	{
-		g_pEnemyExplosionSprite[x] = new EnemyBoss(g_pEnemyExplosionBitmap, g_rcEnemeyBounds, BA_DIE);
+		/*g_pEnemyExplosionSprite[x] = new EnemyBoss(g_pEnemyExplosionBitmap, g_rcEnemeyBounds, BA_DIE);
 		g_pEnemyExplosionSprite[x]->SetNumFrames(9, true);
 		g_pEnemyExplosionSprite[x]->SetFrameDelay(0);
 		g_pEnemyExplosionSprite[x]->SetHidden(true);
@@ -404,22 +405,22 @@ void GameStart(HWND hWindow)
 		g_pEnemyMonkeyRightSprite[x] = new EnemyBoss(g_pEnemyMonkeyRightBitmap, g_rcEnemeyBounds, BA_DIE);
 		g_pEnemyMonkeyRightSprite[x]->SetNumFrames(2);
 		g_pEnemyMonkeyRightSprite[x]->SetFrameDelay(1);
-		g_pEnemyMonkeyRightSprite[x]->SetHidden(true);
+		g_pEnemyMonkeyRightSprite[x]->SetHidden(true);*/
 		g_pEnemyTenticalSprite[x] = new EnemyBoss(g_pEnemyTenticalBitmap, g_rcEnemeyBounds, BA_BOUNCE);
 		g_pEnemyTenticalSprite[x]->SetNumFrames(3);
 		g_pEnemyTenticalSprite[x]->SetFrameDelay(1);
 		g_pEnemyTenticalSprite[x]->MoveRandomly(800, 640 - (16 + g_pDungeonLowerWallBitmap->GetHeight() + g_pDialogBox->GetHeight()));
-		g_pEnemyTenticalDieSprite[x] = new EnemyBoss(g_pEnemyTenticalDieBitmap, g_rcEnemeyBounds, BA_BOUNCE);
-		g_pEnemyTenticalDieSprite[x]->SetNumFrames(3, true);
-		g_pEnemyTenticalDieSprite[x]->SetFrameDelay(1);
-		g_pEnemyTenticalDieSprite[x]->SetHidden(true);
-		g_pGame->AddDungeonSprite(g_pEnemyExplosionSprite[x]);
-		g_pGame->AddDungeonSprite(g_pEnemyMonkeyDownSprite[x]);
-		g_pGame->AddDungeonSprite(g_pEnemyMonkeyUpSprite[x]);
-		g_pGame->AddDungeonSprite(g_pEnemyMonkeyLeftSprite[x]);
-		g_pGame->AddDungeonSprite(g_pEnemyMonkeyRightSprite[x]);
+		//g_pEnemyTenticalDieSprite[x] = new EnemyBoss(g_pEnemyTenticalDieBitmap, g_rcEnemeyBounds, BA_BOUNCE);
+		//g_pEnemyTenticalDieSprite[x]->SetNumFrames(3, true);
+		//g_pEnemyTenticalDieSprite[x]->SetFrameDelay(1);
+		//g_pEnemyTenticalDieSprite[x]->SetHidden(true);
+		//g_pGame->AddDungeonSprite(g_pEnemyExplosionSprite[x]);
+		//g_pGame->AddDungeonSprite(g_pEnemyMonkeyDownSprite[x]);
+		//g_pGame->AddDungeonSprite(g_pEnemyMonkeyUpSprite[x]);
+		//g_pGame->AddDungeonSprite(g_pEnemyMonkeyLeftSprite[x]);
+		//g_pGame->AddDungeonSprite(g_pEnemyMonkeyRightSprite[x]);
 		g_pGame->AddDungeonSprite(g_pEnemyTenticalSprite[x]);
-		g_pGame->AddDungeonSprite(g_pEnemyTenticalDieSprite[x]);
+		//g_pGame->AddDungeonSprite(g_pEnemyTenticalDieSprite[x]);
 
 		//Hero
 		g_pHeroBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP58, g_hInstance);
