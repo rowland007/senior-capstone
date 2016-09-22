@@ -57,7 +57,7 @@ public:
 
 	/// Will have the sprite avoid the Hero sprite 
 	/// @param
-	void MoveRunAway(Hero*);
+	void MoveRunAway(Sprite*);
 
 private:
 	int m_iHealth; ///< Stores the health of the enemy sprite
