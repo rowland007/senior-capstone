@@ -50,7 +50,7 @@ void EnemyBoss::MoveChase()
 {
 }
 
-void EnemyBoss::MoveRunAway(Hero *pHero)
+void EnemyBoss::MoveRunAway(Sprite *pAvoidSprite)
 {
 
 	// Obtain the enemy's position
@@ -60,7 +60,7 @@ void EnemyBoss::MoveRunAway(Hero *pHero)
 	int iXCollision = 500, iYCollision = 400, iXYCollision = 900;
 	
 	// Get the hero's position
-	rcHero = pHero->GetPosition();
+	rcHero = pAvoidSprite->GetPosition();
 
 	// Calculate the minimum XY collision distance
 	int iXCollisionDist = (rcEnemy.left + (rcEnemy.right - rcEnemy.left) / 2) -	(rcHero.left + (rcHero.right - rcHero.left) / 2);
