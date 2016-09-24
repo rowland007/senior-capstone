@@ -78,6 +78,10 @@ void GameCycle();
 /// @param wParam A message
 void HandleKeys(WPARAM);
 
+/// Handles when keyboard input is no longer happening it is passed to the GameEngine  
+/// @param wParam A message
+void ReleaseKeys(WPARAM);
+
 /// Tests two sprites to determine if they have collided and takes appropriate action.  
 /// @param pSpriteHitter A pointer to the sprite that hit the other sprite
 /// @param pSpriteHittee A pointer to the sprite that is getting hit by other sprite

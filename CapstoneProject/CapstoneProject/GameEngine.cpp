@@ -253,6 +253,10 @@ LRESULT GameEngine::HandleEvent(HWND hWindow, UINT msg, WPARAM wParam, LPARAM lP
 	case WM_KEYDOWN:
 		HandleKeys(wParam);
 		return 0;
+
+	case WM_KEYUP:
+		ReleaseKeys(wParam);
+		return 0;
 	}
 	return DefWindowProc(hWindow, msg, wParam, lParam);
 }
