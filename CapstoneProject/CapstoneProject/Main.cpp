@@ -373,66 +373,22 @@ void GameStart(HWND hWindow)
 	//Enemies
 	//Set the enemy bounds rectanlge so they're only in the playable area
 	SetRect(&g_rcEnemeyBounds, g_pDungeonLeftWallBitmap->GetWidth(), g_pDungeonUpperWallBitmap->GetHeight(), g_pGame->GetWidth() - g_pDungeonRightWallBitmap->GetWidth(), g_pGame->GetHeight() - (g_pDialogBox->GetHeight() + g_pDungeonLowerWallBitmap->GetHeight()));
-	g_pEnemyBigPigBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP41, g_hInstance);
-	g_pEnemyExplosionBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP42, g_hInstance);
-	g_pEnemyMonkeyDownBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP43, g_hInstance);
-	g_pEnemyMonkeyUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP44, g_hInstance);
-	g_pEnemyMonkeyLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP45, g_hInstance);
-	g_pEnemyMonkeyRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP46, g_hInstance);
 	g_pEnemyTenticalBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP47, g_hInstance);
-	g_pEnemyTenticalDieBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP48, g_hInstance);
-	g_pEnemyBigPigSprite = new EnemyBoss(g_pEnemyBigPigBitmap, g_rcEnemeyBounds, BA_BOUNCE);
-	g_pEnemyBigPigSprite->SetNumFrames(2);
-	g_pEnemyBigPigSprite->SetHidden(true);
-	g_pEnemyBigPigSprite->MoveChase();
-	//g_pEnemyBigPigSprite->SetFrameDelay(SomeVar); //need to come up with some kind of trigger that will set variable to change it
 	g_pGame->AddDungeonSprite(g_pEnemyBigPigSprite);
 	for (int x = 0; x < 5; x++)
 	{
-		/*g_pEnemyExplosionSprite[x] = new EnemyBoss(g_pEnemyExplosionBitmap, g_rcEnemeyBounds, BA_DIE);
-		g_pEnemyExplosionSprite[x]->SetNumFrames(9, true);
-		g_pEnemyExplosionSprite[x]->SetFrameDelay(0);
-		g_pEnemyExplosionSprite[x]->SetHidden(true);
-		g_pEnemyMonkeyDownSprite[x] = new EnemyBoss(g_pEnemyMonkeyDownBitmap, g_rcEnemeyBounds, BA_DIE);
-		g_pEnemyMonkeyDownSprite[x]->SetNumFrames(4);
-		g_pEnemyMonkeyDownSprite[x]->SetFrameDelay(1);
-		g_pEnemyMonkeyDownSprite[x]->SetHidden(true);
-		g_pEnemyMonkeyUpSprite[x] = new EnemyBoss(g_pEnemyMonkeyUpBitmap, g_rcEnemeyBounds, BA_DIE);
-		g_pEnemyMonkeyUpSprite[x]->SetNumFrames(2);
-		g_pEnemyMonkeyUpSprite[x]->SetFrameDelay(1);
-		g_pEnemyMonkeyUpSprite[x]->SetHidden(true);
-		g_pEnemyMonkeyLeftSprite[x] = new EnemyBoss(g_pEnemyMonkeyLeftBitmap, g_rcEnemeyBounds, BA_DIE);
-		g_pEnemyMonkeyLeftSprite[x]->SetNumFrames(2);
-		g_pEnemyMonkeyLeftSprite[x]->SetFrameDelay(1);
-		g_pEnemyMonkeyLeftSprite[x]->SetHidden(true);
-		g_pEnemyMonkeyRightSprite[x] = new EnemyBoss(g_pEnemyMonkeyRightBitmap, g_rcEnemeyBounds, BA_DIE);
-		g_pEnemyMonkeyRightSprite[x]->SetNumFrames(2);
-		g_pEnemyMonkeyRightSprite[x]->SetFrameDelay(1);
-		g_pEnemyMonkeyRightSprite[x]->SetHidden(true);*/
 		g_pEnemyTenticalSprite[x] = new EnemyBoss(g_pEnemyTenticalBitmap, g_rcEnemeyBounds, BA_BOUNCE);
 		g_pEnemyTenticalSprite[x]->SetNumFrames(3);
 		g_pEnemyTenticalSprite[x]->SetFrameDelay(1);
 		g_pEnemyTenticalSprite[x]->MoveRandomly(800, 640 - (16 + g_pDungeonLowerWallBitmap->GetHeight() + g_pDialogBox->GetHeight()));
-		//g_pEnemyTenticalDieSprite[x] = new EnemyBoss(g_pEnemyTenticalDieBitmap, g_rcEnemeyBounds, BA_BOUNCE);
-		//g_pEnemyTenticalDieSprite[x]->SetNumFrames(3, true);
-		//g_pEnemyTenticalDieSprite[x]->SetFrameDelay(1);
-		//g_pEnemyTenticalDieSprite[x]->SetHidden(true);
-		//g_pGame->AddDungeonSprite(g_pEnemyExplosionSprite[x]);
-		//g_pGame->AddDungeonSprite(g_pEnemyMonkeyDownSprite[x]);
-		//g_pGame->AddDungeonSprite(g_pEnemyMonkeyUpSprite[x]);
-		//g_pGame->AddDungeonSprite(g_pEnemyMonkeyLeftSprite[x]);
-		//g_pGame->AddDungeonSprite(g_pEnemyMonkeyRightSprite[x]);
 		g_pGame->AddDungeonSprite(g_pEnemyTenticalSprite[x]);
-		//g_pGame->AddDungeonSprite(g_pEnemyTenticalDieSprite[x]);
-
-		//Hero
-		g_pHeroBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP58, g_hInstance);
-		g_pHero = new Hero(g_pHeroBitmap, g_rcEnemeyBounds, BA_STOP);
-		g_pHero->SetPosition(g_pGame->GetWidth() / 2, g_pGame->GetHeight() / 2);
-		g_pGame->AddConstructSprite(g_pHero);
-		g_pHeroHealthBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP80, g_hInstance);
-
 	}
+	//Hero
+	g_pHeroBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP58, g_hInstance);
+	g_pHero = new Hero(g_pHeroBitmap, g_rcEnemeyBounds, BA_STOP);
+	g_pHero->SetPosition(g_pGame->GetWidth() / 2, g_pGame->GetHeight() / 2);
+	g_pGame->AddConstructSprite(g_pHero);
+	g_pHeroHealthBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP80, g_hInstance);
 }
 
 void GameEnd()
@@ -485,6 +441,7 @@ void GamePaint(HDC hDC)
 		g_pDialogBox->Draw(hDC, 250, 575 - g_pDialogBox->GetHeight());
 		if (isSettings)
 		{
+			TextOut(hDC, 260, (575 - g_pDialogBox->GetHeight()) + 10, TEXT("DEBUG MODE:"), 11);
 			TextOut(hDC, 275, 550, TEXT("ENABLED"), 7);
 			TextOut(hDC, 350, 550, TEXT("DISABLED"), 8);
 			TextOut (hDC, 450, 550, TEXT("BACK"), 4);
