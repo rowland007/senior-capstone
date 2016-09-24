@@ -529,9 +529,10 @@ void GamePaint(HDC hDC)
 		g_pGame->DrawConstructSprites(hDC);
 
 		//Draw Hero's health over everything
-		for (int x = g_pGame->GetWidth() - 12, counter = 0; counter < g_pHero->GetHealth(); counter++, x - 10)
+		for (int x = g_pGame->GetWidth() - 20, counter = 0; counter < g_pHero->GetHealth(); counter++, x -= 10)
+		{
 			g_pHeroHealthBitmap->Draw(hDC, x, 10);
-
+		}
 	}
 	if (isDungeon)
 	{
@@ -545,8 +546,10 @@ void GamePaint(HDC hDC)
 		g_pGame->DrawDungeonSprites(hDC);
 
 		//Draw Hero's health over everything
-		for (int x = g_pGame->GetWidth() - 12, counter = 0; counter < g_pHero->GetHealth(); counter++, x - 10)
+		for (int x = g_pGame->GetWidth() - 20, counter = 0; counter < g_pHero->GetHealth(); counter++, x -= 10)
+		{
 			g_pHeroHealthBitmap->Draw(hDC, x, 10);
+		}
 
 		if (isTest)
 		{
