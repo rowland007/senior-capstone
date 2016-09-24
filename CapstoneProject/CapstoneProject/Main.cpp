@@ -425,9 +425,9 @@ void GameStart(HWND hWindow)
 	g_pHeroBoomerangRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP60, g_hInstance);
 	g_pHeroBoomerangDownBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP61, g_hInstance);
 	g_pHeroBoomerangUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP79, g_hInstance);
-	g_pHeroBowLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP62, g_hInstance);
-	g_pHeroBowRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP63, g_hInstance);
-	g_pHeroBowUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP64, g_hInstance);
+	g_pHeroBowLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP63, g_hInstance);
+	g_pHeroBowRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP64, g_hInstance);
+	g_pHeroBowUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP62, g_hInstance);
 	g_pHeroBowDownBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP65, g_hInstance);
 	g_pHeroSwordLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP66, g_hInstance);
 	g_pHeroSwordRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP67, g_hInstance);
@@ -529,9 +529,10 @@ void GamePaint(HDC hDC)
 		g_pGame->DrawConstructSprites(hDC);
 
 		//Draw Hero's health over everything
-		for (int x = g_pGame->GetWidth() - 12, counter = 0; counter < g_pHero->GetHealth(); counter++, x - 10)
+		for (int x = g_pGame->GetWidth() - 20, counter = 0; counter < g_pHero->GetHealth(); counter++, x -= 10)
+		{
 			g_pHeroHealthBitmap->Draw(hDC, x, 10);
-
+		}
 	}
 	if (isDungeon)
 	{
@@ -545,8 +546,33 @@ void GamePaint(HDC hDC)
 		g_pGame->DrawDungeonSprites(hDC);
 
 		//Draw Hero's health over everything
-		for (int x = g_pGame->GetWidth() - 12, counter = 0; counter < g_pHero->GetHealth(); counter++, x - 10)
+		for (int x = g_pGame->GetWidth() - 20, counter = 0; counter < g_pHero->GetHealth(); counter++, x -= 10)
+		{
 			g_pHeroHealthBitmap->Draw(hDC, x, 10);
+		}
+
+		if (isTest)
+		{
+			int iLength[6];
+			TCHAR szBuffer1[10];
+			TCHAR szBuffer2[15];
+			TCHAR szBuffer3[15];
+			TCHAR szBuffer4[15];
+			TCHAR szBuffer5[15];
+			TCHAR szBuffer6[15];
+			iLength[0] = wsprintf(szBuffer1, "Hero: %i", g_pHero->GetHealth());
+			iLength[1] = wsprintf(szBuffer2, "Tentical 1: %i", g_pEnemyTenticalSprite[0]->GetHealth());
+			iLength[2] = wsprintf(szBuffer3, "Tentical 2: %i", g_pEnemyTenticalSprite[1]->GetHealth());
+			iLength[3] = wsprintf(szBuffer4, "Tentical 3: %i", g_pEnemyTenticalSprite[2]->GetHealth());
+			iLength[4] = wsprintf(szBuffer5, "Tentical 4: %i", g_pEnemyTenticalSprite[3]->GetHealth());
+			iLength[5] = wsprintf(szBuffer6, "Tentical 5: %i", g_pEnemyTenticalSprite[4]->GetHealth());
+			TextOut(hDC, 740, 560, szBuffer1, iLength[0]);
+			TextOut(hDC, 0, 480, szBuffer2, iLength[1]);
+			TextOut(hDC, 0, 500, szBuffer3, iLength[2]);
+			TextOut(hDC, 0, 520, szBuffer4, iLength[3]);
+			TextOut(hDC, 0, 540, szBuffer5, iLength[4]);
+			TextOut(hDC, 0, 560, szBuffer6, iLength[5]);
+		}
 	}
 }
 
@@ -699,7 +725,7 @@ void HandleKeys(WPARAM wParam)
 				break;
 			case WT_BOW:
 				pNewBitmap = g_pHeroBowLeftBitmap;
-				iNumFrames = 2;
+				iNumFrames = 3;
 				break;
 			case WT_SWORD:
 				pNewBitmap = g_pHeroWalkingLeftBitmap;
@@ -757,7 +783,7 @@ void HandleKeys(WPARAM wParam)
 				break;
 			case WT_BOW:
 				pNewBitmap = g_pHeroBowRightBitmap;
-				iNumFrames = 2;
+				iNumFrames = 3;
 				break;
 			case WT_SWORD:
 				pNewBitmap = g_pHeroWalkingRightBitmap;
@@ -791,7 +817,7 @@ void HandleKeys(WPARAM wParam)
 				break;
 			case WT_BOW:
 				pNewBitmap = g_pHeroBowUpBitmap;
-				iNumFrames = 2;
+				iNumFrames = 3;
 				break;
 			case WT_SWORD:
 				pNewBitmap = g_pHeroWalkingUpBitmap;
@@ -825,7 +851,7 @@ void HandleKeys(WPARAM wParam)
 				break;
 			case WT_BOW:
 				pNewBitmap = g_pHeroBowDownBitmap;
-				iNumFrames = 2;
+				iNumFrames = 3;
 				break;
 			case WT_SWORD:
 				pNewBitmap = g_pHeroWalkingDownBitmap;
@@ -915,7 +941,7 @@ void HandleKeys(WPARAM wParam)
 					g_pHero->SetNumFrames(12);
 					g_pHero->SetVelocity(0, 0);
 					pSwordSwingSprite = new Sprite(g_pSwordSwingLeftBitmap);
-					pSwordSwingSprite->SetNumFrames(12);
+					pSwordSwingSprite->SetNumFrames(12, true);
 					pSwordSwingSprite->SetPosition(g_pHero->GetPosition());
 					g_pGame->AddDungeonSprite(pSwordSwingSprite);
 					break;
@@ -924,7 +950,7 @@ void HandleKeys(WPARAM wParam)
 					g_pHero->SetNumFrames(12);
 					g_pHero->SetVelocity(0, 0);
 					pSwordSwingSprite = new Sprite(g_pSwordSwingRightBitmap);
-					pSwordSwingSprite->SetNumFrames(12);
+					pSwordSwingSprite->SetNumFrames(12, true);
 					pSwordSwingSprite->SetPosition(g_pHero->GetPosition());
 					g_pGame->AddDungeonSprite(pSwordSwingSprite);
 					break;
@@ -933,7 +959,7 @@ void HandleKeys(WPARAM wParam)
 					g_pHero->SetNumFrames(12);
 					g_pHero->SetVelocity(0, 0);
 					pSwordSwingSprite = new Sprite(g_pSwordSwingUpBitmap);
-					pSwordSwingSprite->SetNumFrames(12);
+					pSwordSwingSprite->SetNumFrames(12, true);
 					pSwordSwingSprite->SetPosition(g_pHero->GetPosition());
 					g_pGame->AddDungeonSprite(pSwordSwingSprite);
 					break;
@@ -942,7 +968,7 @@ void HandleKeys(WPARAM wParam)
 					g_pHero->SetNumFrames(12);
 					g_pHero->SetVelocity(0, 0);
 					pSwordSwingSprite = new Sprite(g_pSwordSwingDownBitmap);
-					pSwordSwingSprite->SetNumFrames(12);
+					pSwordSwingSprite->SetNumFrames(12, true);
 					pSwordSwingSprite->SetPosition(g_pHero->GetPosition());
 					g_pGame->AddDungeonSprite(pSwordSwingSprite);
 					break;
@@ -1033,10 +1059,6 @@ void HandleKeys(WPARAM wParam)
 			default:
 				break;
 			}
-		}
-		if (isConstruct)
-		{
-			//Get Hero's location, if touching a weapon, this will select weapon
 		}
 		break;
 	case VK_RETURN:
@@ -1144,6 +1166,7 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 			g_pGame->AddDungeonSprite(g_pHero);
 			isDungeon = true;
 			isConstruct = false;
+			return true;
 		}
 		if (pHitter == g_pHero->GetBitmap() && pHittee == g_pConstructBowBitmap)
 		{
@@ -1151,6 +1174,7 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 			g_pGame->AddDungeonSprite(g_pHero);
 			isDungeon = true;
 			isConstruct = false;
+			return true;
 		}
 		if (pHitter == g_pHero->GetBitmap() && pHittee == g_pConstructSwordBitmap)
 		{
@@ -1158,6 +1182,7 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 			g_pGame->AddDungeonSprite(g_pHero);
 			isDungeon = true;
 			isConstruct = false;
+			return true;
 		}
 	}
 
@@ -1170,28 +1195,32 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 			pSpriteHitter->SetVelocity(-pSpriteHitter->GetVelocity().x, -pSpriteHitter->GetVelocity().y);
 			//if hero's health is more than 1 subtract 1 but if hero's health is 1 then kill the sprite.
 			g_pHero->GetHealth() > 1 ? g_pHero->SetHealth(g_pHero->GetHealth() - 1) : pSpriteHittee->Kill(), g_bGameOver = true;
-			return true;
 		}
 
 		//@TODO:
-		/**************** Needs work
+		
+	}	
+  	return false;
+}
+
+bool SpriteCollision(Sprite* pSpriteHitter, EnemyBoss* pBossSprite)
+{
+	Bitmap* pHitter = pSpriteHitter->GetBitmap();
+	Bitmap* pHittee = pBossSprite->GetBitmap();
+	if (isDungeon)
+	{
 		//Check to see if the boomerang has hit an enemy
 		if (pHitter == g_pBoomerangBitmap && pHittee == g_pEnemyTenticalBitmap)
 		{
 			pSpriteHitter->Kill();
 			//If enemey's health is more than 1 subtract 1 from it but kill it if it is at 1
-			if (pSpriteHittee->GetHealth() > 1)
+			if (pBossSprite->GetHealth() > 1)
 			{
-				pSpriteHitee->SetHealth(pSpriteHitee->GetHealth() - 1);
+				pBossSprite->SetHealth(pBossSprite->GetHealth() - 1);
 			}
 			else
 			{
-				pSpriteHitee->Kill();
-				//If you kill the enemy play explosion
-				Sprite* pSprite = new Sprite(g_pEnemyExplosionBitmap, g_rcEnemeyBounds);
-				pSprite->SetNumFrames(9, true);
-				pSprite->SetPosition(pSpriteHittee->GetPosition());
-				g_pGame->AddDungeonSprite(pSprite);
+				pBossSprite->Kill();
 			}
 		}
 		//Check to see if an arrow has hit an enemy
@@ -1201,40 +1230,30 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 			pSpriteHitter->Kill();
 
 			//If enemey's health is more than 1 subtract 1 from it but kill it if it is at 1
-			if (pSpriteHittee->GetHealth() > 1)
+			if (pBossSprite->GetHealth() > 1)
 			{
-				pSpriteHitee->SetHealth(pSpriteHitee->GetHealth() - 1);
+				pBossSprite->SetHealth(pBossSprite->GetHealth() - 1);
 			}
 			else
 			{
-				pSpriteHitee->Kill();
-				//If you kill the enemy play explosion
-				Sprite* pSprite = new Sprite(g_pEnemyExplosionBitmap, g_rcEnemeyBounds);
-				pSprite->SetNumFrames(9, true);
-				pSprite->SetPosition(pSpriteHittee->GetPosition());
-				g_pGame->AddDungeonSprite(pSprite);
+				pBossSprite->Kill();
 			}
 		}
 		//Check to see if the sword hits the enemy
 		if ((pHitter == g_pSwordSwingLeftBitmap || pHitter == g_pSwordSwingRightBitmap || pHitter == g_pSwordSwingDownBitmap || pHitter == g_pSwordSwingUpBitmap) && pHittee == g_pEnemyTenticalBitmap)
 		{
 			//If enemey's health is more than 1 subtract 1 from it but kill it if it is at 1
-			if (pSpriteHittee->GetHealth() > 1)
+			if (pBossSprite->GetHealth() > 1)
 			{
-				pSpriteHitee->SetHealth(pSpriteHitee->GetHealth() - 1);
+				pBossSprite->SetHealth(pBossSprite->GetHealth() - 1);
 			}
 			else
 			{
-				pSpriteHitee->Kill();
-				//If you kill the enemy play explosion
-				Sprite* pSprite = new Sprite(g_pEnemyExplosionBitmap, g_rcEnemeyBounds);
-				pSprite->SetNumFrames(9, true);
-				pSprite->SetPosition(pSpriteHittee->GetPosition());
-				g_pGame->AddDungeonSprite(pSprite);
+				pBossSprite->Kill();
 			}
-		}*********************************/
-	}	
-  	return false;
+		}
+	}
+	return false;
 }
 
 void SpriteDying(Sprite* pSpriteDying)
