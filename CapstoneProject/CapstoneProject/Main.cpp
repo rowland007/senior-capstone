@@ -1195,10 +1195,8 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 			pSpriteHitter->SetVelocity(-pSpriteHitter->GetVelocity().x, -pSpriteHitter->GetVelocity().y);
 			//if hero's health is more than 1 subtract 1 but if hero's health is 1 then kill the sprite.
 			g_pHero->GetHealth() > 1 ? g_pHero->SetHealth(g_pHero->GetHealth() - 1) : pSpriteHittee->Kill(), g_bGameOver = true;
-		}
-
-		//@TODO:
-		
+			return true;
+		}		
 	}	
   	return false;
 }
@@ -1222,6 +1220,7 @@ bool SpriteCollision(Sprite* pSpriteHitter, EnemyBoss* pBossSprite)
 			{
 				pBossSprite->Kill();
 			}
+			return true;
 		}
 		//Check to see if an arrow has hit an enemy
 		if ((pHitter == g_pArrowLeftBitmap || pHitter == g_pArrowRightBitmap || pHitter == g_pArrowDownBitmap || pHitter == g_pArrowUpBitmap) && pHittee == g_pEnemyTenticalBitmap)
@@ -1238,6 +1237,7 @@ bool SpriteCollision(Sprite* pSpriteHitter, EnemyBoss* pBossSprite)
 			{
 				pBossSprite->Kill();
 			}
+			return true;
 		}
 		//Check to see if the sword hits the enemy
 		if ((pHitter == g_pSwordSwingLeftBitmap || pHitter == g_pSwordSwingRightBitmap || pHitter == g_pSwordSwingDownBitmap || pHitter == g_pSwordSwingUpBitmap) && pHittee == g_pEnemyTenticalBitmap)
@@ -1251,6 +1251,7 @@ bool SpriteCollision(Sprite* pSpriteHitter, EnemyBoss* pBossSprite)
 			{
 				pBossSprite->Kill();
 			}
+			return true;
 		}
 	}
 	return false;
