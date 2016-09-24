@@ -526,7 +526,7 @@ void GameEngine::UpdateDungeonSprites()
 	RECT          rcOldSpritePos;
 	SPRITEACTION  saSpriteAction;
 	vector<Sprite*>::iterator siSprite;
-	for (siSprite = m_vDungeonSprites.begin(); siSprite != m_vDungeonSprites.end(); siSprite++)
+	for (siSprite = m_vDungeonSprites.begin(); siSprite != m_vDungeonSprites.end(); )
 	{
 		// Save the old sprite position in case we need to restore it
 		rcOldSpritePos = (*siSprite)->GetPosition();
@@ -550,7 +550,7 @@ void GameEngine::UpdateDungeonSprites()
 			// Kill the sprite
 			delete (*siSprite);
 			m_vDungeonSprites.erase(siSprite);
-			siSprite--;
+			//siSprite--;
 			continue;
 		}
 
@@ -558,6 +558,8 @@ void GameEngine::UpdateDungeonSprites()
 		if (CheckSpriteCollision(*siSprite))
 			// Restore the old sprite position
 			(*siSprite)->SetPosition(rcOldSpritePos);
+
+		siSprite++;
 	}
 }
 void GameEngine::CleanupSprites()
