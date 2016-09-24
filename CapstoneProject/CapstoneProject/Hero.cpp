@@ -70,7 +70,7 @@ void Hero::SetWeapon(WEAPONTYPE wtWeapon)
 
 WEAPONTYPE Hero::GetWeapon() const
 {
-	return WEAPONTYPE();
+	return m_wtWeapon;
 }
 
 FACINGDIRECTION Hero::GetDirection() const
