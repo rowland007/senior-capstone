@@ -547,6 +547,29 @@ void GamePaint(HDC hDC)
 		//Draw Hero's health over everything
 		for (int x = g_pGame->GetWidth() - 12, counter = 0; counter < g_pHero->GetHealth(); counter++, x - 10)
 			g_pHeroHealthBitmap->Draw(hDC, x, 10);
+
+		if (isTest)
+		{
+			int iLength[6];
+			TCHAR szBuffer1[10];
+			TCHAR szBuffer2[15];
+			TCHAR szBuffer3[15];
+			TCHAR szBuffer4[15];
+			TCHAR szBuffer5[15];
+			TCHAR szBuffer6[15];
+			iLength[0] = wsprintf(szBuffer1, "Hero: %i", g_pHero->GetHealth());
+			iLength[1] = wsprintf(szBuffer2, "Tentical 1: %i", g_pEnemyTenticalSprite[0]->GetHealth());
+			iLength[2] = wsprintf(szBuffer3, "Tentical 2: %i", g_pEnemyTenticalSprite[1]->GetHealth());
+			iLength[3] = wsprintf(szBuffer4, "Tentical 3: %i", g_pEnemyTenticalSprite[2]->GetHealth());
+			iLength[4] = wsprintf(szBuffer5, "Tentical 4: %i", g_pEnemyTenticalSprite[3]->GetHealth());
+			iLength[5] = wsprintf(szBuffer6, "Tentical 5: %i", g_pEnemyTenticalSprite[4]->GetHealth());
+			TextOut(hDC, 740, 560, szBuffer1, iLength[0]);
+			TextOut(hDC, 0, 480, szBuffer2, iLength[1]);
+			TextOut(hDC, 0, 500, szBuffer3, iLength[2]);
+			TextOut(hDC, 0, 520, szBuffer4, iLength[3]);
+			TextOut(hDC, 0, 540, szBuffer5, iLength[4]);
+			TextOut(hDC, 0, 560, szBuffer6, iLength[5]);
+		}
 	}
 }
 
@@ -1140,6 +1163,7 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 			g_pGame->AddDungeonSprite(g_pHero);
 			isDungeon = true;
 			isConstruct = false;
+			return true;
 		}
 		if (pHitter == g_pHero->GetBitmap() && pHittee == g_pConstructBowBitmap)
 		{
@@ -1147,6 +1171,7 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 			g_pGame->AddDungeonSprite(g_pHero);
 			isDungeon = true;
 			isConstruct = false;
+			return true;
 		}
 		if (pHitter == g_pHero->GetBitmap() && pHittee == g_pConstructSwordBitmap)
 		{
@@ -1154,6 +1179,7 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 			g_pGame->AddDungeonSprite(g_pHero);
 			isDungeon = true;
 			isConstruct = false;
+			return true;
 		}
 	}
 
