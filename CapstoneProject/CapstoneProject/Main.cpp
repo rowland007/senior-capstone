@@ -601,13 +601,19 @@ void GameCycle()
     	// Cleanup
     	ReleaseDC(hWindow, hDC);
   	}
-  	else
-    	if (--g_iGameOverDelay == 0)
-    	{
-     	//Switch back to the LoadingScreen
-      	isLoading = true;
-      	//NewGame();
-    	}
+	else
+	{
+		// Clear the sprites
+		g_pGame->CleanupSprites();
+
+		// Initialize the game variables
+		g_bGameOver = false;
+		isSettings = false;
+		isTest = false;
+		isDungeon = false;
+		isConstruct = false;
+		g_pHero->SetHealth(3);
+	}
 }
 
 void HandleKeys(WPARAM wParam)
@@ -1261,22 +1267,7 @@ void SpriteDying(Sprite* pSpriteDying)
 {
 }
 
-//-----------------------------------------------------------------
-// Functions
-//-----------------------------------------------------------------
 void NewGame()
 {
-  	// Clear the sprites
-  	g_pGame->CleanupSprites();
 
-  	// Initialize the game variables
-  	g_bGameOver = false;
-
-	if (isLoading)
-	{
-	}
-  	else
-  	{
-    	
-  	}
 }
