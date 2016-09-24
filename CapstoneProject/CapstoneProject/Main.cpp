@@ -915,7 +915,7 @@ void HandleKeys(WPARAM wParam)
 					g_pHero->SetNumFrames(12);
 					g_pHero->SetVelocity(0, 0);
 					pSwordSwingSprite = new Sprite(g_pSwordSwingLeftBitmap);
-					pSwordSwingSprite->SetNumFrames(12);
+					pSwordSwingSprite->SetNumFrames(12, true);
 					pSwordSwingSprite->SetPosition(g_pHero->GetPosition());
 					g_pGame->AddDungeonSprite(pSwordSwingSprite);
 					break;
@@ -924,7 +924,7 @@ void HandleKeys(WPARAM wParam)
 					g_pHero->SetNumFrames(12);
 					g_pHero->SetVelocity(0, 0);
 					pSwordSwingSprite = new Sprite(g_pSwordSwingRightBitmap);
-					pSwordSwingSprite->SetNumFrames(12);
+					pSwordSwingSprite->SetNumFrames(12, true);
 					pSwordSwingSprite->SetPosition(g_pHero->GetPosition());
 					g_pGame->AddDungeonSprite(pSwordSwingSprite);
 					break;
@@ -933,7 +933,7 @@ void HandleKeys(WPARAM wParam)
 					g_pHero->SetNumFrames(12);
 					g_pHero->SetVelocity(0, 0);
 					pSwordSwingSprite = new Sprite(g_pSwordSwingUpBitmap);
-					pSwordSwingSprite->SetNumFrames(12);
+					pSwordSwingSprite->SetNumFrames(12, true);
 					pSwordSwingSprite->SetPosition(g_pHero->GetPosition());
 					g_pGame->AddDungeonSprite(pSwordSwingSprite);
 					break;
@@ -942,7 +942,7 @@ void HandleKeys(WPARAM wParam)
 					g_pHero->SetNumFrames(12);
 					g_pHero->SetVelocity(0, 0);
 					pSwordSwingSprite = new Sprite(g_pSwordSwingDownBitmap);
-					pSwordSwingSprite->SetNumFrames(12);
+					pSwordSwingSprite->SetNumFrames(12, true);
 					pSwordSwingSprite->SetPosition(g_pHero->GetPosition());
 					g_pGame->AddDungeonSprite(pSwordSwingSprite);
 					break;
@@ -1033,10 +1033,6 @@ void HandleKeys(WPARAM wParam)
 			default:
 				break;
 			}
-		}
-		if (isConstruct)
-		{
-			//Get Hero's location, if touching a weapon, this will select weapon
 		}
 		break;
 	case VK_RETURN:
