@@ -712,7 +712,7 @@ void HandleKeys(WPARAM wParam)
 			g_pHero->SetDirection(FD_LEFT);
 			g_pHero->SetBitmap(pNewBitmap);
 			g_pHero->SetNumFrames(iNumFrames);
-			g_pHero->SetVelocity(-16, 0);
+			g_pHero->SetVelocity(-8, 0);
 		}
 		break;
 	case VK_RIGHT:
@@ -804,7 +804,7 @@ void HandleKeys(WPARAM wParam)
 			g_pHero->SetDirection(FD_UP);
 			g_pHero->SetBitmap(pNewBitmap);
 			g_pHero->SetNumFrames(iNumFrames);
-			g_pHero->SetVelocity(0, -24);
+			g_pHero->SetVelocity(0, -8);
 		}
 		break;
 	case VK_DOWN:
@@ -838,7 +838,7 @@ void HandleKeys(WPARAM wParam)
 			g_pHero->SetDirection(FD_DOWN);
 			g_pHero->SetBitmap(pNewBitmap);
 			g_pHero->SetNumFrames(iNumFrames);
-			g_pHero->SetVelocity(0, 24);
+			g_pHero->SetVelocity(0, 8);
 		}
 		break;
 	case VK_SPACE:
@@ -1095,6 +1095,35 @@ void HandleKeys(WPARAM wParam)
 		break;
 	default:
 		break;
+	}
+	ReleaseDC(hWindow, hDC);
+}
+
+void ReleaseKeys(WPARAM wParam)
+{
+	HDC		hDC;
+	HWND	hWindow = g_pGame->GetWindow();
+	hDC = GetDC(hWindow);
+
+	if (isDungeon || isConstruct)
+	{
+		switch (wParam)
+		{
+		case VK_UP:
+			g_pHero->SetVelocity(0, 0);
+			break;
+		case VK_DOWN:
+			g_pHero->SetVelocity(0, 0);
+			break;
+		case VK_RIGHT:
+			g_pHero->SetVelocity(0, 0);
+			break;
+		case VK_LEFT:
+			g_pHero->SetVelocity(0, 0);
+			break;
+		default:
+			break;
+		}
 	}
 	ReleaseDC(hWindow, hDC);
 }
