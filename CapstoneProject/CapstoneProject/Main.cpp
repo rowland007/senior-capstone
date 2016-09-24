@@ -425,9 +425,9 @@ void GameStart(HWND hWindow)
 	g_pHeroBoomerangRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP60, g_hInstance);
 	g_pHeroBoomerangDownBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP61, g_hInstance);
 	g_pHeroBoomerangUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP79, g_hInstance);
-	g_pHeroBowLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP62, g_hInstance);
-	g_pHeroBowRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP63, g_hInstance);
-	g_pHeroBowUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP64, g_hInstance);
+	g_pHeroBowLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP63, g_hInstance);
+	g_pHeroBowRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP64, g_hInstance);
+	g_pHeroBowUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP62, g_hInstance);
 	g_pHeroBowDownBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP65, g_hInstance);
 	g_pHeroSwordLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP66, g_hInstance);
 	g_pHeroSwordRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP67, g_hInstance);
@@ -699,7 +699,7 @@ void HandleKeys(WPARAM wParam)
 				break;
 			case WT_BOW:
 				pNewBitmap = g_pHeroBowLeftBitmap;
-				iNumFrames = 2;
+				iNumFrames = 3;
 				break;
 			case WT_SWORD:
 				pNewBitmap = g_pHeroWalkingLeftBitmap;
@@ -757,7 +757,7 @@ void HandleKeys(WPARAM wParam)
 				break;
 			case WT_BOW:
 				pNewBitmap = g_pHeroBowRightBitmap;
-				iNumFrames = 2;
+				iNumFrames = 3;
 				break;
 			case WT_SWORD:
 				pNewBitmap = g_pHeroWalkingRightBitmap;
@@ -791,7 +791,7 @@ void HandleKeys(WPARAM wParam)
 				break;
 			case WT_BOW:
 				pNewBitmap = g_pHeroBowUpBitmap;
-				iNumFrames = 2;
+				iNumFrames = 3;
 				break;
 			case WT_SWORD:
 				pNewBitmap = g_pHeroWalkingUpBitmap;
@@ -825,7 +825,7 @@ void HandleKeys(WPARAM wParam)
 				break;
 			case WT_BOW:
 				pNewBitmap = g_pHeroBowDownBitmap;
-				iNumFrames = 2;
+				iNumFrames = 3;
 				break;
 			case WT_SWORD:
 				pNewBitmap = g_pHeroWalkingDownBitmap;
