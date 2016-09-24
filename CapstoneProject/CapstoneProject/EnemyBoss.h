@@ -48,15 +48,16 @@ public:
 	int GetHealth() const;
 
 	/// Will have the sprite move randomly on the screen
-	/// @param
-	/// @param
+	/// @param x Width of the area you want the sprite to move in
+	/// @param y Height of the area you want the sprite to move in
 	void MoveRandomly(int, int);
 
-	/// Will have the sprite chase the Hero sprite
-	void MoveChase();
+	/// Will have the sprite chase the Hero sprite\
+	/// @param pSpriteToChase The pointer of the sprite you want this sprite to chase
+	void MoveChase(Sprite*);
 
-	/// Will have the sprite avoid the Hero sprite 
-	/// @param
+	/// Will have the sprite avoid another sprite 
+	/// @param pAvoidSprite The pointer of the Sprite to avoid
 	void MoveRunAway(Sprite*);
 
 private:

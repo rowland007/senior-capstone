@@ -46,8 +46,9 @@ void EnemyBoss::MoveRandomly(int x, int y)
 }
 
 
-void EnemyBoss::MoveChase()
+void EnemyBoss::MoveChase(Sprite *pSpriteToChase)
 {
+	
 }
 
 void EnemyBoss::MoveRunAway(Sprite *pAvoidSprite)
