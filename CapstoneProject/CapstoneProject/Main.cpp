@@ -110,15 +110,41 @@ Bitmap* g_pDungeonLtGreenSkullBitmap;
 //Hero
 Bitmap* g_pHeroBitmap;
 Bitmap* g_pHeroHealthBitmap;
+///Hero himself
+Bitmap *g_pHeroWalkingLeftBitmap;
+Bitmap *g_pHeroWalkingRightBitmap;
+Bitmap *g_pHeroWalkingUpBitmap;
+Bitmap *g_pHeroWalkingDownBitmap;
+Bitmap *g_pHeroDamageLeftBitmap;
+Bitmap *g_pHeroDamageRightBitmap;
+Bitmap *g_pHeroDamageUpBitmap;
+Bitmap *g_pHeroDamageDownBitmap;
+Bitmap *g_pHeroDyingBitmap;
+Bitmap *g_pHeroWinBitmap;
+Bitmap *g_pHeroBoomerangLeftBitmap;
+Bitmap *g_pHeroBoomerangRightBitmap;
+Bitmap *g_pHeroBoomerangDownBitmap;
+Bitmap *g_pHeroBoomerangUpBitmap;
+Bitmap *g_pHeroBowLeftBitmap;
+Bitmap *g_pHeroBowRightBitmap;
+Bitmap *g_pHeroBowUpBitmap;
+Bitmap *g_pHeroBowDownBitmap;
+Bitmap *g_pHeroSwordLeftBitmap;
+Bitmap *g_pHeroSwordRightBitmap;
+Bitmap *g_pHeroSwordUpBitmap;
+Bitmap *g_pHeroSwordDownBitmap;
+///Weapons
+Bitmap *g_pArrowLeftBitmap;
+Bitmap *g_pArrowRightBitmap;
+Bitmap *g_pArrowUpBitmap;
+Bitmap *g_pArrowDownBitmap;
+Bitmap *g_pBoomerangBitmap;
+Bitmap *g_pSwordSwingLeftBitmap;
+Bitmap *g_pSwordSwingRightBitmap;
+Bitmap *g_pSwordSwingUpBitmap;
+Bitmap *g_pSwordSwingDownBitmap;
 //Enemies
-Bitmap* g_pEnemyBigPigBitmap;
-Bitmap* g_pEnemyExplosionBitmap;
-Bitmap* g_pEnemyMonkeyDownBitmap;
-Bitmap* g_pEnemyMonkeyUpBitmap;
-Bitmap* g_pEnemyMonkeyLeftBitmap;
-Bitmap* g_pEnemyMonkeyRightBitmap;
 Bitmap* g_pEnemyTenticalBitmap;
-Bitmap* g_pEnemyTenticalDieBitmap;
 
 
 //////////////////////////////////////
@@ -373,66 +399,56 @@ void GameStart(HWND hWindow)
 	//Enemies
 	//Set the enemy bounds rectanlge so they're only in the playable area
 	SetRect(&g_rcEnemeyBounds, g_pDungeonLeftWallBitmap->GetWidth(), g_pDungeonUpperWallBitmap->GetHeight(), g_pGame->GetWidth() - g_pDungeonRightWallBitmap->GetWidth(), g_pGame->GetHeight() - (g_pDialogBox->GetHeight() + g_pDungeonLowerWallBitmap->GetHeight()));
-	g_pEnemyBigPigBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP41, g_hInstance);
-	g_pEnemyExplosionBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP42, g_hInstance);
-	g_pEnemyMonkeyDownBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP43, g_hInstance);
-	g_pEnemyMonkeyUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP44, g_hInstance);
-	g_pEnemyMonkeyLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP45, g_hInstance);
-	g_pEnemyMonkeyRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP46, g_hInstance);
 	g_pEnemyTenticalBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP47, g_hInstance);
-	g_pEnemyTenticalDieBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP48, g_hInstance);
-	g_pEnemyBigPigSprite = new EnemyBoss(g_pEnemyBigPigBitmap, g_rcEnemeyBounds, BA_BOUNCE);
-	g_pEnemyBigPigSprite->SetNumFrames(2);
-	g_pEnemyBigPigSprite->SetHidden(true);
-	g_pEnemyBigPigSprite->MoveChase();
-	//g_pEnemyBigPigSprite->SetFrameDelay(SomeVar); //need to come up with some kind of trigger that will set variable to change it
 	g_pGame->AddDungeonSprite(g_pEnemyBigPigSprite);
 	for (int x = 0; x < 5; x++)
 	{
-		/*g_pEnemyExplosionSprite[x] = new EnemyBoss(g_pEnemyExplosionBitmap, g_rcEnemeyBounds, BA_DIE);
-		g_pEnemyExplosionSprite[x]->SetNumFrames(9, true);
-		g_pEnemyExplosionSprite[x]->SetFrameDelay(0);
-		g_pEnemyExplosionSprite[x]->SetHidden(true);
-		g_pEnemyMonkeyDownSprite[x] = new EnemyBoss(g_pEnemyMonkeyDownBitmap, g_rcEnemeyBounds, BA_DIE);
-		g_pEnemyMonkeyDownSprite[x]->SetNumFrames(4);
-		g_pEnemyMonkeyDownSprite[x]->SetFrameDelay(1);
-		g_pEnemyMonkeyDownSprite[x]->SetHidden(true);
-		g_pEnemyMonkeyUpSprite[x] = new EnemyBoss(g_pEnemyMonkeyUpBitmap, g_rcEnemeyBounds, BA_DIE);
-		g_pEnemyMonkeyUpSprite[x]->SetNumFrames(2);
-		g_pEnemyMonkeyUpSprite[x]->SetFrameDelay(1);
-		g_pEnemyMonkeyUpSprite[x]->SetHidden(true);
-		g_pEnemyMonkeyLeftSprite[x] = new EnemyBoss(g_pEnemyMonkeyLeftBitmap, g_rcEnemeyBounds, BA_DIE);
-		g_pEnemyMonkeyLeftSprite[x]->SetNumFrames(2);
-		g_pEnemyMonkeyLeftSprite[x]->SetFrameDelay(1);
-		g_pEnemyMonkeyLeftSprite[x]->SetHidden(true);
-		g_pEnemyMonkeyRightSprite[x] = new EnemyBoss(g_pEnemyMonkeyRightBitmap, g_rcEnemeyBounds, BA_DIE);
-		g_pEnemyMonkeyRightSprite[x]->SetNumFrames(2);
-		g_pEnemyMonkeyRightSprite[x]->SetFrameDelay(1);
-		g_pEnemyMonkeyRightSprite[x]->SetHidden(true);*/
 		g_pEnemyTenticalSprite[x] = new EnemyBoss(g_pEnemyTenticalBitmap, g_rcEnemeyBounds, BA_BOUNCE);
 		g_pEnemyTenticalSprite[x]->SetNumFrames(3);
 		g_pEnemyTenticalSprite[x]->SetFrameDelay(1);
 		g_pEnemyTenticalSprite[x]->MoveRandomly(800, 640 - (16 + g_pDungeonLowerWallBitmap->GetHeight() + g_pDialogBox->GetHeight()));
-		//g_pEnemyTenticalDieSprite[x] = new EnemyBoss(g_pEnemyTenticalDieBitmap, g_rcEnemeyBounds, BA_BOUNCE);
-		//g_pEnemyTenticalDieSprite[x]->SetNumFrames(3, true);
-		//g_pEnemyTenticalDieSprite[x]->SetFrameDelay(1);
-		//g_pEnemyTenticalDieSprite[x]->SetHidden(true);
-		//g_pGame->AddDungeonSprite(g_pEnemyExplosionSprite[x]);
-		//g_pGame->AddDungeonSprite(g_pEnemyMonkeyDownSprite[x]);
-		//g_pGame->AddDungeonSprite(g_pEnemyMonkeyUpSprite[x]);
-		//g_pGame->AddDungeonSprite(g_pEnemyMonkeyLeftSprite[x]);
-		//g_pGame->AddDungeonSprite(g_pEnemyMonkeyRightSprite[x]);
 		g_pGame->AddDungeonSprite(g_pEnemyTenticalSprite[x]);
-		//g_pGame->AddDungeonSprite(g_pEnemyTenticalDieSprite[x]);
-
-		//Hero
-		g_pHeroBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP58, g_hInstance);
-		g_pHero = new Hero(g_pHeroBitmap, g_rcEnemeyBounds, BA_STOP);
-		g_pHero->SetPosition(g_pGame->GetWidth() / 2, g_pGame->GetHeight() / 2);
-		g_pGame->AddConstructSprite(g_pHero);
-		g_pHeroHealthBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP80, g_hInstance);
-
 	}
+	//Hero
+	//Initialize Hero bitmaps
+	g_pHeroWalkingLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP49, g_hInstance);
+	g_pHeroWalkingRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP50, g_hInstance);
+	g_pHeroWalkingUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP51, g_hInstance);
+	g_pHeroWalkingDownBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP52, g_hInstance);
+	g_pHeroDamageLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP53, g_hInstance);
+	g_pHeroDamageRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP54, g_hInstance);
+	g_pHeroDamageUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP55, g_hInstance);
+	g_pHeroDamageDownBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP56, g_hInstance);
+	g_pHeroDyingBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP57, g_hInstance);
+	g_pHeroWinBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP58, g_hInstance);
+	g_pHeroBoomerangLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP59, g_hInstance);
+	g_pHeroBoomerangRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP60, g_hInstance);
+	g_pHeroBoomerangDownBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP61, g_hInstance);
+	g_pHeroBoomerangUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP79, g_hInstance);
+	g_pHeroBowLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP62, g_hInstance);
+	g_pHeroBowRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP63, g_hInstance);
+	g_pHeroBowUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP64, g_hInstance);
+	g_pHeroBowDownBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP65, g_hInstance);
+	g_pHeroSwordLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP66, g_hInstance);
+	g_pHeroSwordRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP67, g_hInstance);
+	g_pHeroSwordUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP68, g_hInstance);
+	g_pHeroSwordDownBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP69, g_hInstance);
+	//Initiazlize Weapon bitmaps
+	g_pArrowLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP70, g_hInstance);
+	g_pArrowRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP71, g_hInstance);
+	g_pArrowUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP72, g_hInstance);
+	g_pArrowDownBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP73, g_hInstance);
+	g_pBoomerangBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP74, g_hInstance);
+	g_pSwordSwingLeftBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP75, g_hInstance);
+	g_pSwordSwingRightBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP76, g_hInstance);
+	g_pSwordSwingUpBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP77, g_hInstance);
+	g_pSwordSwingDownBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP78, g_hInstance);
+	//Create Hero sprite
+	g_pHeroBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP58, g_hInstance);
+	g_pHero = new Hero(g_pHeroBitmap, g_rcEnemeyBounds, BA_STOP);
+	g_pHero->SetPosition(g_pGame->GetWidth() / 2, g_pGame->GetHeight() / 2);
+	g_pGame->AddConstructSprite(g_pHero);
+	g_pHeroHealthBitmap = new Bitmap(GetDC(hWindow), IDB_BITMAP80, g_hInstance);
 }
 
 void GameEnd()
@@ -485,6 +501,7 @@ void GamePaint(HDC hDC)
 		g_pDialogBox->Draw(hDC, 250, 575 - g_pDialogBox->GetHeight());
 		if (isSettings)
 		{
+			TextOut(hDC, 260, (575 - g_pDialogBox->GetHeight()) + 10, TEXT("DEBUG MODE:"), 11);
 			TextOut(hDC, 275, 550, TEXT("ENABLED"), 7);
 			TextOut(hDC, 350, 550, TEXT("DISABLED"), 8);
 			TextOut (hDC, 450, 550, TEXT("BACK"), 4);
@@ -671,7 +688,31 @@ void HandleKeys(WPARAM wParam)
 		}
 		if (isConstruct || isDungeon)
 		{
-			g_pHero->MoveLeft();
+			Bitmap *pNewBitmap;
+			int iNumFrames;
+
+			switch (g_pHero->GetWeapon())
+			{
+			case WT_BOOMERANG:
+				pNewBitmap = g_pHeroBoomerangLeftBitmap;
+				iNumFrames = 2;
+				break;
+			case WT_BOW:
+				pNewBitmap = g_pHeroBowLeftBitmap;
+				iNumFrames = 2;
+				break;
+			case WT_SWORD:
+				pNewBitmap = g_pHeroWalkingLeftBitmap;
+				iNumFrames = 8;
+				break;
+			default:
+				pNewBitmap = g_pHeroWalkingLeftBitmap;
+				iNumFrames = 8;
+			}
+			g_pHero->SetDirection(FD_LEFT);
+			g_pHero->SetBitmap(pNewBitmap);
+			g_pHero->SetNumFrames(iNumFrames);
+			g_pHero->SetVelocity(-8, 0);
 		}
 		break;
 	case VK_RIGHT:
@@ -705,7 +746,31 @@ void HandleKeys(WPARAM wParam)
 		}
 		if (isConstruct || isDungeon)
 		{
-			g_pHero->MoveRight();
+			Bitmap *pNewBitmap;
+			int iNumFrames;
+
+			switch (g_pHero->GetWeapon())
+			{
+			case WT_BOOMERANG:
+				pNewBitmap = g_pHeroBoomerangRightBitmap;
+				iNumFrames = 2;
+				break;
+			case WT_BOW:
+				pNewBitmap = g_pHeroBowRightBitmap;
+				iNumFrames = 2;
+				break;
+			case WT_SWORD:
+				pNewBitmap = g_pHeroWalkingRightBitmap;
+				iNumFrames = 8;
+				break;
+			default:
+				pNewBitmap = g_pHeroWalkingRightBitmap;
+				iNumFrames = 8;
+			}
+			g_pHero->SetDirection(FD_RIGHT);
+			g_pHero->SetBitmap(pNewBitmap);
+			g_pHero->SetNumFrames(iNumFrames);
+			g_pHero->SetVelocity(8, 0);
 		}
 		break;
 	case VK_UP:
@@ -715,7 +780,31 @@ void HandleKeys(WPARAM wParam)
 		}
 		if (isConstruct || isDungeon)
 		{
-			g_pHero->MoveUp();
+			Bitmap *pNewBitmap;
+			int iNumFrames;
+
+			switch (g_pHero->GetWeapon())
+			{
+			case WT_BOOMERANG:
+				pNewBitmap = g_pHeroBoomerangUpBitmap;
+				iNumFrames = 2;
+				break;
+			case WT_BOW:
+				pNewBitmap = g_pHeroBowUpBitmap;
+				iNumFrames = 2;
+				break;
+			case WT_SWORD:
+				pNewBitmap = g_pHeroWalkingUpBitmap;
+				iNumFrames = 8;
+				break;
+			default:
+				pNewBitmap = g_pHeroWalkingUpBitmap;
+				iNumFrames = 8;
+			}
+			g_pHero->SetDirection(FD_UP);
+			g_pHero->SetBitmap(pNewBitmap);
+			g_pHero->SetNumFrames(iNumFrames);
+			g_pHero->SetVelocity(0, -8);
 		}
 		break;
 	case VK_DOWN:
@@ -725,7 +814,31 @@ void HandleKeys(WPARAM wParam)
 		}
 		if (isConstruct || isDungeon)
 		{
-			g_pHero->MoveDown();
+			Bitmap *pNewBitmap;
+			int iNumFrames;
+
+			switch (g_pHero->GetWeapon())
+			{
+			case WT_BOOMERANG:
+				pNewBitmap = g_pHeroBoomerangDownBitmap;
+				iNumFrames = 2;
+				break;
+			case WT_BOW:
+				pNewBitmap = g_pHeroBowDownBitmap;
+				iNumFrames = 2;
+				break;
+			case WT_SWORD:
+				pNewBitmap = g_pHeroWalkingDownBitmap;
+				iNumFrames = 8;
+				break;
+			default:
+				pNewBitmap = g_pHeroWalkingDownBitmap;
+				iNumFrames = 8;
+			}
+			g_pHero->SetDirection(FD_DOWN);
+			g_pHero->SetBitmap(pNewBitmap);
+			g_pHero->SetNumFrames(iNumFrames);
+			g_pHero->SetVelocity(0, 8);
 		}
 		break;
 	case VK_SPACE:
@@ -786,7 +899,140 @@ void HandleKeys(WPARAM wParam)
 		}
 		if (isDungeon)
 		{
-			//g_pGame->AddDungeonSprite(g_pHero->UseWeapon());
+			switch (g_pHero->GetWeapon())
+			{
+			case WT_SWORD:
+			{
+				//Get direction hero is facing
+				//Set new bitmap and frames for that direction
+				//have animation run only once
+				//after animation completes, go back to last bitmap
+				Sprite *pSwordSwingSprite = NULL;
+				switch (g_pHero->GetDirection())
+				{
+				case FD_LEFT:
+					g_pHero->SetBitmap(g_pHeroSwordLeftBitmap);
+					g_pHero->SetNumFrames(12);
+					g_pHero->SetVelocity(0, 0);
+					pSwordSwingSprite = new Sprite(g_pSwordSwingLeftBitmap);
+					pSwordSwingSprite->SetNumFrames(12);
+					pSwordSwingSprite->SetPosition(g_pHero->GetPosition());
+					g_pGame->AddDungeonSprite(pSwordSwingSprite);
+					break;
+				case FD_RIGHT:
+					g_pHero->SetBitmap(g_pHeroSwordRightBitmap);
+					g_pHero->SetNumFrames(12);
+					g_pHero->SetVelocity(0, 0);
+					pSwordSwingSprite = new Sprite(g_pSwordSwingRightBitmap);
+					pSwordSwingSprite->SetNumFrames(12);
+					pSwordSwingSprite->SetPosition(g_pHero->GetPosition());
+					g_pGame->AddDungeonSprite(pSwordSwingSprite);
+					break;
+				case FD_UP:
+					g_pHero->SetBitmap(g_pHeroSwordUpBitmap);
+					g_pHero->SetNumFrames(12);
+					g_pHero->SetVelocity(0, 0);
+					pSwordSwingSprite = new Sprite(g_pSwordSwingUpBitmap);
+					pSwordSwingSprite->SetNumFrames(12);
+					pSwordSwingSprite->SetPosition(g_pHero->GetPosition());
+					g_pGame->AddDungeonSprite(pSwordSwingSprite);
+					break;
+				case FD_DOWN:
+					g_pHero->SetBitmap(g_pHeroSwordDownBitmap);
+					g_pHero->SetNumFrames(12);
+					g_pHero->SetVelocity(0, 0);
+					pSwordSwingSprite = new Sprite(g_pSwordSwingDownBitmap);
+					pSwordSwingSprite->SetNumFrames(12);
+					pSwordSwingSprite->SetPosition(g_pHero->GetPosition());
+					g_pGame->AddDungeonSprite(pSwordSwingSprite);
+					break;
+				default:
+					break;
+				}
+				break;
+			}
+			case WT_BOOMERANG:
+			{
+				// Need to setup a bounding area around the hero that moves with hero
+				Sprite *pBoomerangSprite = new Sprite(g_pBoomerangBitmap);
+				pBoomerangSprite->SetNumFrames(4);
+				//pBoomerangSprite->SetBounds(RECT&); ///< figure out the rect around the hero
+				switch (g_pHero->GetDirection())
+				{
+				case FD_LEFT:
+					pBoomerangSprite->SetPosition(g_pHero->GetPosition());
+					pBoomerangSprite->SetVelocity(-12, 0);
+					pBoomerangSprite->SetBoundsAction(BA_BOUNCE);
+					g_pGame->AddDungeonSprite(pBoomerangSprite);
+					break;
+				case FD_RIGHT:
+					pBoomerangSprite->SetPosition(g_pHero->GetPosition());
+					pBoomerangSprite->SetVelocity(12, 0);
+					pBoomerangSprite->SetBoundsAction(BA_BOUNCE);
+					g_pGame->AddDungeonSprite(pBoomerangSprite);
+					break;
+				case FD_UP:
+					pBoomerangSprite->SetPosition(g_pHero->GetPosition());
+					pBoomerangSprite->SetVelocity(0, -12);
+					pBoomerangSprite->SetBoundsAction(BA_BOUNCE);
+					g_pGame->AddDungeonSprite(pBoomerangSprite);
+					break;
+				case FD_DOWN:
+					pBoomerangSprite->SetPosition(g_pHero->GetPosition());
+					pBoomerangSprite->SetVelocity(0, 12);
+					pBoomerangSprite->SetBoundsAction(BA_BOUNCE);
+					g_pGame->AddDungeonSprite(pBoomerangSprite);
+					break;
+				default:
+					break;
+				}
+				break;
+			}
+			case WT_BOW:
+			{
+				Sprite* pArrowSprite = NULL;
+				switch (g_pHero->GetDirection())
+				{
+				case FD_LEFT:
+					pArrowSprite = new Sprite(g_pArrowLeftBitmap);
+					pArrowSprite->SetNumFrames(9);
+					pArrowSprite->SetBoundsAction(BA_DIE);
+					pArrowSprite->SetPosition(g_pHero->GetPosition());
+					pArrowSprite->SetVelocity(-16, 0);
+					g_pGame->AddDungeonSprite(pArrowSprite);
+					break;
+				case FD_RIGHT:
+					pArrowSprite = new Sprite(g_pArrowRightBitmap);
+					pArrowSprite->SetNumFrames(9);
+					pArrowSprite->SetBoundsAction(BA_DIE);
+					pArrowSprite->SetPosition(g_pHero->GetPosition());
+					pArrowSprite->SetVelocity(16, 0);
+					g_pGame->AddDungeonSprite(pArrowSprite);
+					break;
+				case FD_UP:
+					pArrowSprite = new Sprite(g_pArrowUpBitmap);
+					pArrowSprite->SetNumFrames(9);
+					pArrowSprite->SetBoundsAction(BA_DIE);
+					pArrowSprite->SetPosition(g_pHero->GetPosition());
+					pArrowSprite->SetVelocity(0, -16);
+					g_pGame->AddDungeonSprite(pArrowSprite);
+					break;
+				case FD_DOWN:
+					pArrowSprite = new Sprite(g_pArrowDownBitmap);
+					pArrowSprite->SetNumFrames(9);
+					pArrowSprite->SetBoundsAction(BA_DIE);
+					pArrowSprite->SetPosition(g_pHero->GetPosition());
+					pArrowSprite->SetVelocity(0, 16);
+					g_pGame->AddDungeonSprite(pArrowSprite);
+					break;
+				default:
+					break;
+				}
+				break;
+			}
+			default:
+				break;
+			}
 		}
 		if (isConstruct)
 		{
@@ -849,6 +1095,35 @@ void HandleKeys(WPARAM wParam)
 		break;
 	default:
 		break;
+	}
+	ReleaseDC(hWindow, hDC);
+}
+
+void ReleaseKeys(WPARAM wParam)
+{
+	HDC		hDC;
+	HWND	hWindow = g_pGame->GetWindow();
+	hDC = GetDC(hWindow);
+
+	if (isDungeon || isConstruct)
+	{
+		switch (wParam)
+		{
+		case VK_UP:
+			g_pHero->SetVelocity(0, 0);
+			break;
+		case VK_DOWN:
+			g_pHero->SetVelocity(0, 0);
+			break;
+		case VK_RIGHT:
+			g_pHero->SetVelocity(0, 0);
+			break;
+		case VK_LEFT:
+			g_pHero->SetVelocity(0, 0);
+			break;
+		default:
+			break;
+		}
 	}
 	ReleaseDC(hWindow, hDC);
 }
@@ -964,10 +1239,6 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 
 void SpriteDying(Sprite* pSpriteDying)
 {
-	Sprite* pSprite = new Sprite(g_pEnemyExplosionBitmap, g_rcEnemeyBounds);
-	pSprite->SetNumFrames(9, true);
-	pSprite->SetPosition(pSpriteDying->GetPosition());
-	g_pGame->AddDungeonSprite(pSprite);
 }
 
 //-----------------------------------------------------------------

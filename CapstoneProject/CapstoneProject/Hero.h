@@ -87,12 +87,6 @@ public:
 	/// Used to increase the health meter and refill the Sprite to full health.  
 	void IncreaseHealthMeter();
 
-private:
-	int m_iHealth; ///< The health of the Hero sprite.  Will allow it to collide more before dying
-	int m_iHealthMeter; ///< The health meter will show the player how much health the Hero sprite has
-	WEAPONTYPE m_wtWeapon; ///< Used to store which weapon the Hero sprite has 
-	FACINGDIRECTION m_fdDirection; ///< Used to store which direction the Hero is facing
-
 	/// Returns which weapon the hero is currently holding
 	/// @return m_wtWeapon as a WORD
 	/// @see WEAPONTYPE
@@ -102,5 +96,15 @@ private:
 	/// @return m_fdDirection as a WORD
 	/// @see FACINGDIRECTION
 	FACINGDIRECTION GetDirection() const;
+
+	/// Sets the direction the hero is facing
+	/// @param fdDirection The direction to set the member variable to
+	void SetDirection(FACINGDIRECTION);
+
+private:
+	int m_iHealth; ///< The health of the Hero sprite.  Will allow it to collide more before dying
+	int m_iHealthMeter; ///< The health meter will show the player how much health the Hero sprite has
+	WEAPONTYPE m_wtWeapon; ///< Used to store which weapon the Hero sprite has 
+	FACINGDIRECTION m_fdDirection; ///< Used to store which direction the Hero is facing
 };
 
