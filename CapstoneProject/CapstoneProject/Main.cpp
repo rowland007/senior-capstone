@@ -1166,28 +1166,32 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 			pSpriteHitter->SetVelocity(-pSpriteHitter->GetVelocity().x, -pSpriteHitter->GetVelocity().y);
 			//if hero's health is more than 1 subtract 1 but if hero's health is 1 then kill the sprite.
 			g_pHero->GetHealth() > 1 ? g_pHero->SetHealth(g_pHero->GetHealth() - 1) : pSpriteHittee->Kill(), g_bGameOver = true;
-			return true;
 		}
 
 		//@TODO:
-		/**************** Needs work
+		
+	}	
+  	return false;
+}
+
+bool SpriteCollision(Sprite* pSpriteHitter, EnemyBoss* pBossSprite)
+{
+	Bitmap* pHitter = pSpriteHitter->GetBitmap();
+	Bitmap* pHittee = pBossSprite->GetBitmap();
+	if (isDungeon)
+	{
 		//Check to see if the boomerang has hit an enemy
 		if (pHitter == g_pBoomerangBitmap && pHittee == g_pEnemyTenticalBitmap)
 		{
 			pSpriteHitter->Kill();
 			//If enemey's health is more than 1 subtract 1 from it but kill it if it is at 1
-			if (pSpriteHittee->GetHealth() > 1)
+			if (pBossSprite->GetHealth() > 1)
 			{
-				pSpriteHitee->SetHealth(pSpriteHitee->GetHealth() - 1);
+				pBossSprite->SetHealth(pBossSprite->GetHealth() - 1);
 			}
 			else
 			{
-				pSpriteHitee->Kill();
-				//If you kill the enemy play explosion
-				Sprite* pSprite = new Sprite(g_pEnemyExplosionBitmap, g_rcEnemeyBounds);
-				pSprite->SetNumFrames(9, true);
-				pSprite->SetPosition(pSpriteHittee->GetPosition());
-				g_pGame->AddDungeonSprite(pSprite);
+				pBossSprite->Kill();
 			}
 		}
 		//Check to see if an arrow has hit an enemy
@@ -1197,40 +1201,30 @@ bool SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 			pSpriteHitter->Kill();
 
 			//If enemey's health is more than 1 subtract 1 from it but kill it if it is at 1
-			if (pSpriteHittee->GetHealth() > 1)
+			if (pBossSprite->GetHealth() > 1)
 			{
-				pSpriteHitee->SetHealth(pSpriteHitee->GetHealth() - 1);
+				pBossSprite->SetHealth(pBossSprite->GetHealth() - 1);
 			}
 			else
 			{
-				pSpriteHitee->Kill();
-				//If you kill the enemy play explosion
-				Sprite* pSprite = new Sprite(g_pEnemyExplosionBitmap, g_rcEnemeyBounds);
-				pSprite->SetNumFrames(9, true);
-				pSprite->SetPosition(pSpriteHittee->GetPosition());
-				g_pGame->AddDungeonSprite(pSprite);
+				pBossSprite->Kill();
 			}
 		}
 		//Check to see if the sword hits the enemy
 		if ((pHitter == g_pSwordSwingLeftBitmap || pHitter == g_pSwordSwingRightBitmap || pHitter == g_pSwordSwingDownBitmap || pHitter == g_pSwordSwingUpBitmap) && pHittee == g_pEnemyTenticalBitmap)
 		{
 			//If enemey's health is more than 1 subtract 1 from it but kill it if it is at 1
-			if (pSpriteHittee->GetHealth() > 1)
+			if (pBossSprite->GetHealth() > 1)
 			{
-				pSpriteHitee->SetHealth(pSpriteHitee->GetHealth() - 1);
+				pBossSprite->SetHealth(pBossSprite->GetHealth() - 1);
 			}
 			else
 			{
-				pSpriteHitee->Kill();
-				//If you kill the enemy play explosion
-				Sprite* pSprite = new Sprite(g_pEnemyExplosionBitmap, g_rcEnemeyBounds);
-				pSprite->SetNumFrames(9, true);
-				pSprite->SetPosition(pSpriteHittee->GetPosition());
-				g_pGame->AddDungeonSprite(pSprite);
+				pBossSprite->Kill();
 			}
-		}*********************************/
-	}	
-  	return false;
+		}
+	}
+	return false;
 }
 
 void SpriteDying(Sprite* pSpriteDying)
